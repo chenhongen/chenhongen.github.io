@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>js：对象-属性-set/get | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JS," />
+  
+
+  <meta name="description" content="碎语：
+&amp;emsp;&amp;emsp;js有对象-属性这早已耳熟能详，直到偶然看到某开源js源码才发现，同java一样，它也有对应的set/get方法。
+demo：123456789101112131415161718192021222324var che = &amp;#123;	_wheels: 4,	get wheels() &amp;#123;		return this._wheels;	&amp;#125;,	set">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js：对象-属性-set/get">
+<meta property="og:url" content="http://rebey.cn/2016/12/31/js中的set与get/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="碎语：
+&amp;emsp;&amp;emsp;js有对象-属性这早已耳熟能详，直到偶然看到某开源js源码才发现，同java一样，它也有对应的set/get方法。
+demo：123456789101112131415161718192021222324var che = &amp;#123;	_wheels: 4,	get wheels() &amp;#123;		return this._wheels;	&amp;#125;,	set">
+<meta property="og:updated_time" content="2016-12-31T13:49:43.073Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js：对象-属性-set/get">
+<meta name="twitter:description" content="碎语：
+&amp;emsp;&amp;emsp;js有对象-属性这早已耳熟能详，直到偶然看到某开源js源码才发现，同java一样，它也有对应的set/get方法。
+demo：123456789101112131415161718192021222324var che = &amp;#123;	_wheels: 4,	get wheels() &amp;#123;		return this._wheels;	&amp;#125;,	set">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//pingjs.qq.com/h5/stats.js";
+      hm.name = "MTAH5";
+      hm.SID = "500052254";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-js中的set与get" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">js：对象-属性-set/get</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.12.31</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/前端/">前端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>碎语</strong>：</p>
+<p>&emsp;&emsp;js有<em>对象-属性</em>这早已耳熟能详，直到偶然看到某开源js源码才发现，同java一样，它也有对应的<em>set/get方法</em>。</p>
+<p><strong>demo</strong>：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> che = &#123;</div><div class="line">	_wheels: <span class="number">4</span>,</div><div class="line">	get wheels() &#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">this</span>._wheels;</div><div class="line">	&#125;,</div><div class="line">	set wheels(value) &#123;</div><div class="line">		<span class="keyword">if</span>(value &lt; <span class="number">1</span>) &#123;</div><div class="line">			<span class="built_in">console</span>.log(<span class="string">'give me a wheel at least,please!'</span>);</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">this</span>._wheels = value;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che.wheels: "</span>+che.wheels);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che._wheels: "</span>+che._wheels);</div><div class="line"></div><div class="line">che.wheels = <span class="number">2</span>;</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che.wheels: "</span>+che.wheels);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che._wheels: "</span>+che._wheels);</div><div class="line"></div><div class="line">che.wheels = <span class="number">0</span>;</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che.wheels: "</span>+che.wheels);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che._wheels: "</span>+che._wheels);</div></pre></td></tr></table></figure></p>
+<p><strong>兼容</strong>：这种写法并==不支持IE8==，替代方法如下;</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> che2 = &#123;</div><div class="line">	_wheels: <span class="number">4</span></div><div class="line">&#125;;</div><div class="line"><span class="built_in">Object</span>.defineProperty(che2, <span class="string">"wheels"</span>, &#123;</div><div class="line">	get: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">this</span>._wheels;</div><div class="line">	&#125;,</div><div class="line">	set: <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</div><div class="line">		<span class="keyword">if</span>(value &lt; <span class="number">1</span>) &#123;</div><div class="line">			<span class="built_in">console</span>.log(<span class="string">'give me a wheel at least,please!'</span>);</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">this</span>._wheels = value;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><strong>补充</strong>：</p>
+<p>传说中的标准写法（不代表常用）<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Field</span>(<span class="params">val</span>)</span>&#123;  </div><div class="line">    <span class="keyword">this</span>.value = val;  </div><div class="line">&#125; </div><div class="line"></div><div class="line">Field.prototype = &#123;  </div><div class="line">    get value()&#123;  </div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>._value;  </div><div class="line">    &#125;,  </div><div class="line">    set value(val)&#123;  </div><div class="line">        <span class="keyword">this</span>._value = val;  </div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> field = <span class="keyword">new</span> Field(<span class="string">"che"</span>);</div><div class="line"><span class="built_in">console</span>.log(field.value);</div><div class="line"></div><div class="line">field.value = <span class="string">"che2"</span>;</div><div class="line"><span class="built_in">console</span>.log(field.value);</div></pre></td></tr></table></figure></p>
+<p>常用写法（外界无法修改默认值）<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> che3 = &#123;</div><div class="line">	get wheels() &#123;</div><div class="line">		<span class="keyword">return</span> <span class="number">4</span>;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che3.wheels: "</span> + che3.wheels);</div><div class="line"></div><div class="line">che3.wheels = <span class="number">2</span>;</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che3.wheels: "</span> + che3.wheels);</div></pre></td></tr></table></figure></p>
+<p><del>最后祝各位程序员，新年吉祥。早！日！脱！单</del>！</p>
+<p><strong>参考</strong>：<a href="http://www.cnblogs.com/lhb25/archive/2010/09/19/1830724.html" target="_blank" rel="external">网络之美：JavaScript中Get和Set访问器的实现 </a></p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="js：对象-属性-set/get" data-url="http://rebey.cn/2016/12/31/js中的set与get/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+  }
+</script>
+
+</body>
+</html>

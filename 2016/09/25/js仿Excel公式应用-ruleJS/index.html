@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>js仿Excel公式应用-ruleJS | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JS," />
+  
+
+  <meta name="description" content="概要
+  这是一个基于ruleJS的应用小Demo，体现网页表格等输入公式（类似Excel）并自动计算结果的效果；适用IE9及以上主流浏览器；demo根据handsontable github上源码改编。
+
+难点
+  ruleJS取值定位类似Excel，默认使用了横轴英文字母(A、B、C…),纵轴数字（1,、2、3…）来定位值；如，id值为“C1”即表示第3列第1行元素;此时当网页同时存在多个表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js仿Excel公式应用-ruleJS">
+<meta property="og:url" content="http://rebey.cn/2016/09/25/js仿Excel公式应用-ruleJS/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="概要
+  这是一个基于ruleJS的应用小Demo，体现网页表格等输入公式（类似Excel）并自动计算结果的效果；适用IE9及以上主流浏览器；demo根据handsontable github上源码改编。
+
+难点
+  ruleJS取值定位类似Excel，默认使用了横轴英文字母(A、B、C…),纵轴数字（1,、2、3…）来定位值；如，id值为“C1”即表示第3列第1行元素;此时当网页同时存在多个表">
+<meta property="og:updated_time" content="2016-12-31T12:22:29.681Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js仿Excel公式应用-ruleJS">
+<meta name="twitter:description" content="概要
+  这是一个基于ruleJS的应用小Demo，体现网页表格等输入公式（类似Excel）并自动计算结果的效果；适用IE9及以上主流浏览器；demo根据handsontable github上源码改编。
+
+难点
+  ruleJS取值定位类似Excel，默认使用了横轴英文字母(A、B、C…),纵轴数字（1,、2、3…）来定位值；如，id值为“C1”即表示第3列第1行元素;此时当网页同时存在多个表">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//pingjs.qq.com/h5/stats.js";
+      hm.name = "MTAH5";
+      hm.SID = "500052254";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-js仿Excel公式应用-ruleJS" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">js仿Excel公式应用-ruleJS</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.09.25</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/前端/">前端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <ul>
+<li><p><strong>概要</strong></p>
+<p>  这是一个基于ruleJS的应用小Demo，体现<em>网页表格等输入公式（类似Excel）并自动计算结果</em>的效果；适用IE9及以上主流浏览器；demo根据<a href="https://github.com/chenhongen/ruleJS" target="_blank" rel="external">handsontable github</a>上源码改编。</p>
+</li>
+<li><p><strong>难点</strong></p>
+<p>  ruleJS取值定位类似Excel，默认使用了横轴英文字母(A、B、C…),纵轴数字（1,、2、3…）来定位值；如，id值为“C1”即表示第3列第1行元素;此时当网页同时存在多个表格时，需要考虑id重复的隐患，本例使用了iframe来回避这个问题；</p>
+<p>  尝试兼容IE8做了些修改，替换了源码中使用的一些IE8不支持的函数，诸如：querySelectorAll、Array.indexOf、Array.filter、Array.forEach、getElementsByClassName等；最后还是因为ie8没有HTMLElement兼容失败，暂时抛弃小八（T T）；</p>
+<p>  handsontable贴出的介绍函数链接已失效，可参考Excel相关函数定义规范来使用（或者看js源码–）；</p>
+</li>
+<li><p><strong>链接</strong><br>  演示地址：<a href="https://chenhongen.github.io/ruleJS4Excel" target="_blank" rel="external">点我</a>；<br>  demo源码：<a href="https://github.com/chenhongen/ruleJS4Excel" target="_blank" rel="external">github传送门</a>；</p>
+</li>
+<li><p><strong>源码分析</strong></p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">☞ ruleJS.all.full.js片段：</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * form elements, which can be parsed</div><div class="line">     * @type &#123;string[]&#125;</div><div class="line">     */</div><div class="line">    <span class="comment">//var formElements = ['input[type=text]', '[data-formula]'];</span></div><div class="line">    <span class="comment">//定义需要转换为公式的选择器</span></div><div class="line">    <span class="keyword">var</span> formElements = [<span class="string">'input[class=rj-formula]'</span>, <span class="string">'[data-formula]'</span>];</div></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">☞ jsp片段：</div><div class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"A3"</span> <span class="attr">value</span>=<span class="string">"7"</span> <span class="attr">class</span>=<span class="string">"rj-formula"</span>&gt;</span></div><div class="line">    ...</div><div class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"K1"</span> <span class="attr">data-formula</span>=<span class="string">"SUM(A1:C3,A1)"</span> <span class="attr">class</span>=<span class="string">"rj-formula"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div></pre></td></tr></table></figure>
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="js仿Excel公式应用-ruleJS" data-url="http://rebey.cn/2016/09/25/js仿Excel公式应用-ruleJS/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+  }
+</script>
+
+</body>
+</html>

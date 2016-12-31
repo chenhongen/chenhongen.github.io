@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>CheBus2Mail 实时公交信息（邮件版）踩坑记 | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="前景
+  在寒冬，于北京。错过一辆晚高峰的公交就好比全世界从你身边路过。
+  需求是第一生产力，公交集团推出了查询实时公交的微信公众号，无奈不准确且不稳定，用户体验差。随后某度地图与其合作将此功能结合到了自己的产品中，公交实时定位基本准确。查询总共分三步：①把冰箱门打开 ①输入公交车次号;②选择公交开往方向；③选择乘坐站点。查询结果会告诉你，离你最近的三辆公交距离你还有几站。
+  那么问题来了，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CheBus2Mail 实时公交信息（邮件版）踩坑记">
+<meta property="og:url" content="http://rebey.cn/2016/10/23/CheBus2Mail 实时公交信息（邮件版）踩坑记/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="前景
+  在寒冬，于北京。错过一辆晚高峰的公交就好比全世界从你身边路过。
+  需求是第一生产力，公交集团推出了查询实时公交的微信公众号，无奈不准确且不稳定，用户体验差。随后某度地图与其合作将此功能结合到了自己的产品中，公交实时定位基本准确。查询总共分三步：①把冰箱门打开 ①输入公交车次号;②选择公交开往方向；③选择乘坐站点。查询结果会告诉你，离你最近的三辆公交距离你还有几站。
+  那么问题来了，">
+<meta property="og:image" content="https://github.com/chenhongen/imgStorage/raw/master/20161023-cbm.png">
+<meta property="og:image" content="https://github.com/chenhongen/imgStorage/raw/master/20161023-result.jpg">
+<meta property="og:updated_time" content="2016-10-23T09:08:04.916Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CheBus2Mail 实时公交信息（邮件版）踩坑记">
+<meta name="twitter:description" content="前景
+  在寒冬，于北京。错过一辆晚高峰的公交就好比全世界从你身边路过。
+  需求是第一生产力，公交集团推出了查询实时公交的微信公众号，无奈不准确且不稳定，用户体验差。随后某度地图与其合作将此功能结合到了自己的产品中，公交实时定位基本准确。查询总共分三步：①把冰箱门打开 ①输入公交车次号;②选择公交开往方向；③选择乘坐站点。查询结果会告诉你，离你最近的三辆公交距离你还有几站。
+  那么问题来了，">
+<meta name="twitter:image" content="https://github.com/chenhongen/imgStorage/raw/master/20161023-cbm.png">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//pingjs.qq.com/h5/stats.js";
+      hm.name = "MTAH5";
+      hm.SID = "500052254";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-CheBus2Mail 实时公交信息（邮件版）踩坑记" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">CheBus2Mail 实时公交信息（邮件版）踩坑记</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.10.23</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后台/">后台</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <ul>
+<li><p><strong>前景</strong></p>
+<p>  在寒冬，于北京。错过一辆晚高峰的公交就好比全世界从你身边路过。</p>
+<p>  需求是第一生产力，公交集团推出了查询实时公交的微信公众号，无奈不准确且不稳定，用户体验差。随后某度地图与其合作将此功能结合到了自己的产品中，公交实时定位基本准确。查询总共分三步：<del>①把冰箱门打开</del> <em>①输入公交车次号;②选择公交开往方向；③选择乘坐站点</em>。查询结果会告诉你，离你最近的三辆公交距离你还有几站。</p>
+<p>  那么问题来了，我每天就是要从公司坐同一趟车回家，车次、方向、站点、时间基本固定。根据查询结果的距离站点数，决定我出门候车时间。可以极大降低因候车时间，从而减少雾霾吸收量。然而，不愉快的事我每天需要抽出时间打开它那沉重的APP，输入相同的数字，点击重复的操作才能得到我想要的数据。这么一来，需求很明确了，我们需要一个定时推送实时公交信息的功能的喔~</p>
+</li>
+<li><p><strong>思路</strong></p>
+</li>
+</ul>
+<ol>
+<li>爬虫：nodejs也好、python也好、java也好。能爬到数据的就是好爬虫；</li>
+<li>解析：抓取后数据处理，提取关键信息；</li>
+<li>推送：微信也好、QQ也好、邮件也好。不需要认证审核、消息数量无限制、开发代价小，那么首选就是邮件了。</li>
+</ol>
+<ul>
+<li><p><strong>难点</strong></p>
+<p>门神：起初由于最近刚自学了nodejs，看到它可以写爬虫，就尝试用它来抓取网页数据。然而公交集团的php网站做了类似cookie校验的措施。ajax请求无情的抛回来“timeout”。也尝试过模仿请求头来请求，也吃了闭门羹。这种防爬虫的措施，让我不得不放弃几行代码就能实现爬虫的nodejs，而改用主要用于自动化测试的java ==selenium==。</p>
+<p>版本：selenium需要浏览器驱动（如：chromedriver.exe）的辅助。新版本的浏览器可能出现不支持的情况！如果你在本机运行selenium启动浏览器没问题，在服务器运行报错。jar包引入等都没问题情况下，查询浏览器版本吧。</p>
+<p>定时：==ScheduledExecutorService==实现定时效果。</p>
+<p>运行：在本机，将java project打成runnable jar。win7下直接双击可直接执行，而放到window server 2008服务器上却执行不了，甚是郁闷。研究jre/jvm配置后无果，变通采用==exe4j==工具，将jar打成exe可执行文件。顺带支持自定义logo。</p>
+<p><img src="https://github.com/chenhongen/imgStorage/raw/master/20161023-cbm.png" alt="image"></p>
+</li>
+<li><p><strong>效果</strong></p>
+<p>每天下班时间邮箱收到抓取后的公交信息邮件。</p>
+<p><img src="https://github.com/chenhongen/imgStorage/raw/master/20161023-result.jpg" alt="image"></p>
+</li>
+<li><p><strong>源码</strong></p>
+<p>保护水表，暂不开源。</p>
+</li>
+</ul>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="CheBus2Mail 实时公交信息（邮件版）踩坑记" data-url="http://rebey.cn/2016/10/23/CheBus2Mail 实时公交信息（邮件版）踩坑记/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+  }
+</script>
+
+</body>
+</html>

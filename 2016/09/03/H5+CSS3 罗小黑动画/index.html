@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>H5+CSS3 罗小黑动画 | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="H5,CSS3," />
+  
+
+  <meta name="description" content="概要
+  css3-animation-steps()函数 + Sprite（雪碧图）让萌萌的小黑动起来；  html5-canvas 画一个逗喵神器。
+
+难点
+  实现纯canvas绘制以指定坐标为原点旋转指定角度的椭圆；  椭圆与曲线活动轨迹磨合调整，多canvas整合；
+
+链接  关于本人使用steps()灵感来源于京东618的这篇技术贴，里面大致阐述了steps原理，网上还有更透彻的讲解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="H5+CSS3 罗小黑动画">
+<meta property="og:url" content="http://rebey.cn/2016/09/03/H5+CSS3 罗小黑动画/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="概要
+  css3-animation-steps()函数 + Sprite（雪碧图）让萌萌的小黑动起来；  html5-canvas 画一个逗喵神器。
+
+难点
+  实现纯canvas绘制以指定坐标为原点旋转指定角度的椭圆；  椭圆与曲线活动轨迹磨合调整，多canvas整合；
+
+链接  关于本人使用steps()灵感来源于京东618的这篇技术贴，里面大致阐述了steps原理，网上还有更透彻的讲解">
+<meta property="og:updated_time" content="2016-12-31T12:26:14.131Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="H5+CSS3 罗小黑动画">
+<meta name="twitter:description" content="概要
+  css3-animation-steps()函数 + Sprite（雪碧图）让萌萌的小黑动起来；  html5-canvas 画一个逗喵神器。
+
+难点
+  实现纯canvas绘制以指定坐标为原点旋转指定角度的椭圆；  椭圆与曲线活动轨迹磨合调整，多canvas整合；
+
+链接  关于本人使用steps()灵感来源于京东618的这篇技术贴，里面大致阐述了steps原理，网上还有更透彻的讲解">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//pingjs.qq.com/h5/stats.js";
+      hm.name = "MTAH5";
+      hm.SID = "500052254";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-H5+CSS3 罗小黑动画" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">H5+CSS3 罗小黑动画</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.09.03</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/前端/">前端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <ul>
+<li><p><strong>概要</strong></p>
+<p>  css3-animation-steps()函数 + Sprite（雪碧图）让萌萌的小黑动起来；<br>  html5-canvas 画一个逗喵神器。</p>
+</li>
+<li><p><strong>难点</strong></p>
+<p>  实现纯canvas绘制以指定坐标为原点旋转指定角度的椭圆；<br>  椭圆与曲线活动轨迹磨合调整，多canvas整合；</p>
+</li>
+<li><p><strong>链接</strong><br>  关于本人使用steps()灵感来源于<a href="https://jdc.jd.com/archives/1801" target="_blank" rel="external">京东618</a>的这篇技术贴，里面大致阐述了steps原理，网上还有更透彻的讲解，感兴趣的童鞋可以查阅;<br>  演示地址：<a href="https://chenhongen.github.io/h5css3-LUOXIAOHEI/" target="_blank" rel="external">点我</a>；<br>  demo源码：<a href="https://github.com/chenhongen/h5css3-LUOXIAOHEI" target="_blank" rel="external">github传送门</a>；</p>
+</li>
+<li><p><strong>主要源码</strong></p>
+</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">☞ <span class="selector-tag">css</span>片段：</div><div class="line"></div><div class="line"><span class="selector-class">.xiaohei</span> &#123;</div><div class="line">	<span class="attribute">width</span>: <span class="number">350px</span>;</div><div class="line">	<span class="attribute">height</span>: <span class="number">200px</span>;</div><div class="line">	<span class="attribute">background</span>: <span class="built_in">url</span>(xx.png) no-repeat <span class="number">0</span> <span class="number">0</span>;</div><div class="line">	<span class="attribute">animation</span>: toleft <span class="number">2s</span> infinite <span class="built_in">steps</span>(11, end);</div><div class="line">	<span class="attribute">-moz-animation</span>: toleft <span class="number">1.5s</span> infinite <span class="built_in">steps</span>(11);</div><div class="line">	<span class="attribute">-webkit-animation</span>: toleft <span class="number">2s</span> infinite <span class="built_in">steps</span>(11);</div><div class="line">	<span class="attribute">z-index</span>: -<span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">@<span class="keyword">keyframes</span> toleft &#123;</div><div class="line">	<span class="comment">/*0% &#123;background-position:0;&#125;*/</span></div><div class="line">	100%&#123; <span class="attribute">background-position</span>: -<span class="number">4180px</span> <span class="number">0px</span>;&#125;</div><div class="line">&#125;</div><div class="line">@-<span class="keyword">webkit</span>-<span class="keyword">keyframes</span> toleft &#123;</div><div class="line">	100%&#123; <span class="attribute">background-position</span>: -<span class="number">4180px</span> <span class="number">0px</span>;&#125;</div><div class="line">&#125;</div><div class="line">@-<span class="keyword">moz</span>-<span class="keyword">keyframes</span> toleft &#123;</div><div class="line">	100% &#123;<span class="attribute">background-position</span>: -<span class="number">4180px</span> <span class="number">0</span>;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line">☞ js片段：</div><div class="line"></div><div class="line"><span class="keyword">var</span> h = <span class="number">30</span>, <span class="comment">// 高度（y轴坐标）</span></div><div class="line">	arr = [<span class="number">5</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">50</span>,<span class="number">1</span>,<span class="number">-50</span>,<span class="number">-30</span>,<span class="number">-20</span>,<span class="number">-10</span>,<span class="number">-8</span>,<span class="number">-6</span>,<span class="number">-5</span>,<span class="number">-3</span>], <span class="comment">// 草头旋转角度数组</span></div><div class="line">	<span class="comment">//arrDown = [-6,-7,-8,-9,-10,-20,-30,-50,1,50,30,20,10,8,6,5,4], // 草头下至上旋转角度数组</span></div><div class="line">	i = <span class="number">0</span>, <span class="comment">// 数组下标</span></div><div class="line">	flag = <span class="literal">true</span>, <span class="comment">// 切换标识</span></div><div class="line">	timer = <span class="literal">null</span>; <span class="comment">// 定时器</span></div><div class="line"></div><div class="line"><span class="comment">// 绘制椭圆（草头）</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawOval</span>(<span class="params">ctx, h, neg</span>) </span>&#123;</div><div class="line">	ctx.clearRect(<span class="number">0</span>,<span class="number">0</span>,<span class="number">200</span>,<span class="number">200</span>);<span class="comment">//清除画布上的指定区域</span></div><div class="line">	ctx.beginPath();</div><div class="line">	</div><div class="line">	ctx.save();</div><div class="line">	ctx.translate(<span class="number">16</span>,(h-i/<span class="number">8</span>)+<span class="number">8</span>); <span class="comment">// 垂直变化</span></div><div class="line">	ctx.rotate(<span class="built_in">Math</span>.PI/arr[i]*neg); <span class="comment">// 旋转角度</span></div><div class="line">	ctx.scale(<span class="number">1</span>,<span class="number">1</span>/<span class="number">2</span>); <span class="comment">// 绘制椭圆</span></div><div class="line">	ctx.arc(<span class="number">0</span>,<span class="number">0</span>,<span class="number">15</span>,<span class="number">0</span>,<span class="built_in">Math</span>.PI*<span class="number">2</span>);</div><div class="line">	ctx.fill(); <span class="comment">// 填充</span></div><div class="line">	ctx.stroke();</div><div class="line">	ctx.restore();</div><div class="line"></div><div class="line">	i++; <span class="comment">// 数组遍历</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 贝塞尔曲线（草杆）绘制</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawLine</span>(<span class="params">h</span>) </span>&#123;</div><div class="line">	context.clearRect(<span class="number">0</span>,<span class="number">0</span>,<span class="number">200</span>,<span class="number">200</span>);<span class="comment">//清除画布上的指定区域</span></div><div class="line">	context.beginPath();</div><div class="line">	context.moveTo(<span class="number">20</span>,h+<span class="number">5</span>); <span class="comment">// 起点</span></div><div class="line">	context.bezierCurveTo(<span class="number">80</span>,<span class="number">100</span>,<span class="number">120</span>,<span class="number">100</span>,<span class="number">200</span>,<span class="number">100</span>); <span class="comment">// </span></div><div class="line">	context.stroke();</div><div class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 绘制函数</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">load</span>(<span class="params">v</span>) </span>&#123;</div><div class="line">	clearInterval(timer);</div><div class="line">	timer = setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">		<span class="keyword">if</span>(h===<span class="number">150</span>) &#123;flag = <span class="literal">false</span>; i = <span class="number">0</span>;&#125; <span class="comment">// 切换条件</span></div><div class="line">		<span class="keyword">if</span>(h===<span class="number">30</span>) &#123;flag = <span class="literal">true</span>; i = <span class="number">0</span>;&#125;</div><div class="line"></div><div class="line">		<span class="keyword">if</span>(flag) &#123;</div><div class="line">			h = ++h;</div><div class="line">			(h%<span class="number">8</span> == <span class="number">0</span>) &amp;&amp; drawOval(context1, h, <span class="number">1</span>);</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			h = --h;</div><div class="line">			(h%<span class="number">8</span> == <span class="number">0</span>) &amp;&amp; drawOval(context1, h, <span class="number">-1</span>);</div><div class="line">		&#125;</div><div class="line">		drawLine(h);</div><div class="line"></div><div class="line">		context.drawImage(canvas1,<span class="number">0</span>,<span class="number">0</span>); <span class="comment">// 合并多画布</span></div><div class="line">	&#125;, v);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="H5+CSS3 罗小黑动画" data-url="http://rebey.cn/2016/09/03/H5+CSS3 罗小黑动画/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+  }
+</script>
+
+</body>
+</html>
