@@ -1,30 +1,48 @@
 <!DOCTYPE html>
 
 
-  <html class="light page-category">
+  <html class="light page-post">
 
 
 <head>
   <meta charset="utf-8">
   
-  <title>category | CHE Studio</title>
+  <title>SSM架构问题记录之配置篇 | CHE Studio</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="花田土著,陈宏恩,前端,rebey,frontend,design,nodejs,JavaScript" />
+    <meta name="keywords" content="oracle,mybatis," />
   
 
-  <meta name="description" content="Code Help Everything!">
-<meta property="og:type" content="website">
-<meta property="og:title" content="category">
-<meta property="og:url" content="http://rebey.cn/category/index.html">
+  <meta name="description" content="概要
+  习惯了使用别人的框架，自己动手时碰到的一些问题。
+  工具：maven+spring+mybatis+oracle等。
+
+问题01
+  使用MyBatis Generator自动生成工具生成代码，使用junit测试insert一条记录。（由于oracle主键自增需要依赖序列，这里采用手动赋值测试。）
+  报错：==…无效的列类型: getBigDecimal not implement">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSM架构问题记录之配置篇">
+<meta property="og:url" content="http://rebey.cn/2017/02/19/SSM架构问题记录之配置篇/index.html">
 <meta property="og:site_name" content="CHE Studio">
-<meta property="og:description" content="Code Help Everything!">
-<meta property="og:updated_time" content="2016-07-30T14:00:21.825Z">
+<meta property="og:description" content="概要
+  习惯了使用别人的框架，自己动手时碰到的一些问题。
+  工具：maven+spring+mybatis+oracle等。
+
+问题01
+  使用MyBatis Generator自动生成工具生成代码，使用junit测试insert一条记录。（由于oracle主键自增需要依赖序列，这里采用手动赋值测试。）
+  报错：==…无效的列类型: getBigDecimal not implement">
+<meta property="og:updated_time" content="2017-02-19T13:42:10.081Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="category">
-<meta name="twitter:description" content="Code Help Everything!">
+<meta name="twitter:title" content="SSM架构问题记录之配置篇">
+<meta name="twitter:description" content="概要
+  习惯了使用别人的框架，自己动手时碰到的一些问题。
+  工具：maven+spring+mybatis+oracle等。
+
+问题01
+  使用MyBatis Generator自动生成工具生成代码，使用junit测试insert一条记录。（由于oracle主键自增需要依赖序列，这里采用手动赋值测试。）
+  报错：==…无效的列类型: getBigDecimal not implement">
 
   
 
@@ -66,17 +84,8 @@
     <span id="toolbox-mobile" class="toolbox-mobile">More</span>
   
 
-  <div class="content content-category">
-  <div class="page-header">
-
-  
-    <div class="breadcrumb">
-      <div class="location">分类</div>
-      <i class="icon-location"></i>
-    </div>
-  
-
-  
+  <div class="post-header CENTER">
+   
   <div class="toolbox">
     <a class="toolbox-entry" href="/">
       <span class="toolbox-entry-text">More</span>
@@ -149,126 +158,94 @@
   </div>
 
 
+</div>
 
-  <div class="box-blog-info">
-    <a class="avatar" href="/">
-      <img src="/images/avatar.jpg" alt="" />
-    </a>
-    <div class="info">
-      <h3 class="name" style="font-family: calligraffittiregular">
-        CHE Studio
-      </h3>
-      <div class="slogan">
-        Code Helps Everything.
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-SSM架构问题记录之配置篇" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">SSM架构问题记录之配置篇</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.02.19</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后台/">后台</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <ul>
+<li><p><strong>概要</strong></p>
+<p>  习惯了使用别人的框架，自己动手时碰到的一些问题。</p>
+<p>  工具：maven+spring+mybatis+oracle等。</p>
+</li>
+<li><p><strong>问题01</strong></p>
+<p>  使用MyBatis Generator自动生成工具生成代码，使用junit测试insert一条记录。（由于<a href="http://www.cnblogs.com/panie2015/p/5807683.html" target="_blank" rel="external">oracle主键自增需要依赖序列</a>，这里采用手动赋值测试。）</p>
+<p>  <strong>报错</strong>：==<em>…无效的列类型: getBigDecimal not implemented for class oracle.jdbc.driver.T4CRowidAcces…</em>==；</p>
+</li>
+<li><p><strong>解决01</strong></p>
+<p>  最主要的原因，是我在mybatis-config.xml中配置了“<setting name="useGeneratedKeys" value="true">”而oracle并不支持所以报错；<br>  此外值得一提的是，Generator在生成PO对象时会更加++NUMBER类型的长度++对应java数据类型。如下：</setting></p>
+<p>  长度 | 类型<br>  —|—<br>  1~4 | Short<br>  5~9 | Integer<br>  10~18 | Long<br>  18+（或不写） | BigDecimal</p>
+</li>
+<li><p><strong>挥别亲朋，漂泊异乡在这几平米的空间里就是写梦想，没有时间浪了。待续…</strong></p>
+</li>
+</ul>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
       </div>
     </div>
   </div>
 
-</div>
 
-  <section class="category-box">
-  <div class="category-title">分类</div>
-  <div class="category-list">
-    
-      <a class="category-item" href="#前端">
-        <span class="category-name">前端</span>
-        <span class="category-size">( 4 )</span>
-      </a>
-    
-      <a class="category-item" href="#后台">
-        <span class="category-name">后台</span>
-        <span class="category-size">( 2 )</span>
-      </a>
-    
-      <a class="category-item" href="#总结">
-        <span class="category-name">总结</span>
-        <span class="category-size">( 1 )</span>
-      </a>
-    
-  </div>
-</section>
-
-  <ul class="list-post"><li id="前端" class="item-category-name item-title item-title-0">
-  <!--
-    <a href="" class="text-year">
-   -->
-    前端
-    <span class="category-count">( 4 )</span>
-  <!--
-  </a>
-   -->
-</li>
-<li class="item-post item">
-  <span class="post-date">09-03</span>
-
-  <a class="post-title" href="/2016/09/03/H5+CSS3 罗小黑动画/">H5+CSS3 罗小黑动画</a>
-
-</li>
-<li class="item-post item">
-  <span class="post-date">12-31</span>
-
-  <a class="post-title" href="/2016/12/31/js中的set与get/">js：对象-属性-set/get</a>
-
-</li>
-<li class="item-post item">
-  <span class="post-date">09-25</span>
-
-  <a class="post-title" href="/2016/09/25/js仿Excel公式应用-ruleJS/">js仿Excel公式应用-ruleJS</a>
-
-</li>
-<li class="item-post item">
-  <span class="post-date">09-21</span>
-
-  <a class="post-title" href="/2016/09/21/querySelector与querySelectorAll/">querySelector/querySelectorAll</a>
-
-</li>
-<li id="后台" class="item-category-name item-title item-title-1">
-  <!--
-    <a href="" class="text-year">
-   -->
-    后台
-    <span class="category-count">( 2 )</span>
-  <!--
-  </a>
-   -->
-</li>
-<li class="item-post item">
-  <span class="post-date">02-19</span>
-
-  <a class="post-title" href="/2017/02/19/SSM架构问题记录之配置篇/">SSM架构问题记录之配置篇</a>
-
-</li>
-<li class="item-post item">
-  <span class="post-date">10-23</span>
-
-  <a class="post-title" href="/2016/10/23/CheBus2Mail 实时公交信息（邮件版）踩坑记/">CheBus2Mail 实时公交信息（邮件版）踩坑记</a>
-
-</li>
-<li id="总结" class="item-category-name item-title item-title-2">
-  <!--
-    <a href="" class="text-year">
-   -->
-    总结
-    <span class="category-count">( 1 )</span>
-  <!--
-  </a>
-   -->
-</li>
-<li class="item-post item">
-  <span class="post-date">04-16</span>
-
-  <a class="post-title" href="/2016/04/16/Json的转换与传递/">Json的转换与传递</a>
-
-</li>
-</ul>
-</div>
 
 
   <a id="backTop" class="back-top">
     <i class="icon-angle-up"></i>
   </a>
-
-
 
 
 
@@ -350,6 +327,35 @@
 </div>
 
 
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="SSM架构问题记录之配置篇" data-url="http://rebey.cn/2017/02/19/SSM架构问题记录之配置篇/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
 
   
 
