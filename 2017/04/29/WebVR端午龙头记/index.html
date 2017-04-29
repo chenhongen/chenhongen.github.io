@@ -15,8 +15,10 @@
     <meta name="keywords" content="花田土著,陈宏恩,前端,rebey,frontend,design,nodejs,JavaScript" />
   
 
-  <meta name="description" content="效果展示：
- ☞ 点我打开新世界
+  <meta name="description" content="![—title: WebVR端午龙头记date: 2017-04-29 17:00:00tags: [JS]
+category: 前端
+效果展示：
+  ☞ 点我打开新世界
 
 
 
@@ -28,13 +30,15 @@
 
 代码实现：
 
-12345678910111213141516171819202122232425262728html:&amp;lt;script src=&amp;quot;js/afram">
+123456789101">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CHE Studio">
 <meta property="og:url" content="http://rebey.cn/2017/04/29/WebVR端午龙头记/index.html">
 <meta property="og:site_name" content="CHE Studio">
-<meta property="og:description" content="效果展示：
- ☞ 点我打开新世界
+<meta property="og:description" content="![—title: WebVR端午龙头记date: 2017-04-29 17:00:00tags: [JS]
+category: 前端
+效果展示：
+  ☞ 点我打开新世界
 
 
 
@@ -46,12 +50,14 @@
 
 代码实现：
 
-12345678910111213141516171819202122232425262728html:&amp;lt;script src=&amp;quot;js/afram">
-<meta property="og:updated_time" content="2017-04-29T07:23:40.670Z">
+123456789101">
+<meta property="og:updated_time" content="2017-04-29T08:51:30.861Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CHE Studio">
-<meta name="twitter:description" content="效果展示：
- ☞ 点我打开新世界
+<meta name="twitter:description" content="![—title: WebVR端午龙头记date: 2017-04-29 17:00:00tags: [JS]
+category: 前端
+效果展示：
+  ☞ 点我打开新世界
 
 
 
@@ -63,7 +69,7 @@
 
 代码实现：
 
-12345678910111213141516171819202122232425262728html:&amp;lt;script src=&amp;quot;js/afram">
+123456789101">
 
   
 
@@ -182,6 +188,11 @@
 </div>
 
 
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#category-前端"><span class="toc-text">category: 前端</span></a></li></ol>
+  </div>
+
 
 
 <div class="content content-post CENTER">
@@ -212,9 +223,10 @@
 
   <div class="article-content">
     
-      <ul>
+      <p>![—<br>title: WebVR端午龙头记<br>date: 2017-04-29 17:00:00<br>tags: [JS]</p>
+<h2 id="category-前端"><a href="#category-前端" class="headerlink" title="category: 前端"></a>category: 前端</h2><ul>
 <li><p>效果展示：</p>
-<p> ☞ <a href="http://rebey.oschina.io/aframe/" target="_blank" rel="external">点我打开新世界</a></p>
+<p>  ☞ <a href="http://rebey.oschina.io/aframe/" target="_blank" rel="external">点我打开新世界</a></p>
 </li>
 </ul>
 <ul>
@@ -226,7 +238,7 @@
 <ul>
 <li>代码实现：</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">html:</div><div class="line">&lt;script src=&quot;js/aframe.js&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;script src=&quot;js/aframe-extras.loaders.min.js&quot;&gt;&lt;/script&gt;</div><div class="line">  </div><div class="line">&lt;a-scene&gt;</div><div class="line">  &lt;a-assets&gt;</div><div class="line">    &lt;a-asset-item id=&quot;myModelObj&quot; src=&quot;che.obj&quot;&gt;&lt;/a-asset-item&gt;</div><div class="line">    &lt;a-asset-item id=&quot;myModelMtl&quot; src=&quot;che.mtl&quot;&gt;&lt;/a-asset-item&gt;</div><div class="line">    &lt;!-- &lt;a-asset-item id=&quot;myPlyModel&quot; src=&quot;che.ply&quot;&gt;&lt;/a-asset-item&gt; --&gt;</div><div class="line">    &lt;img id=&quot;skyTexture&quot; src=&quot;image/sechelt.jpg&quot;&gt;</div><div class="line">  &lt;/a-assets&gt;</div><div class="line">  </div><div class="line">  &lt;a-entity position=&quot;0 1.2 -5&quot; scale=&quot;0.035 0.035 0.035&quot; rotation=&quot;-10 -150 -15&quot; obj-model=&quot;obj: #myModelObj; mtl: #myModelMtl&quot;&gt;</div><div class="line">    &lt;a-animation attribute=&quot;position&quot; to=&quot;0 1.4 -5&quot; direction=&quot;alternate&quot; dur=&quot;2000&quot; repeat=&quot;indefinite&quot;&gt;&lt;/a-animation&gt;</div><div class="line">    &lt;a-animation attribute=&quot;rotation&quot; begin=&quot;click&quot; dur=&quot;7200&quot; to=&quot;-10 570 -15&quot; &gt;&lt;/a-animation&gt;</div><div class="line">  	</div><div class="line">  &lt;/a-entity&gt;</div><div class="line">  &lt;!-- &lt;a-entity ply-model=&quot;src: #myPlyModel&quot; position=&quot;0 1 -1&quot; scale=&quot;0.01 0.01 0.01&quot; rotation=&quot;-90 0 0&quot;&gt;&lt;/a-entity&gt; --&gt;</div><div class="line"></div><div class="line">  &lt;a-sky src=&quot;#skyTexture&quot; &gt;&lt;/a-sky&gt;</div><div class="line">  </div><div class="line">  &lt;a-text value=&quot;rebey.cn 端午节快乐！&quot; color=&quot;#CCC&quot; </div><div class="line">    position=&quot;-0.9 0.2 -3&quot; scale=&quot;2 2 2&quot;&gt;&lt;/a-text&gt;</div><div class="line">  </div><div class="line">  &lt;a-camera&gt;</div><div class="line">    &lt;a-cursor&gt;&lt;/a-cursor&gt;</div><div class="line">  &lt;/a-camera&gt;</div><div class="line">&lt;/a-scene&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">html:</div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"js/aframe.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"js/aframe-extras.loaders.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">  </div><div class="line"><span class="tag">&lt;<span class="name">a-scene</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">a-assets</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">a-asset-item</span> <span class="attr">id</span>=<span class="string">"myModelObj"</span> <span class="attr">src</span>=<span class="string">"che.obj"</span>&gt;</span><span class="tag">&lt;/<span class="name">a-asset-item</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">a-asset-item</span> <span class="attr">id</span>=<span class="string">"myModelMtl"</span> <span class="attr">src</span>=<span class="string">"che.mtl"</span>&gt;</span><span class="tag">&lt;/<span class="name">a-asset-item</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- &lt;a-asset-item id="myPlyModel" src="che.ply"&gt;&lt;/a-asset-item&gt; --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">id</span>=<span class="string">"skyTexture"</span> <span class="attr">src</span>=<span class="string">"image/sechelt.jpg"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">a-assets</span>&gt;</span></div><div class="line">  </div><div class="line">  <span class="tag">&lt;<span class="name">a-entity</span> <span class="attr">position</span>=<span class="string">"0 1.2 -5"</span> <span class="attr">scale</span>=<span class="string">"0.035 0.035 0.035"</span> <span class="attr">rotation</span>=<span class="string">"-10 -150 -15"</span> <span class="attr">obj-model</span>=<span class="string">"obj: #myModelObj; mtl: #myModelMtl"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">a-animation</span> <span class="attr">attribute</span>=<span class="string">"position"</span> <span class="attr">to</span>=<span class="string">"0 1.4 -5"</span> <span class="attr">direction</span>=<span class="string">"alternate"</span> <span class="attr">dur</span>=<span class="string">"2000"</span> <span class="attr">repeat</span>=<span class="string">"indefinite"</span>&gt;</span><span class="tag">&lt;/<span class="name">a-animation</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">a-animation</span> <span class="attr">attribute</span>=<span class="string">"rotation"</span> <span class="attr">begin</span>=<span class="string">"click"</span> <span class="attr">dur</span>=<span class="string">"7200"</span> <span class="attr">to</span>=<span class="string">"-10 570 -15"</span> &gt;</span><span class="tag">&lt;/<span class="name">a-animation</span>&gt;</span></div><div class="line">  	</div><div class="line">  <span class="tag">&lt;/<span class="name">a-entity</span>&gt;</span></div><div class="line">  <span class="comment">&lt;!-- &lt;a-entity ply-model="src: #myPlyModel" position="0 1 -1" scale="0.01 0.01 0.01" rotation="-90 0 0"&gt;&lt;/a-entity&gt; --&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">a-sky</span> <span class="attr">src</span>=<span class="string">"#skyTexture"</span> &gt;</span><span class="tag">&lt;/<span class="name">a-sky</span>&gt;</span></div><div class="line">  </div><div class="line">  <span class="tag">&lt;<span class="name">a-text</span> <span class="attr">value</span>=<span class="string">"rebey.cn 端午节快乐！"</span> <span class="attr">color</span>=<span class="string">"#CCC"</span> </span></div><div class="line">    <span class="attr">position</span>=<span class="string">"-0.9 0.2 -3"</span> <span class="attr">scale</span>=<span class="string">"2 2 2"</span>&gt;<span class="tag">&lt;/<span class="name">a-text</span>&gt;</span></div><div class="line">  </div><div class="line">  <span class="tag">&lt;<span class="name">a-camera</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">a-cursor</span>&gt;</span><span class="tag">&lt;/<span class="name">a-cursor</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">a-camera</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">a-scene</span>&gt;</span></div></pre></td></tr></table></figure>
 <ul>
 <li><p>代码分析：</p>
 <p> 由aframe全权负责搭建3d全景，由 <em>entity-龙头、sky-天空环境、text-文字、camera-模拟镜头焦点、assert-存放定义对象（通过id引用）</em>构成。更多aframe知识点参考官网<a href="https://aframe.io/docs/0.5.0/guides/building-with-magicavoxel.html" target="_blank" rel="external">aframe.io</a>。最花时间的就是使用MagicaVoxel画的龙头，画了我两天近十几个小时。最终和大家分享成果，庆祝一年一度的端午节。</p>
