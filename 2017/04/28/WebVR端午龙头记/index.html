@@ -7,39 +7,63 @@
 <head>
   <meta charset="utf-8">
   
-  <title>querySelector/querySelectorAll | CHE Studio</title>
+  <title>CHE Studio</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="JS,H5," />
+    <meta name="keywords" content="花田土著,陈宏恩,前端,rebey,frontend,design,nodejs,JavaScript" />
   
 
-  <meta name="description" content="格式：
-[1].querySelector([2]);
-[1].querySelectorAll([2]);
-[1]Document/Element;
-[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);
-说明：主要作用为CSS选择器；querySelector返回第一">
+  <meta name="description" content="效果展示：
+ ☞ 点我打开新世界
+
+
+
+相关技术：
+ ☞ aframe.js： Mozilla 开源的网页虚拟现实体验( WebVR )框架；
+ ☞ MagicaVoxel： @ephtracy开发的体素编辑神器；
+
+
+
+代码实现：
+
+12345678910111213141516171819202122232425262728html:&amp;lt;script src=&amp;quot;js/afram">
 <meta property="og:type" content="article">
-<meta property="og:title" content="querySelector/querySelectorAll">
-<meta property="og:url" content="http://rebey.cn/2016/09/21/querySelector与querySelectorAll/index.html">
+<meta property="og:title" content="CHE Studio">
+<meta property="og:url" content="http://rebey.cn/2017/04/28/WebVR端午龙头记/index.html">
 <meta property="og:site_name" content="CHE Studio">
-<meta property="og:description" content="格式：
-[1].querySelector([2]);
-[1].querySelectorAll([2]);
-[1]Document/Element;
-[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);
-说明：主要作用为CSS选择器；querySelector返回第一">
-<meta property="og:updated_time" content="2016-12-31T12:25:24.183Z">
+<meta property="og:description" content="效果展示：
+ ☞ 点我打开新世界
+
+
+
+相关技术：
+ ☞ aframe.js： Mozilla 开源的网页虚拟现实体验( WebVR )框架；
+ ☞ MagicaVoxel： @ephtracy开发的体素编辑神器；
+
+
+
+代码实现：
+
+12345678910111213141516171819202122232425262728html:&amp;lt;script src=&amp;quot;js/afram">
+<meta property="og:updated_time" content="2017-04-29T07:14:12.247Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="querySelector/querySelectorAll">
-<meta name="twitter:description" content="格式：
-[1].querySelector([2]);
-[1].querySelectorAll([2]);
-[1]Document/Element;
-[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);
-说明：主要作用为CSS选择器；querySelector返回第一">
+<meta name="twitter:title" content="CHE Studio">
+<meta name="twitter:description" content="效果展示：
+ ☞ 点我打开新世界
+
+
+
+相关技术：
+ ☞ aframe.js： Mozilla 开源的网页虚拟现实体验( WebVR )框架；
+ ☞ MagicaVoxel： @ephtracy开发的体素编辑神器；
+
+
+
+代码实现：
+
+12345678910111213141516171819202122232425262728html:&amp;lt;script src=&amp;quot;js/afram">
 
   
 
@@ -161,14 +185,14 @@
 
 
 <div class="content content-post CENTER">
-   <article id="post-querySelector与querySelectorAll" class="article article-type-post" itemprop="blogPost">
+   <article id="post-WebVR端午龙头记" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">querySelector/querySelectorAll</h1>
+    <h1 class="post-title">(no title)</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2016.09.21</span>
+        <span>2017.04.28</span>
       </span>
 
       
@@ -179,11 +203,6 @@
       
 
       
-  <span class="article-category">
-    <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/前端/">前端</a>
-  </span>
-
 
 
       
@@ -193,19 +212,36 @@
 
   <div class="article-content">
     
-      <p><strong>格式</strong>：</p>
-<p><em>[1].querySelector([2]);</em></p>
-<p><em>[1].querySelectorAll([2]);</em></p>
-<p>[1]Document/Element;</p>
-<p>[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);</p>
-<p><strong>说明</strong>：主要作用为CSS选择器；querySelector返回第一个匹配元素,匹配不到返回null；querySelectorAll返回所有匹配元素集合，匹配不到返回NodeList[]；</p>
-<p>这里着重说明querySelectorAll，其返回值为NodeList。<br>NodeList是静态的，主要有length与item两个属性；常把NodeList转为数组使用：Array.prototype.slice.call(div_list);</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">// 体现静态</span></div><div class="line"><span class="keyword">var</span> a = <span class="built_in">document</span>.getElementById(<span class="string">"body"</span>).querySelectorAll(<span class="string">"div"</span>);</div><div class="line"><span class="keyword">var</span> b = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"div"</span>);</div><div class="line"><span class="keyword">var</span> oDiv = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</div><div class="line"><span class="built_in">document</span>.body.appendChild(oDiv);</div><div class="line">alert(<span class="string">"querySelectorAll:"</span>+a.length+<span class="string">"getElementsByTagName:"</span>+b.length);</div><div class="line"><span class="comment">// 结果：querySelectorAll:3 getElementsByTagName:4</span></div></pre></td></tr></table></figure>
-<p>在IE8下返回类型为StaticNodeList，StaticNodeList只有length属性，使用时小心。</p>
-<p><strong>兼容</strong>：主流浏览器基本支持，特别注意的是，<a href="http://caniuse.com/#search=querySelector" target="_blank" rel="external">IE8只支持CSS2.1和一小部分CSS3</a></p>
-<p><strong>引发</strong>：<br>在handsontable上看到用ruleJS实现了类似Excel的单元格公式计算。download了源码想研究下，结果发现IE8不好使，一查源头就到了querySelectorAll上。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ruleJS src</span></div><div class="line"><span class="keyword">var</span> formElements = [<span class="string">'input[type=text]'</span>, <span class="string">'[data-formula]'</span>];</div><div class="line">[].slice.call($totalElements).forEach(<span class="function"><span class="keyword">function</span> (<span class="params">$item</span>) </span>&#123;</div><div class="line">    registerElementInMatrix($item);</div><div class="line">    registerElementEvents($item);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p><strong>参考</strong>：<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/querySelector" target="_blank" rel="external">MDN Web API</a></p>
+      <ul>
+<li><p>效果展示：</p>
+<p> ☞ <a href="http://rebey.oschina.io/aframe/" target="_blank" rel="external">点我打开新世界</a></p>
+</li>
+</ul>
+<ul>
+<li><p>相关技术：</p>
+<p> ☞ <em>aframe.js</em>： Mozilla 开源的网页虚拟现实体验( WebVR )框架；</p>
+<p> ☞ <em>MagicaVoxel</em>： @ephtracy开发的体素编辑神器；</p>
+</li>
+</ul>
+<ul>
+<li>代码实现：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">html:</div><div class="line">&lt;script src=&quot;js/aframe.js&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;script src=&quot;js/aframe-extras.loaders.min.js&quot;&gt;&lt;/script&gt;</div><div class="line">  </div><div class="line">&lt;a-scene&gt;</div><div class="line">  &lt;a-assets&gt;</div><div class="line">    &lt;a-asset-item id=&quot;myModelObj&quot; src=&quot;che.obj&quot;&gt;&lt;/a-asset-item&gt;</div><div class="line">    &lt;a-asset-item id=&quot;myModelMtl&quot; src=&quot;che.mtl&quot;&gt;&lt;/a-asset-item&gt;</div><div class="line">    &lt;!-- &lt;a-asset-item id=&quot;myPlyModel&quot; src=&quot;che.ply&quot;&gt;&lt;/a-asset-item&gt; --&gt;</div><div class="line">    &lt;img id=&quot;skyTexture&quot; src=&quot;image/sechelt.jpg&quot;&gt;</div><div class="line">  &lt;/a-assets&gt;</div><div class="line">  </div><div class="line">  &lt;a-entity position=&quot;0 1.2 -5&quot; scale=&quot;0.035 0.035 0.035&quot; rotation=&quot;-10 -150 -15&quot; obj-model=&quot;obj: #myModelObj; mtl: #myModelMtl&quot;&gt;</div><div class="line">    &lt;a-animation attribute=&quot;position&quot; to=&quot;0 1.4 -5&quot; direction=&quot;alternate&quot; dur=&quot;2000&quot; repeat=&quot;indefinite&quot;&gt;&lt;/a-animation&gt;</div><div class="line">    &lt;a-animation attribute=&quot;rotation&quot; begin=&quot;click&quot; dur=&quot;7200&quot; to=&quot;-10 570 -15&quot; &gt;&lt;/a-animation&gt;</div><div class="line">  	</div><div class="line">  &lt;/a-entity&gt;</div><div class="line">  &lt;!-- &lt;a-entity ply-model=&quot;src: #myPlyModel&quot; position=&quot;0 1 -1&quot; scale=&quot;0.01 0.01 0.01&quot; rotation=&quot;-90 0 0&quot;&gt;&lt;/a-entity&gt; --&gt;</div><div class="line"></div><div class="line">  &lt;a-sky src=&quot;#skyTexture&quot; &gt;&lt;/a-sky&gt;</div><div class="line">  </div><div class="line">  &lt;a-text value=&quot;rebey.cn 端午节快乐！&quot; color=&quot;#CCC&quot; </div><div class="line">    position=&quot;-0.9 0.2 -3&quot; scale=&quot;2 2 2&quot;&gt;&lt;/a-text&gt;</div><div class="line">  </div><div class="line">  &lt;a-camera&gt;</div><div class="line">    &lt;a-cursor&gt;&lt;/a-cursor&gt;</div><div class="line">  &lt;/a-camera&gt;</div><div class="line">&lt;/a-scene&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>代码分析：</p>
+<p> 由aframe全权负责搭建3d全景，由 <em>entity-龙头、sky-天空环境、text-文字、camera-模拟镜头焦点、assert-存放定义对象（通过id引用）</em>构成。更多aframe知识点参考官网<a href="https://aframe.io/docs/0.5.0/guides/building-with-magicavoxel.html" target="_blank" rel="external">aframe.io</a>。最花时间的就是使用MagicaVoxel画的龙头，画了我两天近十几个小时。最终和大家分享成果，庆祝一年一度的端午节。</p>
+</li>
+<li><p>写在最后：</p>
+<p> 最重要的往往在最后。细心的你发现了吗？在源码中a-text的值明明写了中文却没有显示。是的，aframe用的字体不支持伟大的汉字，前端大神可以尝试一下更改aframe引用的字体。</p>
+<p> 还有一点重要的是，引用aframe.js后必须运行在服务器端，否则可能出现浏览器提示跨域冲突的问题，可以将代码置于nodejs或者tomcat等服务器下运行。</p>
+<p> 此外，aframe支持MagicaVoxel导出的两种方式.PLY (with Baked Shadows)与.OBJ。当你选择的是OBJ时请注意，导出的是3个文件（.obj/.png/.mtl）缺一不可。</p>
+</li>
+</ul>
+<ul>
+<li><p>关于作者：</p>
+<p> <a href="https://rebey.cn">rebey.cn</a>：个人博客-沉迷前端美色的java工程师，有工作机会欢迎联系。</p>
+</li>
+</ul>
 
     
   </div>
@@ -329,7 +365,7 @@
     
   <section class="duoshuo-comments">
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="" data-title="querySelector/querySelectorAll" data-url="http://rebey.cn/2016/09/21/querySelector与querySelectorAll/index.html"></div>
+    <div class="ds-thread" data-thread-key="" data-title="" data-url="http://rebey.cn/2017/04/28/WebVR端午龙头记/index.html"></div>
     <!-- 多说评论框 end -->
   </section>
 
