@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>【java源码一带一路系列】之HashMap.putAll() | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="本文以jdk1.8中HashMap.putAll()方法为切入点，分析其中难理解、有价值的源码片段（类似源码查看是ctrl+鼠标左键的过程）。观光线路图：putAll() –&amp;gt; putMapEntries() –&amp;gt; tableSizeFor() –&amp;gt; resize() –&amp;gt; hash() –&amp;gt; putVal()…
+123public void putAll(Map&amp;l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【java源码一带一路系列】之HashMap.putAll()">
+<meta property="og:url" content="http://rebey.cn/2017/05/07/【java源码一带一路系列】之HashMap.putAll()/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="本文以jdk1.8中HashMap.putAll()方法为切入点，分析其中难理解、有价值的源码片段（类似源码查看是ctrl+鼠标左键的过程）。观光线路图：putAll() –&amp;gt; putMapEntries() –&amp;gt; tableSizeFor() –&amp;gt; resize() –&amp;gt; hash() –&amp;gt; putVal()…
+123public void putAll(Map&amp;l">
+<meta property="og:image" content="https://github.com/chenhongen/DemoRun/blob/master/image/tableSizeFor.png?raw=true">
+<meta property="og:updated_time" content="2017-05-07T13:41:37.128Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【java源码一带一路系列】之HashMap.putAll()">
+<meta name="twitter:description" content="本文以jdk1.8中HashMap.putAll()方法为切入点，分析其中难理解、有价值的源码片段（类似源码查看是ctrl+鼠标左键的过程）。观光线路图：putAll() –&amp;gt; putMapEntries() –&amp;gt; tableSizeFor() –&amp;gt; resize() –&amp;gt; hash() –&amp;gt; putVal()…
+123public void putAll(Map&amp;l">
+<meta name="twitter:image" content="https://github.com/chenhongen/DemoRun/blob/master/image/tableSizeFor.png?raw=true">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//pingjs.qq.com/h5/stats.js";
+      hm.name = "MTAH5";
+      hm.SID = "500052254";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-【java源码一带一路系列】之HashMap.putAll()" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">【java源码一带一路系列】之HashMap.putAll()</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.05.07</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>本文以jdk1.8中HashMap.putAll()方法为切入点，分析其中难理解、有价值的源码片段（类似源码查看是ctrl+鼠标左键的过程）。观光线路图：putAll() –&gt; putMapEntries() –&gt; tableSizeFor() –&gt; resize() –&gt; hash() –&gt; putVal()…</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">putAll</span><span class="params">(Map&lt;? extends K, ? extends V&gt; m)</span> </span>&#123;</div><div class="line">    putMapEntries(m, <span class="keyword">true</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">putMapEntries</span><span class="params">(Map&lt;? extends K, ? extends V&gt; m, <span class="keyword">boolean</span> evict)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> s = m.size();</div><div class="line">    <span class="keyword">if</span> (s &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (table == <span class="keyword">null</span>) &#123; <span class="comment">// pre-size</span></div><div class="line">            <span class="comment">// 这里“/loadFactor”得出hash table的capacity，“+1.0”结合下面“&lt;”就懂了。</span></div><div class="line">            <span class="keyword">float</span> ft = ((<span class="keyword">float</span>)s / loadFactor) + <span class="number">1.0F</span>; </div><div class="line">            <span class="keyword">int</span> t = ((ft &lt; (<span class="keyword">float</span>)MAXIMUM_CAPACITY) ?</div><div class="line">                     (<span class="keyword">int</span>)ft : MAXIMUM_CAPACITY);</div><div class="line">            <span class="keyword">if</span> (t &gt; threshold)</div><div class="line">                threshold = tableSizeFor(t);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (s &gt; threshold)</div><div class="line">            resize();</div><div class="line">            </div><div class="line">        <span class="comment">// 笔者疑问：原map加上m后可能需要扩容的判断在putVal中，在此是不是更佳呢？</span></div><div class="line">        <span class="keyword">for</span> (Map.Entry&lt;? extends K, ? extends V&gt; e : m.entrySet()) &#123;</div><div class="line">            K key = e.getKey();</div><div class="line">            V value = e.getValue();</div><div class="line">            putVal(hash(key), key, value, <span class="keyword">false</span>, evict);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 找到大于等于cap的最小的2的幂</span></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">tableSizeFor</span><span class="params">(<span class="keyword">int</span> cap)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> n = cap - <span class="number">1</span>;</div><div class="line">    n |= n &gt;&gt;&gt; <span class="number">1</span>;</div><div class="line">    n |= n &gt;&gt;&gt; <span class="number">2</span>;</div><div class="line">    n |= n &gt;&gt;&gt; <span class="number">4</span>;</div><div class="line">    n |= n &gt;&gt;&gt; <span class="number">8</span>;</div><div class="line">    n |= n &gt;&gt;&gt; <span class="number">16</span>;</div><div class="line">    <span class="keyword">return</span> (n &lt; <span class="number">0</span>) ? <span class="number">1</span> : (n &gt;= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + <span class="number">1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里的“-1”可以理解为是为了++保证结果值≥原值++。举个栗子，假如cap=8（1000）。计算结果为16(10000)。这显然不是我们想要的最小的2的幂。关于抑或、右移的计算过程，我以size=3为例，可以参考便于理解：<br><img src="https://github.com/chenhongen/DemoRun/blob/master/image/tableSizeFor.png?raw=true" alt="image"></p>
+<p>那么问题来了。为了要遵循“2的幂次方”的套路呢？不仅tableSizeFor如此，连一些参数初始值也遵循着（如DEFAULT_INITIAL_CAPACITY = 1 &lt;&lt; 4）。</p>
+<p>根本意图为了提高效率，为了使用借助以下规律：</p>
+<blockquote>
+<p>取余(%)操作中如果除数是2的幂次方，则等同于与其除数减一的与(&amp;)操作</p>
+</blockquote>
+<p>因此在源码中会看到大量的“(n - 1) &amp; hash”语句，也就是为什么要按“2的幂次方”的套路出牌了。</p>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// hash table扩容至原来2倍，将原table数据重新映射到新table中</span></div><div class="line"><span class="keyword">final</span> Node&lt;K,V&gt;[] resize() &#123;</div><div class="line">    Node&lt;K,V&gt;[] oldTab = table;</div><div class="line">    <span class="keyword">int</span> oldCap = (oldTab == <span class="keyword">null</span>) ? <span class="number">0</span> : oldTab.length;</div><div class="line">    <span class="keyword">int</span> oldThr = threshold;</div><div class="line">    <span class="keyword">int</span> newCap, newThr = <span class="number">0</span>;</div><div class="line">    <span class="keyword">if</span> (oldCap &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (oldCap &gt;= MAXIMUM_CAPACITY) &#123;</div><div class="line">            threshold = Integer.MAX_VALUE;</div><div class="line">            <span class="keyword">return</span> oldTab;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> ((newCap = oldCap &lt;&lt; <span class="number">1</span>) &lt; MAXIMUM_CAPACITY &amp;&amp;</div><div class="line">                 oldCap &gt;= DEFAULT_INITIAL_CAPACITY)</div><div class="line">            newThr = oldThr &lt;&lt; <span class="number">1</span>; <span class="comment">// double threshold</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (oldThr &gt; <span class="number">0</span>) <span class="comment">// initial capacity was placed in threshold</span></div><div class="line">        newCap = oldThr;</div><div class="line">    <span class="keyword">else</span> &#123;               <span class="comment">// zero initial threshold signifies using defaults</span></div><div class="line">        newCap = DEFAULT_INITIAL_CAPACITY;</div><div class="line">        newThr = (<span class="keyword">int</span>)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (newThr == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">float</span> ft = (<span class="keyword">float</span>)newCap * loadFactor;</div><div class="line">        newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (<span class="keyword">float</span>)MAXIMUM_CAPACITY ?</div><div class="line">                  (<span class="keyword">int</span>)ft : Integer.MAX_VALUE);</div><div class="line">    &#125;</div><div class="line">    threshold = newThr;</div><div class="line">    <span class="meta">@SuppressWarnings</span>(&#123;<span class="string">"rawtypes"</span>,<span class="string">"unchecked"</span>&#125;)</div><div class="line">        Node&lt;K,V&gt;[] newTab = (Node&lt;K,V&gt;[])<span class="keyword">new</span> Node[newCap];</div><div class="line">    table = newTab;</div><div class="line">    <span class="keyword">if</span> (oldTab != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; oldCap; ++j) &#123;</div><div class="line">            Node&lt;K,V&gt; e;</div><div class="line">            <span class="keyword">if</span> ((e = oldTab[j]) != <span class="keyword">null</span>) &#123;</div><div class="line">                oldTab[j] = <span class="keyword">null</span>; <span class="comment">// 清空原table</span></div><div class="line">                <span class="keyword">if</span> (e.next == <span class="keyword">null</span>) <span class="comment">// 哈希表只有一个节点，直接赋值</span></div><div class="line">                    newTab[e.hash &amp; (newCap - <span class="number">1</span>)] = e;</div><div class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (e <span class="keyword">instanceof</span> TreeNode)</div><div class="line">                    ((TreeNode&lt;K,V&gt;)e).split(<span class="keyword">this</span>, newTab, j, oldCap); <span class="comment">// 红黑树情况</span></div><div class="line">                <span class="keyword">else</span> &#123; <span class="comment">// preserve order</span></div><div class="line">                    Node&lt;K,V&gt; loHead = <span class="keyword">null</span>, loTail = <span class="keyword">null</span>;</div><div class="line">                    Node&lt;K,V&gt; hiHead = <span class="keyword">null</span>, hiTail = <span class="keyword">null</span>;</div><div class="line">                    Node&lt;K,V&gt; next;</div><div class="line">                    do &#123;</div><div class="line">                        next = e.next;</div><div class="line">                        <span class="keyword">if</span> ((e.hash &amp; oldCap) == <span class="number">0</span>) &#123;</div><div class="line">                            <span class="keyword">if</span> (loTail == <span class="keyword">null</span>)</div><div class="line">                                loHead = e;</div><div class="line">                            <span class="keyword">else</span></div><div class="line">                                loTail.next = e;</div><div class="line">                            loTail = e;</div><div class="line">                        &#125;</div><div class="line">                        <span class="keyword">else</span> &#123;</div><div class="line">                            <span class="keyword">if</span> (hiTail == <span class="keyword">null</span>)</div><div class="line">                                hiHead = e;</div><div class="line">                            <span class="keyword">else</span></div><div class="line">                                hiTail.next = e;</div><div class="line">                            hiTail = e;</div><div class="line">                        &#125;</div><div class="line">                    &#125; <span class="keyword">while</span> ((e = next) != <span class="keyword">null</span>);</div><div class="line">                    <span class="keyword">if</span> (loTail != <span class="keyword">null</span>) &#123;</div><div class="line">                        loTail.next = <span class="keyword">null</span>;</div><div class="line">                        newTab[j] = loHead;</div><div class="line">                    &#125;</div><div class="line">                    <span class="keyword">if</span> (hiTail != <span class="keyword">null</span>) &#123;</div><div class="line">                        hiTail.next = <span class="keyword">null</span>;</div><div class="line">                        newTab[j + oldCap] = hiHead;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> newTab;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>hashMap使用链表法避免哈希冲突（相同hash值），当链表长度大于TREEIFY_THRESHOLD（默认为8）时，将链表转换为红黑树，当然小于UNTREEIFY_THRESHOLD（默认为6）时，又会转回链表以达到性能均衡。</p>
+<p>根据“e.hash &amp; oldCap”是否为零将原链表拆分成2个链表，一部分仍保留在原链表中不需要移动，一部分移动到“原索引+oldCap”的新链表中。</p>
+<p>那么问题来了，“e.hash &amp; oldCap”从何而来！？<br>因为扩容前后hash不变，由上文n遵循“2的幂次方”且“index=(n-1)&amp;hash”可知：新的index的决定因素为：++(n-1)二进制最高位对应的hash位上是0还是1++；因此源码作者巧妙的拉关系，以“oldCap等价于newTab的(n-1)的最高位”推出“e.hash &amp; oldCap”！</p>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hash</span><span class="params">(Object key)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> h;</div><div class="line">    <span class="keyword">return</span> (key == <span class="keyword">null</span>) ? <span class="number">0</span> : (h = key.hashCode()) ^ (h &gt;&gt;&gt; <span class="number">16</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>异或运算：(h = key.hashCode()) ^ (h &gt;&gt;&gt; 16)</p>
+<p>原 来 的 hashCode : 1111 1111 1111 1111 0100 1100 0000 1010<br>移位后的hashCode: 0000 0000 0000 0000 1111 1111 1111 1111<br>进行异或运算 结果：1111 1111 1111 1111 1011 0011 1111 0101</p>
+<p>这样做的好处是，可以将hashcode高位和低位的值进行混合做异或运算，而且混合后，低位的信息中加入了高位的信息，这样高位的信息被变相的保留了下来。掺杂的元素多了，那么生成的hash值的随机性会增大。</p>
+</blockquote>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">final</span> V <span class="title">putVal</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, <span class="keyword">boolean</span> onlyIfAbsent,</span></span></div><div class="line">               <span class="keyword">boolean</span> evict) &#123;</div><div class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; <span class="keyword">int</span> n, i;</div><div class="line">    <span class="keyword">if</span> ((tab = table) == <span class="keyword">null</span> || (n = tab.length) == <span class="number">0</span>)</div><div class="line">        n = (tab = resize()).length;</div><div class="line">    <span class="keyword">if</span> ((p = tab[i = (n - <span class="number">1</span>) &amp; hash]) == <span class="keyword">null</span>)</div><div class="line">        tab[i] = newNode(hash, key, value, <span class="keyword">null</span>);</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        Node&lt;K,V&gt; e; K k;</div><div class="line">        <span class="keyword">if</span> (p.hash == hash &amp;&amp;</div><div class="line">            ((k = p.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</div><div class="line">            e = p;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (p <span class="keyword">instanceof</span> TreeNode)</div><div class="line">            e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(<span class="keyword">this</span>, tab, hash, key, value);</div><div class="line">        <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> binCount = <span class="number">0</span>; ; ++binCount) &#123;</div><div class="line">                <span class="keyword">if</span> ((e = p.next) == <span class="keyword">null</span>) &#123;</div><div class="line">                    p.next = newNode(hash, key, value, <span class="keyword">null</span>);</div><div class="line">                    <span class="keyword">if</span> (binCount &gt;= TREEIFY_THRESHOLD - <span class="number">1</span>) <span class="comment">// -1 for 1st</span></div><div class="line">                        treeifyBin(tab, hash);</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (e.hash == hash &amp;&amp;</div><div class="line">                    ((k = e.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                p = e;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123; <span class="comment">// existing mapping for key</span></div><div class="line">            V oldValue = e.value;</div><div class="line">            <span class="keyword">if</span> (!onlyIfAbsent || oldValue == <span class="keyword">null</span>)</div><div class="line">                e.value = value;</div><div class="line">            afterNodeAccess(e);</div><div class="line">            <span class="keyword">return</span> oldValue;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    ++modCount;</div><div class="line">    <span class="keyword">if</span> (++size &gt; threshold)</div><div class="line">        resize();</div><div class="line">    afterNodeInsertion(evict);</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>相对清晰，留坑后填，江湖再见</p>
+<hr>
+<p><strong>源码中出现的全局变量：</strong></p>
+<p><em><a href="http://www.cnblogs.com/szlbm/p/5504166.html" target="_blank" rel="external">transient</a> Node<k,v>[] table;</k,v></em>  哈希表,初始化长度length(默认值是16)</p>
+<p><em>final float loadFactor;</em>  负载因子（默认0.75）,表示table的填满程度。</p>
+<p><em>static final int MAXIMUM_CAPACITY = 1 &lt;&lt; 30;</em>  最大容量</p>
+<p><em>int threshold;</em>  阈值 = table.length * loadFactor</p>
+<p>…</p>
+<hr>
+<p><strong>参考文献：</strong></p>
+<ol>
+<li><a href="http://blog.csdn.net/fan2012huan/article/details/51097331" target="_blank" rel="external">HashMap源码注解 之 静态工具方法hash()、tableSizeFor()（四）</a>；201604</li>
+<li><a href="http://lishuo.me/2017/04/16/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8BHashMap/?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="external">源码分析之HashMap</a>；201704</li>
+<li><a href="http://blog.csdn.net/u010176014/article/details/52213395" target="_blank" rel="external">【集合详解】HashMap源码解析</a>；201608</li>
+<li><a href="http://note.youdao.com/share/?spm=5176.100239.0.0.Kai02P&amp;id=07710dc47ce4a8812ddc0261cb659f2e&amp;type=note#/" target="_blank" rel="external">HashMap源码分析（jdk1.8）</a>;201604</li>
+</ol>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="【java源码一带一路系列】之HashMap.putAll()" data-url="http://rebey.cn/2017/05/07/【java源码一带一路系列】之HashMap.putAll()/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+  }
+</script>
+
+</body>
+</html>
