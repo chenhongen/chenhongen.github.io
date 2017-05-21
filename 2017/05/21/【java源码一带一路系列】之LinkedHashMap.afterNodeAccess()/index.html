@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>【java源码一带一路系列】之LinkedHashMap.afterNodeAccess() | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="本文以jdk1.8中LinkedHashMap.afterNodeAccess()方法为切入点，分析其中难理解、有价值的源码片段（类似源码查看是ctrl+鼠标左键的过程）。观光线路图：afterNodeAccess() –&amp;gt; afterNodeInsertion() –&amp;gt; removeEldestEntry() –&amp;gt; afterNodeRemoval() –&amp;gt; intern">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【java源码一带一路系列】之LinkedHashMap.afterNodeAccess()">
+<meta property="og:url" content="http://rebey.cn/2017/05/21/【java源码一带一路系列】之LinkedHashMap.afterNodeAccess()/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="本文以jdk1.8中LinkedHashMap.afterNodeAccess()方法为切入点，分析其中难理解、有价值的源码片段（类似源码查看是ctrl+鼠标左键的过程）。观光线路图：afterNodeAccess() –&amp;gt; afterNodeInsertion() –&amp;gt; removeEldestEntry() –&amp;gt; afterNodeRemoval() –&amp;gt; intern">
+<meta property="og:updated_time" content="2017-05-21T10:42:11.338Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【java源码一带一路系列】之LinkedHashMap.afterNodeAccess()">
+<meta name="twitter:description" content="本文以jdk1.8中LinkedHashMap.afterNodeAccess()方法为切入点，分析其中难理解、有价值的源码片段（类似源码查看是ctrl+鼠标左键的过程）。观光线路图：afterNodeAccess() –&amp;gt; afterNodeInsertion() –&amp;gt; removeEldestEntry() –&amp;gt; afterNodeRemoval() –&amp;gt; intern">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#☞-afterNodeAccess"><span class="toc-text">☞ afterNodeAccess() </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☞-afterNodeInsertion"><span class="toc-text">☞ afterNodeInsertion() </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☞-afterNodeRemoval"><span class="toc-text">☞ afterNodeRemoval() </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☞-internalWriteEntries"><span class="toc-text">☞ internalWriteEntries() </span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-【java源码一带一路系列】之LinkedHashMap.afterNodeAccess()" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">【java源码一带一路系列】之LinkedHashMap.afterNodeAccess()</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.05.21</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>本文以jdk1.8中LinkedHashMap.afterNodeAccess()方法为切入点，分析其中难理解、有价值的源码片段（类似源码查看是ctrl+鼠标左键的过程）。观光线路图：afterNodeAccess() –&gt; afterNodeInsertion() –&gt; removeEldestEntry() –&gt; afterNodeRemoval() –&gt; internalWriteEntries() …</p>
+<h2 id="☞-afterNodeAccess"><a href="#☞-afterNodeAccess" class="headerlink" title="☞ afterNodeAccess() "></a>☞ afterNodeAccess() </h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">afterNodeAccess</span><span class="params">(Node&lt;K,V&gt; e)</span> </span>&#123; <span class="comment">// move node to last</span></div><div class="line">    LinkedHashMap.Entry&lt;K,V&gt; last;</div><div class="line">    <span class="keyword">if</span> (accessOrder &amp;&amp; (last = tail) != e) &#123;</div><div class="line">        LinkedHashMap.Entry&lt;K,V&gt; p =</div><div class="line">            (LinkedHashMap.Entry&lt;K,V&gt;)e, b = p.before, a = p.after;</div><div class="line">        p.after = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">if</span> (b == <span class="keyword">null</span>)</div><div class="line">            head = a;</div><div class="line">        <span class="keyword">else</span></div><div class="line">            b.after = a;</div><div class="line">        <span class="keyword">if</span> (a != <span class="keyword">null</span>)</div><div class="line">            a.before = b;</div><div class="line">        <span class="keyword">else</span></div><div class="line">            last = b;</div><div class="line">        <span class="keyword">if</span> (last == <span class="keyword">null</span>)</div><div class="line">            head = p;</div><div class="line">        <span class="keyword">else</span> &#123;</div><div class="line">            p.before = last;</div><div class="line">            last.after = p;</div><div class="line">        &#125;</div><div class="line">        tail = p;</div><div class="line">        ++modCount;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//////////////////////////////// 涉及变量如下：</span></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * The head (eldest) of the doubly linked list.</div><div class="line"> */</div><div class="line"><span class="keyword">transient</span> LinkedHashMap.Entry&lt;K,V&gt; head;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * The tail (youngest) of the doubly linked list.</div><div class="line"> */</div><div class="line"><span class="keyword">transient</span> LinkedHashMap.Entry&lt;K,V&gt; tail;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * The iteration ordering method for this linked hash map: &lt;tt&gt;true&lt;/tt&gt;</div><div class="line"> * for access-order, &lt;tt&gt;false&lt;/tt&gt; for insertion-order.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@serial</span></div><div class="line"> */</div><div class="line"><span class="keyword">final</span> <span class="keyword">boolean</span> accessOrder;</div></pre></td></tr></table></figure>
+<p>上回在HashMap.afterNodeAccess()中说道，“是为LinkedHashMap留的后路”。如今行至于此，当观赏一方。首先需要了解的是LinkedHashMap相比HashMap多了有序性，由双向链表(before,after)实现。源码出现了一些全局变量：</p>
+<p>accessOrder：<em>true:按访问顺序排序（LRU），false:按插入顺序排序</em>；</p>
+<p>head、tail：<em>存放链表首尾</em>；</p>
+<p>可见仅有accessOrder为true时，且访问节点不等于尾节点时，该方法才有意义。通过before、after重定向，将新访问节点链接为链表尾节点。</p>
+<h2 id="☞-afterNodeInsertion"><a href="#☞-afterNodeInsertion" class="headerlink" title="☞ afterNodeInsertion() "></a>☞ afterNodeInsertion() </h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">afterNodeInsertion</span><span class="params">(<span class="keyword">boolean</span> evict)</span> </span>&#123; <span class="comment">// possibly remove eldest</span></div><div class="line">    LinkedHashMap.Entry&lt;K,V&gt; first;</div><div class="line">    <span class="keyword">if</span> (evict &amp;&amp; (first = head) != <span class="keyword">null</span> &amp;&amp; removeEldestEntry(first)) &#123;</div><div class="line">        K key = first.key;</div><div class="line">        removeNode(hash(key), key, <span class="keyword">null</span>, <span class="keyword">false</span>, <span class="keyword">true</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">removeEldestEntry</span><span class="params">(Map.Entry&lt;K,V&gt; eldest)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>细心的你也花现了吧。afterNodeInsertion()由于removeEldestEntry()所返回的false无执行意义。也就意味着如果想要让它有意义必须重写removeEldestEntry()。</p>
+<p>如，使用LinkedHashMap实现一个简单的LRU（Least Recently Used）Cache。那么就应该重写removeEldestEntry(),当超出缓存容器大小时移除最老的首节点（这里不考虑并发问题，如下）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span>  </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">removeEldestEntry</span><span class="params">(Map.Entry&lt;K, V&gt; eldest)</span></span>&#123;       </div><div class="line">    <span class="keyword">return</span> size() &gt; capacity;          </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="☞-afterNodeRemoval"><a href="#☞-afterNodeRemoval" class="headerlink" title="☞ afterNodeRemoval() "></a>☞ afterNodeRemoval() </h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">afterNodeRemoval</span><span class="params">(Node&lt;K,V&gt; e)</span> </span>&#123; <span class="comment">// unlink</span></div><div class="line">        LinkedHashMap.Entry&lt;K,V&gt; p =</div><div class="line">            (LinkedHashMap.Entry&lt;K,V&gt;)e, b = p.before, a = p.after;</div><div class="line">        p.before = p.after = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">if</span> (b == <span class="keyword">null</span>)</div><div class="line">            head = a;</div><div class="line">        <span class="keyword">else</span></div><div class="line">            b.after = a;</div><div class="line">        <span class="keyword">if</span> (a == <span class="keyword">null</span>)</div><div class="line">            tail = b;</div><div class="line">        <span class="keyword">else</span></div><div class="line">            a.before = b;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>afterNodeRemoval()方法相对简单，就是在删除后处理其对应链表前后关系（刨掉一截）。</p>
+<h2 id="☞-internalWriteEntries"><a href="#☞-internalWriteEntries" class="headerlink" title="☞ internalWriteEntries() "></a>☞ internalWriteEntries() </h2><p>LinkedHashMap源码阅读总体门槛相对而言比HashMap，毕竟大多数底层put,get都由HashMap实现了。internalWriteEntries()相对来说比较突兀，如果你知道它在哪里起着什么样神秘的作用请在评论里告诉在下吧。[比心❤]</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">internalWriteEntries</span><span class="params">(java.io.ObjectOutputStream s)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">    <span class="keyword">for</span> (LinkedHashMap.Entry&lt;K,V&gt; e = head; e != <span class="keyword">null</span>; e = e.after) &#123;</div><div class="line">        s.writeObject(e.key);</div><div class="line">        s.writeObject(e.value);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<p>可通过这篇文章理解创建一个LinkedHashMap实例过程（图）：</p>
+<p><a href="http://blog.csdn.net/qq_28051453/article/details/71169801" target="_blank" rel="external">Java_LinkedHashMap工作原理</a> 2017-05-04；</p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="【java源码一带一路系列】之LinkedHashMap.afterNodeAccess()" data-url="http://rebey.cn/2017/05/21/【java源码一带一路系列】之LinkedHashMap.afterNodeAccess()/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+  }
+</script>
+
+</body>
+</html>
