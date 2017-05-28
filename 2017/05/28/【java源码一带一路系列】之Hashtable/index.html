@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>【java源码一带一路系列】之Hashtable | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="从上往下看的源码，标注了路上一些“景点”。皮皮虾，我们走。
+12345678910111213/** * Constructs a new hashtable with the same mappings as the given * Map.  The hashtable is created with an initial capacity sufficient to * hold the m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【java源码一带一路系列】之Hashtable">
+<meta property="og:url" content="http://rebey.cn/2017/05/28/【java源码一带一路系列】之Hashtable/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="从上往下看的源码，标注了路上一些“景点”。皮皮虾，我们走。
+12345678910111213/** * Constructs a new hashtable with the same mappings as the given * Map.  The hashtable is created with an initial capacity sufficient to * hold the m">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/HashTable-shallow%20copy.png">
+<meta property="og:updated_time" content="2017-05-28T14:06:02.042Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【java源码一带一路系列】之Hashtable">
+<meta name="twitter:description" content="从上往下看的源码，标注了路上一些“景点”。皮皮虾，我们走。
+12345678910111213/** * Constructs a new hashtable with the same mappings as the given * Map.  The hashtable is created with an initial capacity sufficient to * hold the m">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/HashTable-shallow%20copy.png">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献-推荐-："><span class="toc-text">参考文献[推荐]：</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-【java源码一带一路系列】之Hashtable" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">【java源码一带一路系列】之Hashtable</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.05.28</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <pre><code>从上往下看的源码，标注了路上一些“景点”。皮皮虾，我们走。
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Constructs a new hashtable with the same mappings as the given</div><div class="line"> * Map.  The hashtable is created with an initial capacity sufficient to</div><div class="line"> * hold the mappings in the given Map and a default load factor (0.75).</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> t the map whose mappings are to be placed in this map.</div><div class="line"> * <span class="doctag">@throws</span> NullPointerException if the specified map is null.</div><div class="line"> * <span class="doctag">@since</span>   1.2</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Hashtable</span><span class="params">(Map&lt;? extends K, ? extends V&gt; t)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>(Math.max(<span class="number">2</span>*t.size(), <span class="number">11</span>), <span class="number">0.75f</span>);</div><div class="line">    putAll(t);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>initialCapacity不指定的话是默认11；</p>
+<p>这里单独列出这个初始化方法，主要是因为这个2*t.size()，如果你还记得的话，在第二路文中介绍HashMap.resize()时，它就是按2扩容的。</p>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Returns an enumeration of the keys in this hashtable.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span>  an enumeration of the keys in this hashtable.</div><div class="line"> * <span class="doctag">@see</span>     Enumeration</div><div class="line"> * <span class="doctag">@see</span>     #elements()</div><div class="line"> * <span class="doctag">@see</span>     #keySet()</div><div class="line"> * <span class="doctag">@see</span>     Map</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> Enumeration&lt;K&gt; <span class="title">keys</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.&lt;K&gt;getEnumeration(KEYS);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Types of Enumerations/Iterations</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> KEYS = <span class="number">0</span>;</div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> VALUES = <span class="number">1</span>;</div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> ENTRIES = <span class="number">2</span>;</div></pre></td></tr></table></figure>
+<p>看到synchronized想说的是HashTable是同步，所以大多数方法都可见进行了同步处理，这点与HashMap不同（其他差别：HashTable的key、value都不允许为null）。该方法通过Enumeration遍历Hashtable的键（KEYS是定义的全局变量），类似的，还有通过Enumeration遍历Hashtable的值。感兴趣的同学可以继续跟getEnumeration()，它返回的是一个hashtable内部实现的Enumerator类（实现了Enumeration, Iterator）。<br>应用实例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Enumeration enu = table.keys();</div><div class="line"><span class="keyword">while</span>(enu.hasMoreElements()) &#123;</div><div class="line">    System.out.println(enu.nextElement());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * The maximum size of array to allocate.</div><div class="line"> * Some VMs reserve some header words in an array.</div><div class="line"> * Attempts to allocate larger arrays may result in</div><div class="line"> * OutOfMemoryError: Requested array size exceeds VM limit</div><div class="line"> */</div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_ARRAY_SIZE = Integer.MAX_VALUE - <span class="number">8</span>;</div></pre></td></tr></table></figure>
+<p>这里好奇的是“-8”从何而来？从<a href="https://stackoverflow.com/questions/35756277/why-the-maximum-array-size-of-arraylist-is-integer-max-value-8" target="_blank" rel="external">stackoverflow</a>得到的答案是（译）：</p>
+<blockquote>
+<p>数组(ARRAY)需要用8bytes来存储（2^31 = 2,147,483,648 ）大小(size)。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Increases the capacity of and internally reorganizes this</div><div class="line"> * hashtable, in order to accommodate and access its entries more</div><div class="line"> * efficiently.  This method is called automatically when the</div><div class="line"> * number of keys in the hashtable exceeds this hashtable's capacity</div><div class="line"> * and load factor.</div><div class="line"> */</div><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">rehash</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> oldCapacity = table.length;</div><div class="line">    Entry&lt;?,?&gt;[] oldMap = table;</div><div class="line"></div><div class="line">    <span class="comment">// overflow-conscious code</span></div><div class="line">    <span class="keyword">int</span> newCapacity = (oldCapacity &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>;</div><div class="line">    <span class="keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (oldCapacity == MAX_ARRAY_SIZE)</div><div class="line">            <span class="comment">// Keep running with MAX_ARRAY_SIZE buckets</span></div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        newCapacity = MAX_ARRAY_SIZE;</div><div class="line">    &#125;</div><div class="line">    Entry&lt;?,?&gt;[] newMap = <span class="keyword">new</span> Entry&lt;?,?&gt;[newCapacity];</div><div class="line"></div><div class="line">    modCount++;</div><div class="line">    threshold = (<span class="keyword">int</span>)Math.min(newCapacity * loadFactor, MAX_ARRAY_SIZE + <span class="number">1</span>);</div><div class="line">    table = newMap;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = oldCapacity ; i-- &gt; <span class="number">0</span> ;) &#123;</div><div class="line">        <span class="keyword">for</span> (Entry&lt;K,V&gt; old = (Entry&lt;K,V&gt;)oldMap[i] ; old != <span class="keyword">null</span> ; ) &#123;</div><div class="line">            Entry&lt;K,V&gt; e = old;</div><div class="line">            old = old.next;</div><div class="line"></div><div class="line">            <span class="keyword">int</span> index = (e.hash &amp; <span class="number">0x7FFFFFFF</span>) % newCapacity;</div><div class="line">            e.next = (Entry&lt;K,V&gt;)newMap[index];</div><div class="line">            newMap[index] = e;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>hashtable的新容量是：2倍+1，即始终为奇数。不同于前2回讲过的hashmap中resize()则是2倍。why?我们知道“除2以外所有的素数都是奇数”，而当哈希表的大小为素数时，简单的取模哈希的结果分布更加均匀，从而降低哈希冲突。</p>
+<p>“0x7FFFFFFF”即二进制的32个1，按位与运算后使得结果范围在区间[0,2147483647]内，可以理解为取正。</p>
+<p>此外，for循环中的新旧数据迁移的5行代码也很经典。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">/**</span></div><div class="line"> * Creates a shallow copy of this hashtable. All the structure of the</div><div class="line"> * hashtable itself is copied, but the keys and values are not cloned.</div><div class="line"> * This is a relatively expensive operation.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span>  a clone of the hashtable</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> Object <span class="title">clone</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        Hashtable&lt;?,?&gt; t = (Hashtable&lt;?,?&gt;)<span class="keyword">super</span>.clone();</div><div class="line">        t.table = <span class="keyword">new</span> Entry&lt;?,?&gt;[table.length];</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = table.length ; i-- &gt; <span class="number">0</span> ; ) &#123;</div><div class="line">            t.table[i] = (table[i] != <span class="keyword">null</span>)</div><div class="line">                ? (Entry&lt;?,?&gt;) table[i].clone() : <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">        t.keySet = <span class="keyword">null</span>;</div><div class="line">        t.entrySet = <span class="keyword">null</span>;</div><div class="line">        t.values = <span class="keyword">null</span>;</div><div class="line">        t.modCount = <span class="number">0</span>;</div><div class="line">        <span class="keyword">return</span> t;</div><div class="line">    &#125; <span class="keyword">catch</span> (CloneNotSupportedException e) &#123;</div><div class="line">        <span class="comment">// this shouldn't happen, since we are Cloneable</span></div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> InternalError(e);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>“shallow copy”一词成功引起了笔者注意。what is it?浅拷贝非java独有的概念，其他编程语言同样存在，如C#、C++、IOS、python等。与之对应的是深拷贝(deep copy)。两者的区别是：</p>
+<blockquote>
+<p>对象的浅拷贝会对“主”对象进行拷贝，但不会复制主对象里面的对象。”里面的对象“会在原来的对象和它的副本之间共享。深拷贝是一个整个独立的对象拷贝。[参考文献2]</p>
+</blockquote>
+<p>“I have a pen, I have a apple.”（唱起来了） 我，笔，苹果是三个对象，我引用了笔和苹果，此时对我进行拷贝，效果如图：<br><img src="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/HashTable-shallow%20copy.png" alt="image"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Apple</span> </span>&#123;</div><div class="line">	String color;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getColor</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> color;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setColor</span><span class="params">(String color)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.color = color;</div><div class="line">	&#125; </div><div class="line">&#125;</div><div class="line"></div><div class="line">Apple apple = <span class="keyword">new</span> Apple();</div><div class="line">apple.setColor(<span class="string">"red"</span>);</div><div class="line"></div><div class="line">Hashtable ht = <span class="keyword">new</span> Hashtable();</div><div class="line">ht.put(<span class="string">"apple"</span>, apple);</div><div class="line">System.out.println(((Apple)ht.get(<span class="string">"apple"</span>)).getColor());</div><div class="line"></div><div class="line">Hashtable htc = (Hashtable) ht.clone();</div><div class="line">System.out.println(((Apple)htc.get(<span class="string">"apple"</span>)).getColor());</div><div class="line"></div><div class="line">((Apple)htc.get(<span class="string">"apple"</span>)).setColor(<span class="string">"green"</span>);</div><div class="line">System.out.println(((Apple)ht.get(<span class="string">"apple"</span>)).getColor());</div><div class="line">System.out.println(((Apple)htc.get(<span class="string">"apple"</span>)).getColor());</div><div class="line"></div><div class="line"><span class="comment">//输出结果：</span></div><div class="line"><span class="comment">//red</span></div><div class="line"><span class="comment">//red</span></div><div class="line"><span class="comment">//green</span></div><div class="line"><span class="comment">//green</span></div><div class="line"><span class="comment">//浅拷贝的hashtable共用一个苹果</span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Returns a string representation of this &lt;tt&gt;Hashtable&lt;/tt&gt; object</div><div class="line"> * in the form of a set of entries, enclosed in braces and separated</div><div class="line"> * by the ASCII characters "&lt;tt&gt;,&amp;nbsp;&lt;/tt&gt;" (comma and space). Each</div><div class="line"> * entry is rendered as the key, an equals sign &lt;tt&gt;=&lt;/tt&gt;, and the</div><div class="line"> * associated element, where the &lt;tt&gt;toString&lt;/tt&gt; method is used to</div><div class="line"> * convert the key and element to strings.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span>  a string representation of this hashtable</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> max = size() - <span class="number">1</span>;</div><div class="line">    <span class="keyword">if</span> (max == -<span class="number">1</span>)</div><div class="line">        <span class="keyword">return</span> <span class="string">"&#123;&#125;"</span>;</div><div class="line"></div><div class="line">    StringBuilder sb = <span class="keyword">new</span> StringBuilder();</div><div class="line">    Iterator&lt;Map.Entry&lt;K,V&gt;&gt; it = entrySet().iterator();</div><div class="line"></div><div class="line">    sb.append(<span class="string">'&#123;'</span>);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; ; i++) &#123;</div><div class="line">        Map.Entry&lt;K,V&gt; e = it.next();</div><div class="line">        K key = e.getKey();</div><div class="line">        V value = e.getValue();</div><div class="line">        sb.append(key   == <span class="keyword">this</span> ? <span class="string">"(this Map)"</span> : key.toString());</div><div class="line">        sb.append(<span class="string">'='</span>);</div><div class="line">        sb.append(value == <span class="keyword">this</span> ? <span class="string">"(this Map)"</span> : value.toString());</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (i == max)</div><div class="line">            <span class="keyword">return</span> sb.append(<span class="string">'&#125;'</span>).toString();</div><div class="line">        sb.append(<span class="string">", "</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>“(this Map)”，即，ht.put(ht, ht)将输出{(this Map)=(this Map)}。</p>
+<p>还有同步处理用到的volatile关键字（各个线程在访问该关键字所修饰变量前必须从主存（共享内存）中读取该变量的值）、Collections.synchronizedSet()（创建同步的集合对象）有缘再续。</p>
+<h2 id="参考文献-推荐-："><a href="#参考文献-推荐-：" class="headerlink" title="参考文献[推荐]："></a>参考文献[推荐]：</h2><p>1.<a href="http://www.cnblogs.com/xinzhao/p/5644175.html" target="_blank" rel="external">HashMap和HashTable到底哪不同？</a>,2016-07-05;</p>
+<p>2.<a href="http://www.oschina.net/translate/java-copy-shallow-vs-deep-in-which-you-will-swim?cmp" target="_blank" rel="external">Java 中的浅拷贝与深拷贝(Shallow vs. Deep Copy in Java )</a>,中英;</p>
+<p>3.<a href="http://www.jianshu.com/p/387a04a78c84" target="_blank" rel="external">Java基础之volatile关键字</a>,2016-07-18;</p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="【java源码一带一路系列】之Hashtable" data-url="http://rebey.cn/2017/05/28/【java源码一带一路系列】之Hashtable/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+  }
+</script>
+
+</body>
+</html>
