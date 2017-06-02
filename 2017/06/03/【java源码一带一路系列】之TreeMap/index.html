@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>【java源码一带一路系列】之TreeMap | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="TreeMap基于红黑树实现，在之前HashMap篇章中有所涉及，所以本篇重点不在此。上路~
+containsKey() –&amp;gt; getEntry() –&amp;gt; getEntryUsingComparator()1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【java源码一带一路系列】之TreeMap">
+<meta property="og:url" content="http://rebey.cn/2017/06/03/【java源码一带一路系列】之TreeMap/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="TreeMap基于红黑树实现，在之前HashMap篇章中有所涉及，所以本篇重点不在此。上路~
+containsKey() –&amp;gt; getEntry() –&amp;gt; getEntryUsingComparator()1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/TreeMap.successor.png">
+<meta property="og:updated_time" content="2017-06-02T16:26:28.491Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【java源码一带一路系列】之TreeMap">
+<meta name="twitter:description" content="TreeMap基于红黑树实现，在之前HashMap篇章中有所涉及，所以本篇重点不在此。上路~
+containsKey() –&amp;gt; getEntry() –&amp;gt; getEntryUsingComparator()1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/TreeMap.successor.png">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#containsKey-–-gt-getEntry-–-gt-getEntryUsingComparator"><span class="toc-text">containsKey() –> getEntry() –> getEntryUsingComparator()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#put-–-gt-compare-–-gt-fixAfterInsertion"><span class="toc-text">put() –> compare() –> fixAfterInsertion()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#deleteEntry-–-gt-successor-–-gt-fixAfterDeletion"><span class="toc-text">deleteEntry() –> successor() –> fixAfterDeletion()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#说点什么："><span class="toc-text">说点什么：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#知识点："><span class="toc-text">知识点：</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-【java源码一带一路系列】之TreeMap" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">【java源码一带一路系列】之TreeMap</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.06.03</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <pre><code>TreeMap基于红黑树实现，在之前HashMap篇章中有所涉及，所以本篇重点不在此。上路~
+</code></pre><h2 id="containsKey-–-gt-getEntry-–-gt-getEntryUsingComparator"><a href="#containsKey-–-gt-getEntry-–-gt-getEntryUsingComparator" class="headerlink" title="containsKey() –&gt; getEntry() –&gt; getEntryUsingComparator()"></a>containsKey() –&gt; getEntry() –&gt; getEntryUsingComparator()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Returns &#123;<span class="doctag">@code</span> true&#125; if this map contains a mapping for the specified</div><div class="line"> * key.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> key key whose presence in this map is to be tested</div><div class="line"> * <span class="doctag">@return</span> &#123;<span class="doctag">@code</span> true&#125; if this map contains a mapping for the</div><div class="line"> *         specified key</div><div class="line"> * <span class="doctag">@throws</span> ClassCastException if the specified key cannot be compared</div><div class="line"> *         with the keys currently in the map</div><div class="line"> * <span class="doctag">@throws</span> NullPointerException if the specified key is null</div><div class="line"> *         and this map uses natural ordering, or its comparator</div><div class="line"> *         does not permit null keys</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">containsKey</span><span class="params">(Object key)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> getEntry(key) != <span class="keyword">null</span>; <span class="comment">// Key不能为null </span></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Returns this map's entry for the given key, or &#123;<span class="doctag">@code</span> null&#125; if the map</div><div class="line"> * does not contain an entry for the key.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> this map's entry for the given key, or &#123;<span class="doctag">@code</span> null&#125; if the map</div><div class="line"> *         does not contain an entry for the key</div><div class="line"> * <span class="doctag">@throws</span> ClassCastException if the specified key cannot be compared</div><div class="line"> *         with the keys currently in the map</div><div class="line"> * <span class="doctag">@throws</span> NullPointerException if the specified key is null</div><div class="line"> *         and this map uses natural ordering, or its comparator</div><div class="line"> *         does not permit null keys</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">final</span> Entry&lt;K,V&gt; <span class="title">getEntry</span><span class="params">(Object key)</span> </span>&#123;</div><div class="line">    <span class="comment">// Offload comparator-based version for sake of performance</span></div><div class="line">    <span class="keyword">if</span> (comparator != <span class="keyword">null</span>)</div><div class="line">        <span class="keyword">return</span> getEntryUsingComparator(key);</div><div class="line">    <span class="keyword">if</span> (key == <span class="keyword">null</span>)</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</div><div class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">        Comparable&lt;? <span class="keyword">super</span> K&gt; k = (Comparable&lt;? <span class="keyword">super</span> K&gt;) key;</div><div class="line">    Entry&lt;K,V&gt; p = root;</div><div class="line">    <span class="keyword">while</span> (p != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">int</span> cmp = k.compareTo(p.key);</div><div class="line">        <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>)</div><div class="line">            p = p.left;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>)</div><div class="line">            p = p.right;</div><div class="line">        <span class="keyword">else</span></div><div class="line">            <span class="keyword">return</span> p;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Version of getEntry using comparator. Split off from getEntry</div><div class="line"> * for performance. (This is not worth doing for most methods,</div><div class="line"> * that are less dependent on comparator performance, but is</div><div class="line"> * worthwhile here.)</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">final</span> Entry&lt;K,V&gt; <span class="title">getEntryUsingComparator</span><span class="params">(Object key)</span> </span>&#123;</div><div class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">        K k = (K) key;</div><div class="line">    Comparator&lt;? <span class="keyword">super</span> K&gt; cpr = comparator;</div><div class="line">    <span class="keyword">if</span> (cpr != <span class="keyword">null</span>) &#123;</div><div class="line">        Entry&lt;K,V&gt; p = root;</div><div class="line">        <span class="keyword">while</span> (p != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">int</span> cmp = cpr.compare(k, p.key);</div><div class="line">            <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>)</div><div class="line">                p = p.left;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>)</div><div class="line">                p = p.right;</div><div class="line">            <span class="keyword">else</span></div><div class="line">                <span class="keyword">return</span> p;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>虽然明面上是获取值的方法，本质却是比出个高低等。这里将Java的java.util.Comparator（比较器排序）、java.lang.Comparable（自然排序）都用到了。顺便补了两者知识点(见文末①)。当然这里好奇的是源码中将使用comparator比较独立提成方法，说是能提高性能。why?反向思考下，假使将getEntryUsingComparator()方法内代码放回getEntry()似乎也就多了一对“{}”。费解- -</p>
+<p>顺带一提，如果你还记得之前文章中的HashMap也用到了红黑树，而它先比较的hash再比key值，这比较的是key值。</p>
+<h2 id="put-–-gt-compare-–-gt-fixAfterInsertion"><a href="#put-–-gt-compare-–-gt-fixAfterInsertion" class="headerlink" title="put() –&gt; compare() –&gt; fixAfterInsertion()"></a>put() –&gt; compare() –&gt; fixAfterInsertion()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Associates the specified value with the specified key in this map.</div><div class="line"> * If the map previously contained a mapping for the key, the old</div><div class="line"> * value is replaced.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> key key with which the specified value is to be associated</div><div class="line"> * <span class="doctag">@param</span> value value to be associated with the specified key</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> the previous value associated with &#123;<span class="doctag">@code</span> key&#125;, or</div><div class="line"> *         &#123;<span class="doctag">@code</span> null&#125; if there was no mapping for &#123;<span class="doctag">@code</span> key&#125;.</div><div class="line"> *         (A &#123;<span class="doctag">@code</span> null&#125; return can also indicate that the map</div><div class="line"> *         previously associated &#123;<span class="doctag">@code</span> null&#125; with &#123;<span class="doctag">@code</span> key&#125;.)</div><div class="line"> * <span class="doctag">@throws</span> ClassCastException if the specified key cannot be compared</div><div class="line"> *         with the keys currently in the map</div><div class="line"> * <span class="doctag">@throws</span> NullPointerException if the specified key is null</div><div class="line"> *         and this map uses natural ordering, or its comparator</div><div class="line"> *         does not permit null keys</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> V <span class="title">put</span><span class="params">(K key, V value)</span> </span>&#123;</div><div class="line">    Entry&lt;K,V&gt; t = root;</div><div class="line">    <span class="keyword">if</span> (t == <span class="keyword">null</span>) &#123;</div><div class="line">        compare(key, key); <span class="comment">// type (and possibly null) check</span></div><div class="line"></div><div class="line">        root = <span class="keyword">new</span> Entry&lt;&gt;(key, value, <span class="keyword">null</span>);</div><div class="line">        size = <span class="number">1</span>;</div><div class="line">        modCount++;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> cmp;</div><div class="line">    Entry&lt;K,V&gt; parent;</div><div class="line">    <span class="comment">// split comparator and comparable paths</span></div><div class="line">    Comparator&lt;? <span class="keyword">super</span> K&gt; cpr = comparator;</div><div class="line">    <span class="keyword">if</span> (cpr != <span class="keyword">null</span>) &#123;</div><div class="line">        do &#123;</div><div class="line">            parent = t;</div><div class="line">            cmp = cpr.compare(key, t.key);</div><div class="line">            <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>)</div><div class="line">                t = t.left;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>)</div><div class="line">                t = t.right;</div><div class="line">            <span class="keyword">else</span></div><div class="line">                <span class="keyword">return</span> t.setValue(value);</div><div class="line">        &#125; <span class="keyword">while</span> (t != <span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">if</span> (key == <span class="keyword">null</span>)</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</div><div class="line">        <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">            Comparable&lt;? <span class="keyword">super</span> K&gt; k = (Comparable&lt;? <span class="keyword">super</span> K&gt;) key;</div><div class="line">        do &#123;</div><div class="line">            parent = t;</div><div class="line">            cmp = k.compareTo(t.key);</div><div class="line">            <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>)</div><div class="line">                t = t.left;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>)</div><div class="line">                t = t.right;</div><div class="line">            <span class="keyword">else</span></div><div class="line">                <span class="keyword">return</span> t.setValue(value);</div><div class="line">        &#125; <span class="keyword">while</span> (t != <span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line">    Entry&lt;K,V&gt; e = <span class="keyword">new</span> Entry&lt;&gt;(key, value, parent);</div><div class="line">    <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>)</div><div class="line">        parent.left = e;</div><div class="line">    <span class="keyword">else</span></div><div class="line">        parent.right = e;</div><div class="line">    fixAfterInsertion(e);</div><div class="line">    size++;</div><div class="line">    modCount++;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Compares two keys using the correct comparison method for this TreeMap.</div><div class="line"> */</div><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Object k1, Object k2)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> comparator==<span class="keyword">null</span> ? ((Comparable&lt;? <span class="keyword">super</span> K&gt;)k1).compareTo((K)k2)</div><div class="line">        : comparator.compare((K)k1, (K)k2);</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/** From CLR */</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">fixAfterInsertion</span><span class="params">(Entry&lt;K,V&gt; x)</span> </span>&#123;</div><div class="line">    x.color = RED;</div><div class="line"></div><div class="line">    <span class="keyword">while</span> (x != <span class="keyword">null</span> &amp;&amp; x != root &amp;&amp; x.parent.color == RED) &#123;</div><div class="line">        <span class="keyword">if</span> (parentOf(x) == leftOf(parentOf(parentOf(x)))) &#123;</div><div class="line">            Entry&lt;K,V&gt; y = rightOf(parentOf(parentOf(x)));</div><div class="line">            <span class="keyword">if</span> (colorOf(y) == RED) &#123;</div><div class="line">                setColor(parentOf(x), BLACK);</div><div class="line">                setColor(y, BLACK);</div><div class="line">                setColor(parentOf(parentOf(x)), RED);</div><div class="line">                x = parentOf(parentOf(x));</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">if</span> (x == rightOf(parentOf(x))) &#123;</div><div class="line">                    x = parentOf(x);</div><div class="line">                    rotateLeft(x);</div><div class="line">                &#125;</div><div class="line">                setColor(parentOf(x), BLACK);</div><div class="line">                setColor(parentOf(parentOf(x)), RED);</div><div class="line">                rotateRight(parentOf(parentOf(x)));</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            Entry&lt;K,V&gt; y = leftOf(parentOf(parentOf(x)));</div><div class="line">            <span class="keyword">if</span> (colorOf(y) == RED) &#123;</div><div class="line">                setColor(parentOf(x), BLACK);</div><div class="line">                setColor(y, BLACK);</div><div class="line">                setColor(parentOf(parentOf(x)), RED);</div><div class="line">                x = parentOf(parentOf(x));</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">if</span> (x == leftOf(parentOf(x))) &#123;</div><div class="line">                    x = parentOf(x);</div><div class="line">                    rotateRight(x);</div><div class="line">                &#125;</div><div class="line">                setColor(parentOf(x), BLACK);</div><div class="line">                setColor(parentOf(parentOf(x)), RED);</div><div class="line">                rotateLeft(parentOf(parentOf(x)));</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    root.color = BLACK;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>“compare(key, key);”是一个有意思写法。从注释直译就是类型（为null可能性）检查。为空检查很好理解，因为null.xx()肯定跑异常，至于类型检查笔者理解是要求键值实现Comparable接口。</p>
+<blockquote>
+<p>“from CLR”是指Cormen, Leiserson, Rivest，他们是算法导论的作者，也就是说TreeMap里面算法都是参照算法导论的伪代码。</p>
+</blockquote>
+<p>由于TreeMap的有序性，使其增删查都是先进行比较，找到合适的位置。fixAfterInsertion()在这的作用类似HashMap中的balanceInsertion()，修复红黑树性质。</p>
+<h2 id="deleteEntry-–-gt-successor-–-gt-fixAfterDeletion"><a href="#deleteEntry-–-gt-successor-–-gt-fixAfterDeletion" class="headerlink" title="deleteEntry() –&gt; successor() –&gt; fixAfterDeletion()"></a>deleteEntry() –&gt; successor() –&gt; fixAfterDeletion()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Delete node p, and then rebalance the tree.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">deleteEntry</span><span class="params">(Entry&lt;K,V&gt; p)</span> </span>&#123;</div><div class="line">    modCount++;</div><div class="line">    size--;</div><div class="line"></div><div class="line">    <span class="comment">// If strictly internal, copy successor's element to p and then make p</span></div><div class="line">    <span class="comment">// point to successor.</span></div><div class="line">    <span class="keyword">if</span> (p.left != <span class="keyword">null</span> &amp;&amp; p.right != <span class="keyword">null</span>) &#123;</div><div class="line">        Entry&lt;K,V&gt; s = successor(p);</div><div class="line">        p.key = s.key;</div><div class="line">        p.value = s.value;</div><div class="line">        p = s;</div><div class="line">    &#125; <span class="comment">// p has 2 children</span></div><div class="line"></div><div class="line">    <span class="comment">// Start fixup at replacement node, if it exists.</span></div><div class="line">    Entry&lt;K,V&gt; replacement = (p.left != <span class="keyword">null</span> ? p.left : p.right);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (replacement != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">// Link replacement to parent</span></div><div class="line">        replacement.parent = p.parent;</div><div class="line">        <span class="keyword">if</span> (p.parent == <span class="keyword">null</span>)</div><div class="line">            root = replacement;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (p == p.parent.left)</div><div class="line">            p.parent.left  = replacement;</div><div class="line">        <span class="keyword">else</span></div><div class="line">            p.parent.right = replacement;</div><div class="line"></div><div class="line">        <span class="comment">// Null out links so they are OK to use by fixAfterDeletion.</span></div><div class="line">        p.left = p.right = p.parent = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">        <span class="comment">// Fix replacement</span></div><div class="line">        <span class="keyword">if</span> (p.color == BLACK)</div><div class="line">            fixAfterDeletion(replacement);</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (p.parent == <span class="keyword">null</span>) &#123; <span class="comment">// return if we are the only node.</span></div><div class="line">        root = <span class="keyword">null</span>;</div><div class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">//  No children. Use self as phantom replacement and unlink.</span></div><div class="line">        <span class="keyword">if</span> (p.color == BLACK)</div><div class="line">            fixAfterDeletion(p);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (p.parent != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (p == p.parent.left)</div><div class="line">                p.parent.left = <span class="keyword">null</span>;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (p == p.parent.right)</div><div class="line">                p.parent.right = <span class="keyword">null</span>;</div><div class="line">            p.parent = <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Returns the successor of the specified Entry, or null if no such.</div><div class="line"> */</div><div class="line"><span class="keyword">static</span> &lt;K,V&gt; TreeMap.<span class="function">Entry&lt;K,V&gt; <span class="title">successor</span><span class="params">(Entry&lt;K,V&gt; t)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (t == <span class="keyword">null</span>)</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (t.right != <span class="keyword">null</span>) &#123; <span class="comment">// ① ②</span></div><div class="line">        Entry&lt;K,V&gt; p = t.right;</div><div class="line">        <span class="keyword">while</span> (p.left != <span class="keyword">null</span>)</div><div class="line">            p = p.left;</div><div class="line">        <span class="keyword">return</span> p;</div><div class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">//③ ④ ⑤</span></div><div class="line">        Entry&lt;K,V&gt; p = t.parent;</div><div class="line">        Entry&lt;K,V&gt; ch = t;</div><div class="line">        <span class="keyword">while</span> (p != <span class="keyword">null</span> &amp;&amp; ch == p.right) &#123;</div><div class="line">            ch = p;</div><div class="line">            p = p.parent;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> p;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>successor()可以简单的理解为“一个升序数组a[index],successor即为a[index+1]”。相对的还有prodecessor()。源码中可能出现的情况抽象如下图（while只举一次循环为例）。<br><img src="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/TreeMap.successor.png" alt="successor"></p>
+<p>deleteEntry调用successor时，由于right != null，所以不会出现③ ④ ⑤的情况。基本思路就是找到“a[index+1]”（p）替换待删节点，然后使“a[index+1]”的子节点（replacement）指向其父节点（Link replacement to parent）,最后清p、fixAfterDeletion修复红黑树性。</p>
+<p>如果觉得这个看懂了，可以挑战下HashMap.TreeNode.removeTreeNode()。</p>
+<h2 id="说点什么："><a href="#说点什么：" class="headerlink" title="说点什么："></a>说点什么：</h2><p>TreeMap 有序；非线程安全；key值不支持null…;</p>
+<p>实现了NavigableMap接口(见文末②)，NavigableMap具有了针对给定搜索目标返回最接近匹配项的导航方法。</p>
+<blockquote>
+<p>如： lowerEntry、floorEntry、ceilingEntry 和 higherEntry 分别返回与小于、小于等于、大于等于、大于给定键的 Map.Entry对象，如果不存在这样的键，则返回 null。</p>
+</blockquote>
+<p>实现了SortedMap接口：它用来保持键的有序顺序,也提供了范围检索的一些方法;</p>
+<blockquote>
+<p>如： headMap、subMap、tailMap分别返回小于结束键、大于或等于开始和小于结束键、大于或等于开始键的Map.Entry对象。</p>
+<p>添加到SortedMap实现类的元素必须实现Comparable接口，否则您必须给它的构造函数提供一个Comparator接口的实现。TreeMap类是它的唯一一份实现。</p>
+</blockquote>
+<h2 id="知识点："><a href="#知识点：" class="headerlink" title="知识点："></a>知识点：</h2><p>①<a href="http://www.bitscn.com/pdb/java/201611/755489.html" target="_blank" rel="external">Java中自然排序和比较器排序详解</a>:Comparable与Comparator；</p>
+<p>②<a href="http://www.cnblogs.com/swiftma/p/5975943.html" target="_blank" rel="external">计算机程序的思维逻辑 (43) - 剖析TreeMap</a>：方法应用举例;</p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="【java源码一带一路系列】之TreeMap" data-url="http://rebey.cn/2017/06/03/【java源码一带一路系列】之TreeMap/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+  }
+</script>
+
+</body>
+</html>
