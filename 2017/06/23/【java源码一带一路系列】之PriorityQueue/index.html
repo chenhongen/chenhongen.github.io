@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>【java源码一带一路系列】之PriorityQueue | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="按照下图的配方，走了一遍源码。凑齐PriorityQueue就可以召唤神龙了。Ler’s go go go!
+
+结构123456789/** * Priority queue represented as a balanced binary heap: the two * children of queue[n] are queue[2*n+1] and queue[2*(n+1)].  The">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【java源码一带一路系列】之PriorityQueue">
+<meta property="og:url" content="http://rebey.cn/2017/06/23/【java源码一带一路系列】之PriorityQueue/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="按照下图的配方，走了一遍源码。凑齐PriorityQueue就可以召唤神龙了。Ler’s go go go!
+
+结构123456789/** * Priority queue represented as a balanced binary heap: the two * children of queue[n] are queue[2*n+1] and queue[2*(n+1)].  The">
+<meta property="og:image" content="https://sfault-image.b0.upaiyun.com/414/440/4144400515-594d35d3ef7fd_articlex">
+<meta property="og:image" content="https://sfault-image.b0.upaiyun.com/152/295/1522952226-594d360d5ca37_articlex">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/Full%20Binary%20Tree.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/binaryTreeArray.png">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/195193-e9ad437213e69b07.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-06-23T16:16:13.614Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【java源码一带一路系列】之PriorityQueue">
+<meta name="twitter:description" content="按照下图的配方，走了一遍源码。凑齐PriorityQueue就可以召唤神龙了。Ler’s go go go!
+
+结构123456789/** * Priority queue represented as a balanced binary heap: the two * children of queue[n] are queue[2*n+1] and queue[2*(n+1)].  The">
+<meta name="twitter:image" content="https://sfault-image.b0.upaiyun.com/414/440/4144400515-594d35d3ef7fd_articlex">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#结构"><span class="toc-text">结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#heapify-–-gt-siftDown-–-gt-siftDownComparable-–-gt-siftDownUsingComparator"><span class="toc-text">heapify() –> siftDown() –> siftDownComparable() –> siftDownUsingComparator()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#说点什么"><span class="toc-text">说点什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#推荐文章："><span class="toc-text">推荐文章：</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-【java源码一带一路系列】之PriorityQueue" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">【java源码一带一路系列】之PriorityQueue</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.06.23</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>按照下图的配方，走了一遍源码。<br>凑齐PriorityQueue就可以召唤神龙了。<br>Ler’s go go go!</p>
+<p><img src="https://sfault-image.b0.upaiyun.com/414/440/4144400515-594d35d3ef7fd_articlex" alt="clipboard.png"><br><img src="https://sfault-image.b0.upaiyun.com/152/295/1522952226-594d360d5ca37_articlex" alt="clipboard.png"></p>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Priority queue represented as a balanced binary heap: the two</div><div class="line"> * children of queue[n] are queue[2*n+1] and queue[2*(n+1)].  The</div><div class="line"> * priority queue is ordered by comparator, or by the elements'</div><div class="line"> * natural ordering, if comparator is null: For each node n in the</div><div class="line"> * heap and each descendant d of n, n &lt;= d.  The element with the</div><div class="line"> * lowest value is in queue[0], assuming the queue is nonempty.</div><div class="line"> */</div><div class="line"><span class="keyword">transient</span> Object[] queue; <span class="comment">// non-private to simplify nested class access</span></div></pre></td></tr></table></figure>
+<p>没错这是个数组，为了更好的理解注释的含义，请看下面↓。</p>
+<p><strong>满二叉树：</strong></p>
+<p>所有的节点都有2个叶子节点，除了最后层叶子节点；</p>
+<p>节点数n和深度d的关系 n=2^d-1；</p>
+<p>第i层上的节点数为2^(i-1)；</p>
+<p>第n个节点的父节点：n/2,左子节点：2n,右子节点：2n+1;(参考下图)</p>
+<p><img src="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/Full%20Binary%20Tree.png" alt="满二叉树与完全二叉树"></p>
+<p><strong>完全二叉树：</strong></p>
+<p>有且仅有最底层叶子节点不完整就是完全二叉树。（例如：把15去掉）</p>
+<p><strong>最小堆：</strong></p>
+<p>父节点小于左右子节点的完全二叉树。</p>
+<p><strong>转数组：</strong></p>
+<p>用数组来存储二叉树后（参见下图）可得，根节点A[0]；左子节点a[2n+1];右子节点a[2(n+1)]，父节点a[(n-1)/2]。（n为数组下标，从0开始）</p>
+<p><img src="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/binaryTreeArray.png" alt="二叉树转数组"></p>
+<p>是的，优先队列的存储结构大概就是这样推演而来。</p>
+<h2 id="heapify-–-gt-siftDown-–-gt-siftDownComparable-–-gt-siftDownUsingComparator"><a href="#heapify-–-gt-siftDown-–-gt-siftDownComparable-–-gt-siftDownUsingComparator" class="headerlink" title="heapify() –&gt; siftDown() –&gt; siftDownComparable() –&gt; siftDownUsingComparator()"></a>heapify() –&gt; siftDown() –&gt; siftDownComparable() –&gt; siftDownUsingComparator()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Establishes the heap invariant (described above) in the entire tree,</div><div class="line"> * assuming nothing about the order of the elements prior to the call.</div><div class="line"> */</div><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">heapify</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = (size &gt;&gt;&gt; <span class="number">1</span>) - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)</div><div class="line">        siftDown(i, (E) queue[i]);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Inserts item x at position k, maintaining heap invariant by</div><div class="line"> * demoting x down the tree repeatedly until it is less than or</div><div class="line"> * equal to its children or is a leaf.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> k the position to fill</div><div class="line"> * <span class="doctag">@param</span> x the item to insert</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">siftDown</span><span class="params">(<span class="keyword">int</span> k, E x)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (comparator != <span class="keyword">null</span>)</div><div class="line">        siftDownUsingComparator(k, x);</div><div class="line">    <span class="keyword">else</span></div><div class="line">        siftDownComparable(k, x);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">siftDownComparable</span><span class="params">(<span class="keyword">int</span> k, E x)</span> </span>&#123;</div><div class="line">    Comparable&lt;? <span class="keyword">super</span> E&gt; key = (Comparable&lt;? <span class="keyword">super</span> E&gt;)x;</div><div class="line">    <span class="keyword">int</span> half = size &gt;&gt;&gt; <span class="number">1</span>;        <span class="comment">// loop while a non-leaf</span></div><div class="line">    <span class="keyword">while</span> (k &lt; half) &#123;</div><div class="line">        <span class="keyword">int</span> child = (k &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>; <span class="comment">// assume left child is least</span></div><div class="line">        Object c = queue[child];</div><div class="line">        <span class="keyword">int</span> right = child + <span class="number">1</span>;</div><div class="line">        <span class="keyword">if</span> (right &lt; size &amp;&amp;</div><div class="line">            ((Comparable&lt;? <span class="keyword">super</span> E&gt;) c).compareTo((E) queue[right]) &gt; <span class="number">0</span>)</div><div class="line">            c = queue[child = right];</div><div class="line">        <span class="keyword">if</span> (key.compareTo((E) c) &lt;= <span class="number">0</span>)</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        queue[k] = c;</div><div class="line">        k = child;</div><div class="line">    &#125;</div><div class="line">    queue[k] = key;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">siftDownUsingComparator</span><span class="params">(<span class="keyword">int</span> k, E x)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> half = size &gt;&gt;&gt; <span class="number">1</span>;</div><div class="line">    <span class="keyword">while</span> (k &lt; half) &#123;</div><div class="line">        <span class="keyword">int</span> child = (k &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>; <span class="comment">//2n + 1,这里n是下标</span></div><div class="line">        Object c = queue[child];</div><div class="line">        <span class="keyword">int</span> right = child + <span class="number">1</span>;</div><div class="line">        <span class="keyword">if</span> (right &lt; size &amp;&amp;</div><div class="line">            comparator.compare((E) c, (E) queue[right]) &gt; <span class="number">0</span>) <span class="comment">// 找出最小子节点</span></div><div class="line">            c = queue[child = right];</div><div class="line">        <span class="keyword">if</span> (comparator.compare(x, (E) c) &lt;= <span class="number">0</span>) <span class="comment">// 父节点小则退出循环，否则进行替换</span></div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        queue[k] = c;</div><div class="line">        k = child;</div><div class="line">    &#125;</div><div class="line">    queue[k] = x;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这是任意数组最小堆化的过程。如果是一个合格的最小堆，那么所有的父节点都在数组前半部分，而通过父节点又能得到左右子节点。因此源码一上来就“size &gt;&gt;&gt; 1”（相当于除以2），只需对前半部分进行循环处理，使得循环结束后所有父节点均大于左/右子节点。这里非根父节点会被多次比较到。heapify()后将得到上文所说的最小堆数组。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> E <span class="title">poll</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (size == <span class="number">0</span>)</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">int</span> s = --size;</div><div class="line">    modCount++;</div><div class="line">    E result = (E) queue[<span class="number">0</span>];</div><div class="line">    E x = (E) queue[s];</div><div class="line">    queue[s] = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">if</span> (s != <span class="number">0</span>)</div><div class="line">        siftDown(<span class="number">0</span>, x); <span class="comment">// !</span></div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>poll()的核心也是siftDown，而这里的“siftDown(0, x);”与之前的“siftDown(i, (E) queue[i]);”不同的是，下标0所对应的元素本非x。也就是说，这里进行了个转换：把最后queue[s]替换了queue[0]进行新的最小堆数组化。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">/**</span></div><div class="line"> * Removes a single instance of the specified element from this queue,</div><div class="line"> * if it is present.  More formally, removes an element &#123;<span class="doctag">@code</span> e&#125; such</div><div class="line"> * that &#123;<span class="doctag">@code</span> o.equals(e)&#125;, if this queue contains one or more such</div><div class="line"> * elements.  Returns &#123;<span class="doctag">@code</span> true&#125; if and only if this queue contained</div><div class="line"> * the specified element (or equivalently, if this queue changed as a</div><div class="line"> * result of the call).</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> o element to be removed from this queue, if present</div><div class="line"> * <span class="doctag">@return</span> &#123;<span class="doctag">@code</span> true&#125; if this queue changed as a result of the call</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Object o)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> i = indexOf(o);</div><div class="line">    <span class="keyword">if</span> (i == -<span class="number">1</span>)</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        removeAt(i);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Removes the ith element from queue.</div><div class="line"> *</div><div class="line"> * Normally this method leaves the elements at up to i-1,</div><div class="line"> * inclusive, untouched.  Under these circumstances, it returns</div><div class="line"> * null.  Occasionally, in order to maintain the heap invariant,</div><div class="line"> * it must swap a later element of the list with one earlier than</div><div class="line"> * i.  Under these circumstances, this method returns the element</div><div class="line"> * that was previously at the end of the list and is now at some</div><div class="line"> * position before i. This fact is used by iterator.remove so as to</div><div class="line"> * avoid missing traversing elements.</div><div class="line"> */</div><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line"><span class="function"><span class="keyword">private</span> E <span class="title">removeAt</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">    <span class="comment">// assert i &gt;= 0 &amp;&amp; i &lt; size;</span></div><div class="line">    modCount++;</div><div class="line">    <span class="keyword">int</span> s = --size;</div><div class="line">    <span class="keyword">if</span> (s == i) <span class="comment">// removed last element</span></div><div class="line">        queue[i] = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        E moved = (E) queue[s];</div><div class="line">        queue[s] = <span class="keyword">null</span>;</div><div class="line">        siftDown(i, moved); </div><div class="line">        <span class="keyword">if</span> (queue[i] == moved) &#123;</div><div class="line">            siftUp(i, moved);</div><div class="line">            <span class="keyword">if</span> (queue[i] != moved)</div><div class="line">                <span class="keyword">return</span> moved;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如你所见，remove()也用到了siftDown()（同时还有siftUp()，下面介绍）。这里 经过siftDown后，如果queue[i] == moved则表示queue[i]的左右子节点都大于moved，即保证了i节点子树是最小堆，但queue[i]的父节点是否小于moved却未知，故又进行了siftUp。【2】</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/195193-e9ad437213e69b07.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Inserts item x at position k, maintaining heap invariant by</div><div class="line"> * promoting x up the tree until it is greater than or equal to</div><div class="line"> * its parent, or is the root.</div><div class="line"> *</div><div class="line"> * To simplify and speed up coercions and comparisons. the</div><div class="line"> * Comparable and Comparator versions are separated into different</div><div class="line"> * methods that are otherwise identical. (Similarly for siftDown.)</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> k the position to fill</div><div class="line"> * <span class="doctag">@param</span> x the item to insert</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">siftUp</span><span class="params">(<span class="keyword">int</span> k, E x)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (comparator != <span class="keyword">null</span>)</div><div class="line">        siftUpUsingComparator(k, x);</div><div class="line">    <span class="keyword">else</span></div><div class="line">        siftUpComparable(k, x);</div><div class="line">&#125;</div><div class="line">    </div><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">siftUpComparable</span><span class="params">(<span class="keyword">int</span> k, E x)</span> </span>&#123;</div><div class="line">    Comparable&lt;? <span class="keyword">super</span> E&gt; key = (Comparable&lt;? <span class="keyword">super</span> E&gt;) x;</div><div class="line">    <span class="keyword">while</span> (k &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">int</span> parent = (k - <span class="number">1</span>) &gt;&gt;&gt; <span class="number">1</span>;</div><div class="line">        Object e = queue[parent];</div><div class="line">        <span class="keyword">if</span> (key.compareTo((E) e) &gt;= <span class="number">0</span>)</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        queue[k] = e;</div><div class="line">        k = parent;</div><div class="line">    &#125;</div><div class="line">    queue[k] = key;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">siftUpUsingComparator</span><span class="params">(<span class="keyword">int</span> k, E x)</span> </span>&#123;</div><div class="line">    <span class="keyword">while</span> (k &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">int</span> parent = (k - <span class="number">1</span>) &gt;&gt;&gt; <span class="number">1</span>;</div><div class="line">        Object e = queue[parent];</div><div class="line">        <span class="keyword">if</span> (comparator.compare(x, (E) e) &gt;= <span class="number">0</span>)</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        queue[k] = e;</div><div class="line">        k = parent;</div><div class="line">    &#125;</div><div class="line">    queue[k] = x;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>与之相对的，还有名为siftUpComparable()/siftUpUsingComparator()的方法。在新增元素时被调用。新增元素放在下标为size的位置。这里的down与up指的是被比较对象x的去向。比较后x被赋值给子节点就是down，被赋值给父节点就是up。当然你来写的时候也可能新增时，从上到下循环遍历。</p>
+<h2 id="说点什么"><a href="#说点什么" class="headerlink" title="说点什么"></a>说点什么</h2><p>PriorityQueue有序；不允许为null；非线程安全；（PriorityBlockingQueue线程安全）；没有介绍的地方大抵与其他集合框架相似，如扩容机制等。</p>
+<p>优先队列每次出队的元素都是优先级最高（权值最小）的元素,通过比较（Comparator或元素本身自然排序）决定优先级。</p>
+<p>记得常来复习啊~~~</p>
+<p><strong>更多有意思的内容，欢迎访问笔者小站：</strong> <a href="http://rebey.cn/">rebey.cn</a></p>
+<h2 id="推荐文章："><a href="#推荐文章：" class="headerlink" title="推荐文章："></a>推荐文章：</h2><p>【1】<a href="https://github.com/CarpenterLee/JCFInternals/blob/master/markdown/8-PriorityQueue.md" target="_blank" rel="external">【深入理解Java集合框架】深入理解Java PriorityQueue;</a></p>
+<p>【2】<a href="http://www.jianshu.com/p/0e84b8d3606c" target="_blank" rel="external">java集合——Queue；</a></p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="【java源码一带一路系列】之PriorityQueue" data-url="http://rebey.cn/2017/06/23/【java源码一带一路系列】之PriorityQueue/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+  }
+</script>
+
+</body>
+</html>
