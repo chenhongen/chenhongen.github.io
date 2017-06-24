@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>？ extends T与？ super T | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="概览集合框架的源码经常见到“? extends E”、“? super T”。本篇文章以实例+注释讲讲“有限通配符的参数化类型”的创建、存值以及取值。这两种都是限定类的取值范围的写法。“? extends T”表示类的允许范围是T及其子类；“? super T”表示类的允许范围是T及其父类。也就是new的时候受到此约束。
+存值：只要能保证存放类是指定类及其子类即可。null不受“? extends">
+<meta property="og:type" content="article">
+<meta property="og:title" content="？ extends T与？ super T">
+<meta property="og:url" content="http://rebey.cn/2017/06/24/？ extends T与？ super T/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="概览集合框架的源码经常见到“? extends E”、“? super T”。本篇文章以实例+注释讲讲“有限通配符的参数化类型”的创建、存值以及取值。这两种都是限定类的取值范围的写法。“? extends T”表示类的允许范围是T及其子类；“? super T”表示类的允许范围是T及其父类。也就是new的时候受到此约束。
+存值：只要能保证存放类是指定类及其子类即可。null不受“? extends">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/super%20and%20extends.png">
+<meta property="og:updated_time" content="2017-06-24T08:04:32.613Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="？ extends T与？ super T">
+<meta name="twitter:description" content="概览集合框架的源码经常见到“? extends E”、“? super T”。本篇文章以实例+注释讲讲“有限通配符的参数化类型”的创建、存值以及取值。这两种都是限定类的取值范围的写法。“? extends T”表示类的允许范围是T及其子类；“? super T”表示类的允许范围是T及其父类。也就是new的时候受到此约束。
+存值：只要能保证存放类是指定类及其子类即可。null不受“? extends">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/super%20and%20extends.png">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概览"><span class="toc-text">概览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo"><span class="toc-text">Demo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#说点什么"><span class="toc-text">说点什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#推荐阅读"><span class="toc-text">推荐阅读</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-？ extends T与？ super T" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">？ extends T与？ super T</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.06.24</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><p>集合框架的源码经常见到“? extends E”、“? super T”。本篇文章以实例+注释讲讲“有限通配符的参数化类型”的创建、存值以及取值。<br><img src="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/super%20and%20extends.png" alt="image"><br>这两种都是限定类的取值范围的写法。“? extends T”表示类的允许范围是T及其子类；“? super T”表示类的允许范围是T及其父类。也就是new的时候受到此约束。</p>
+<p>存值：只要能保证存放类是指定类及其子类即可。null不受“? extends/super T”约束。</p>
+<p>取值：“? extends T”取得的默认类型为上界T，“? super T”的默认类型为所有类的父类Object。</p>
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> generic;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.PriorityQueue;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Extend</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		<span class="comment">// ? extends T,T为临界类</span></div><div class="line">		<span class="comment">// extends限定了类的上界</span></div><div class="line">		<span class="comment">// Type mismatch: cannot convert from PriorityQueue&lt;Person&gt; to PriorityQueue&lt;? extends Parent&gt;</span></div><div class="line">		<span class="comment">//PriorityQueue&lt;? extends Parent&gt; pq = new PriorityQueue&lt;Person&gt;();</span></div><div class="line">		PriorityQueue&lt;? extends Parent&gt; pq = <span class="keyword">new</span> PriorityQueue&lt;Son&gt;();</div><div class="line">		</div><div class="line">		<span class="comment">// 无法直接放入，因为无法保证存放类与Son的关系</span></div><div class="line">		<span class="comment">//The method add(capture#1-of ? extends Parent) in the type PriorityQueue&lt;capture#1-of ? extends Parent&gt; is not applicable for the arguments (Son)</span></div><div class="line">		<span class="comment">//pq.add(new Son()));</span></div><div class="line">		<span class="comment">//The method add(capture#1-of ? extends Parent) in the type PriorityQueue&lt;capture#1-of ? extends Parent&gt; is not applicable for the arguments (Son)</span></div><div class="line">		<span class="comment">//pq.add(new Parent());</span></div><div class="line">		<span class="comment">//null不受类型限定，但PriorityQueue不允许为空，会抛出空指针异常</span></div><div class="line">		<span class="comment">//pq.add(null);</span></div><div class="line">		</div><div class="line">		<span class="comment">// 间接存放</span></div><div class="line">		PriorityQueue&lt;Son&gt; pqs = <span class="keyword">new</span> PriorityQueue&lt;Son&gt;();</div><div class="line">		pqs.add(<span class="keyword">new</span> Son(<span class="string">"1"</span>));</div><div class="line">		pqs.add(<span class="keyword">new</span> Son(<span class="string">"2"</span>));</div><div class="line">		pqs.add(<span class="keyword">new</span> Son(<span class="string">"3"</span>));</div><div class="line">		pqs.add(<span class="keyword">new</span> Son(<span class="string">"4"</span>));</div><div class="line">		</div><div class="line">		PriorityQueue&lt;? extends Parent&gt; pq1 = pqs;</div><div class="line">		</div><div class="line">		<span class="comment">//取值</span></div><div class="line">		Son s = (Son) pq1.poll();</div><div class="line">		Parent p = pq1.poll();</div><div class="line">		<span class="comment">//Daughter d = (Daughter) pq1.poll(); // 编译通过，执行报错。类型转换异常。</span></div><div class="line">		Person pp= pq1.poll();</div><div class="line">		</div><div class="line">		System.out.println(s.getName());</div><div class="line">		System.out.println(p.getName());</div><div class="line">		System.out.println(pp.getName());</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> generic;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.PriorityQueue;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Super</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		<span class="comment">// ? super T,T为临界类</span></div><div class="line">		<span class="comment">// super限制了下界</span></div><div class="line">		<span class="comment">// Type mismatch: cannot convert from PriorityQueue&lt;Son&gt; to PriorityQueue&lt;? super Parent&gt;</span></div><div class="line">		<span class="comment">//PriorityQueue&lt;? super Parent&gt; pq = new PriorityQueue&lt;Son&gt;();</span></div><div class="line">		PriorityQueue&lt;? <span class="keyword">super</span> Parent&gt; pq = <span class="keyword">new</span> PriorityQueue&lt;Person&gt;();</div><div class="line">		</div><div class="line">		<span class="comment">// 可存放临界类的子类，因为任一“? super T”也是其父类</span></div><div class="line">		pq.add(<span class="keyword">new</span> Son(<span class="string">"1"</span>));</div><div class="line">		pq.add(<span class="keyword">new</span> Daughter(<span class="string">"2"</span>));</div><div class="line">		pq.add(<span class="keyword">new</span> Parent(<span class="string">"3"</span>));</div><div class="line">		<span class="comment">// The method add(capture#4-of ? super Parent) in the type PriorityQueue&lt;capture#4-of ? super Parent&gt; is not applicable for the arguments (Person)</span></div><div class="line">		<span class="comment">//pq.add(new Person("4"));</span></div><div class="line"></div><div class="line">		<span class="comment">// 取值（默认Object，类型顺序必须与存放对应或者是其父类，否则类型转换错误）</span></div><div class="line">		<span class="comment">/*Parent p = (Parent) pq.poll();</span></div><div class="line">		Daughter d = (Daughter) pq.poll();</div><div class="line">		Son s = (Son) pq.poll();*/</div><div class="line">		</div><div class="line">		Parent p = (Parent) pq.poll();</div><div class="line">		Parent d = (Parent) pq.poll();</div><div class="line">		Parent s = (Parent) pq.poll();</div><div class="line">		</div><div class="line">		System.out.println(d.getName());</div><div class="line">		System.out.println(p.getName());</div><div class="line">		System.out.println(s.getName());</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> generic;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> <span class="keyword">implements</span> <span class="title">Comparable</span>&lt;<span class="title">Person</span>&gt;</span>&#123;</div><div class="line">	<span class="keyword">protected</span> String name;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>();</div><div class="line">		<span class="keyword">this</span>.name = name;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> name;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.name = name;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(Person o)</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> o.name.compareTo(<span class="keyword">this</span>.name);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> generic;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span> <span class="keyword">extends</span> <span class="title">Person</span></span>&#123;</div><div class="line">	<span class="keyword">private</span> String name;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Parent</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>(name);</div><div class="line">		<span class="keyword">this</span>.name = name;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> name;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.name = name;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> generic;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Parent</span></span>&#123;</div><div class="line">	<span class="keyword">private</span> String name;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Son</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>(name);</div><div class="line">		<span class="keyword">this</span>.name = name;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> name;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.name = name;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> generic;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Daughter</span> <span class="keyword">extends</span> <span class="title">Parent</span></span>&#123;</div><div class="line">	<span class="keyword">private</span> String name;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Daughter</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>(name);</div><div class="line">		<span class="keyword">this</span>.name = name;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> name;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.name = name;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="说点什么"><a href="#说点什么" class="headerlink" title="说点什么"></a>说点什么</h2><p>针对以上特性，java中有“PECS（“Producer Extends，Consumer Super”）”的说法。即如果要用参数化类型表示生产者，就使用&lt;? extends T&gt;；如果表示消费者，就使用&lt;? super T&gt;。</p>
+<p><strong>更多有意思的内容，欢迎访问笔者小站：</strong> <a href="http://rebey.cn/">rebey.cn</a></p>
+<h2 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h2><p><a href="http://www.importnew.com/8966.html" target="_blank" rel="external">Java 泛型: 什么是PECS（Producer Extends, Consumer Super）</a>。</p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="？ extends T与？ super T" data-url="http://rebey.cn/2017/06/24/？ extends T与？ super T/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+  }
+</script>
+
+</body>
+</html>
