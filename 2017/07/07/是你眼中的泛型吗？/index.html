@@ -16,24 +16,33 @@
   
 
   <meta name="description" content="继《？ extends T与？ super T》之后，我们再聊聊泛型。
-Demo 1public interface Generator {     T next();}第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
-public interface Generator {    T next();}第二种解决方法，在接口名后加“”使其成为一个泛型接口。
-泛型类/接口在使用前，必须先">
+Demo 1
+123public interface Generator &amp;#123;	&amp;lt;T&amp;gt; T next();&amp;#125;
+第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
+123public interface Generator&amp;lt;T&amp;gt; &amp;#123;	T next();&amp;#125;
+第">
 <meta property="og:type" content="article">
 <meta property="og:title" content="是你眼中的泛型吗？">
 <meta property="og:url" content="http://rebey.cn/2017/07/07/是你眼中的泛型吗？/index.html">
 <meta property="og:site_name" content="CHE Studio">
 <meta property="og:description" content="继《？ extends T与？ super T》之后，我们再聊聊泛型。
-Demo 1public interface Generator {     T next();}第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
-public interface Generator {    T next();}第二种解决方法，在接口名后加“”使其成为一个泛型接口。
-泛型类/接口在使用前，必须先">
-<meta property="og:updated_time" content="2017-07-07T13:10:41.776Z">
+Demo 1
+123public interface Generator &amp;#123;	&amp;lt;T&amp;gt; T next();&amp;#125;
+第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
+123public interface Generator&amp;lt;T&amp;gt; &amp;#123;	T next();&amp;#125;
+第">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/Generator.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/StaticGenerator.png">
+<meta property="og:updated_time" content="2017-07-07T14:19:24.569Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="是你眼中的泛型吗？">
 <meta name="twitter:description" content="继《？ extends T与？ super T》之后，我们再聊聊泛型。
-Demo 1public interface Generator {     T next();}第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
-public interface Generator {    T next();}第二种解决方法，在接口名后加“”使其成为一个泛型接口。
-泛型类/接口在使用前，必须先">
+Demo 1
+123public interface Generator &amp;#123;	&amp;lt;T&amp;gt; T next();&amp;#125;
+第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
+123public interface Generator&amp;lt;T&amp;gt; &amp;#123;	T next();&amp;#125;
+第">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/Generator.png">
 
   
 
@@ -155,7 +164,7 @@ public interface Generator {    T next();}第二种解决方法，在接口名�
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo-1"><span class="toc-text">Demo 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo-2"><span class="toc-text">Demo 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo-3"><span class="toc-text">Demo 3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo-4"><span class="toc-text">Demo 4</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo-1"><span class="toc-text">Demo 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo-2"><span class="toc-text">Demo 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo-3"><span class="toc-text">Demo 3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo-4"><span class="toc-text">Demo 4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#说点什么"><span class="toc-text">说点什么</span></a></li></ol>
   </div>
 
 
@@ -193,53 +202,29 @@ public interface Generator {    T next();}第二种解决方法，在接口名�
 
   <div class="article-content">
     
-      <p>继《？ extends T与？ super T》之后，我们再聊聊泛型。</p>
-<h2 id="Demo-1"><a href="#Demo-1" class="headerlink" title="Demo 1"></a>Demo 1</h2><p>public interface Generator {<br>    <t> T next();<br>}<br>第一种解决方法，在方法返回类型前加“<t>”使其成为一个泛型方法。</t></t></p>
-<p>public interface Generator<t> {<br>    T next();<br>}<br>第二种解决方法，在接口名后加“<t>”使其成为一个泛型接口。</t></t></p>
+      <p>继<a href="http://rebey.cn/2017/06/24/%EF%BC%9F%20extends%20T%E4%B8%8E%EF%BC%9F%20super%20T/">《？ extends T与？ super T》</a>之后，我们再聊聊泛型。</p>
+<h2 id="Demo-1"><a href="#Demo-1" class="headerlink" title="Demo 1"></a>Demo 1</h2><p><img src="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/Generator.png" alt="1"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Generator</span> </span>&#123;</div><div class="line">	&lt;T&gt; <span class="function">T <span class="title">next</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>第一种解决方法，在方法返回类型前加“<t>”使其成为一个泛型方法。</t></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Generator</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">	<span class="function">T <span class="title">next</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>第二种解决方法，在接口名后加“<t>”使其成为一个泛型接口。</t></p>
 <p>泛型类/接口在使用前，必须先指名参数类型，其中除了泛型方法外的泛型参数都将是所指定的类型。如下：</p>
-<p>// 泛型接口与其子类<br>public interface Generator<t> {<br>    T next(T t);<br>    void print(T t);<br>}</t></p>
-<p>public class SubGenerator implements Generator<string>{</string></p>
-<pre><code>@Override
-public String next(String t) {
-    // TODO Auto-generated method stub
-    return null;
-}
-
-@Override
-public void print(String t) {
-    // TODO Auto-generated method stub
-
-}
-</code></pre><p>}</p>
-<p>// 含有泛型方法的接口及其子类<br>public interface Generator<t> {<br>    T next(T t);<br>    <u> void print(U t);<br>}</u></t></p>
-<p>public class SubGenerator implements Generator<string>{</string></p>
-<pre><code>@Override
-public String next(String t) {
-    // TODO Auto-generated method stub
-    return null;
-}
-
-@Override
-public &lt;U&gt; void print(U t) {
-    // TODO Auto-generated method stub
-
-}
-</code></pre><p>}</p>
-<h2 id="Demo-2"><a href="#Demo-2" class="headerlink" title="Demo 2"></a>Demo 2</h2><p>即静态方法无法访问泛型类上定义的泛型，此时采用泛型方法可解决。</p>
-<p>// 正确做法<br>public class StaticGenerator {<br>    public static <t> T rebey(T t) {<br>        return null;<br>    }<br>}</t></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 泛型接口与其子类</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Generator</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">	<span class="function">T <span class="title">next</span><span class="params">(T t)</span></span>;</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(T t)</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubGenerator</span> <span class="keyword">implements</span> <span class="title">Generator</span>&lt;<span class="title">String</span>&gt;</span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">next</span><span class="params">(String t)</span> </span>&#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">(String t)</span> </span>&#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line">		</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 含有泛型方法的接口及其子类</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Generator</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">	<span class="function">T <span class="title">next</span><span class="params">(T t)</span></span>;</div><div class="line">	&lt;U&gt; <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(U t)</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubGenerator</span> <span class="keyword">implements</span> <span class="title">Generator</span>&lt;<span class="title">String</span>&gt;</span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">next</span><span class="params">(String t)</span> </span>&#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="keyword">public</span> &lt;U&gt; <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(U t)</span> </span>&#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line">		</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Demo-2"><a href="#Demo-2" class="headerlink" title="Demo 2"></a>Demo 2</h2><p><img src="https://raw.githubusercontent.com/chenhongen/DemoRun/master/image/StaticGenerator.png" alt="2"></p>
+<p>即静态方法无法访问泛型类上定义的泛型，此时采用泛型方法可解决。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 正确做法</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticGenerator</span> </span>&#123;</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">rebey</span><span class="params">(T t)</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="Demo-3"><a href="#Demo-3" class="headerlink" title="Demo 3"></a>Demo 3</h2><p>在《深入理解Java虚拟机 JVM高级特性与最佳实践（高清完整版）》P271 介绍了“当泛型遇见重载”的例子。得出的结论是：</p>
-<p>两个方法如果有相同的名称和特征签名，但返回值不同，那他们也是可以合法地共存于一个Class文件中的。<br>public String url(String s) {<br>    return “rebey.cn”;<br>}</p>
-<p>public int url(String s) {<br>    return 0;<br>}<br>然而以上代码是无法编译通过的。因为此书出版时还未发布JDK7，因此其实只有JDK1.6及以下才能编译通过。随着时间的推移，原来错的可能所以还是按我们原来的理解来解读重载就好了。同名方法参数个数、顺序、类型不同，与返回值类型无关。</p>
-<h2 id="Demo-4"><a href="#Demo-4" class="headerlink" title="Demo 4"></a>Demo 4</h2><p>public class Utilities {<br>    public static <t> HashSet<t> create(int size) {<br>        return new HashSet<t>(size);<br>    }</t></t></t></p>
-<pre><code>public static void print( HashSet&lt;String&gt; h) { 
-    for (String s : h) System.out.println(s);
-}
-</code></pre><p>}</p>
-<p>public class ResultGerneric {<br>    public static void main(String[] args) {<br>        Utilities.print(Utilities.create(10));    // error in Java 5,6,7 ; fine in Java 8<br>    }<br>}<br>这是来自GenericsFAQ403中的一个例子。笔者在java7上测试了，如愿的看到了错误提示：“The method print(HashSet<string>) in the type Utilities is not applicable for the arguments (HashSet<object>)”。由于Utilities.create方法未指定具体类型，默认转为Object，所以Utilities.print此时无法接收其作为String类型的参数。而在Java8版本的增加了类型推断(type argument inference)，能够根据赋值符号左边值类型自动推断出右边。</object></string></p>
+<blockquote>
+<p>两个方法如果有相同的名称和特征签名，但返回值不同，那他们也是可以合法地共存于一个Class文件中的。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">url</span><span class="params">(String s)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="string">"rebey.cn"</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">url</span><span class="params">(String s)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然而以上代码是无法编译通过的。因为此书出版时还未发布JDK7，因此其实只有JDK1.6及以下才能编译通过。随着时间的推移，原来错的可能所以还是按我们原来的理解来解读重载就好了。同名方法参数个数、顺序、类型不同，与返回值类型无关。</p>
+<h2 id="Demo-4"><a href="#Demo-4" class="headerlink" title="Demo 4"></a>Demo 4</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Utilities</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">HashSet&lt;T&gt; <span class="title">create</span><span class="params">(<span class="keyword">int</span> size)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> HashSet&lt;T&gt;(size);</div><div class="line">    &#125;</div><div class="line">     </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">( HashSet&lt;String&gt; h)</span> </span>&#123; </div><div class="line">        <span class="keyword">for</span> (String s : h) System.out.println(s);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResultGerneric</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Utilities.print(Utilities.create(<span class="number">10</span>));    <span class="comment">// error in Java 5,6,7 ; fine in Java 8</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这是来自<a href="http://www.angelikalanger.com/GenericsFAQ/FAQSections/TechnicalDetails.html#FAQ403" target="_blank" rel="external">GenericsFAQ403</a>中的一个例子。笔者在java7上测试了，如愿的看到了错误提示：“The method print(HashSet<string>) in the type Utilities is not applicable for the arguments (HashSet<object>)”。由于Utilities.create方法未指定具体类型，默认转为Object，所以Utilities.print此时无法接收其作为String类型的参数。而在Java8版本的增加了类型推断(type argument inference)，能够根据赋值符号左边值类型自动推断出右边。</object></string></p>
 <p>此外，通过显示指定参数类型也能够解决上述问题：</p>
-<p>public class ResultGerneric {<br>    public static void main(String[] args) {<br>        Utilities.print(Utilities.<string>create(10));//点操作符与方法名之间<br>    }<br>}<br>在《Think In Java》4th中泛型章节也提到了相似的例子（P363）。</string></p>
-<p>说点什么</p>
-<p>通过几个泛型的例子，我们看到：随着时间的推移，对的可能错，错的亦能对。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResultGerneric</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">	    Utilities.print(Utilities.&lt;String&gt;create(<span class="number">10</span>));<span class="comment">//点操作符与方法名之间</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在《Think In Java》4th中泛型章节也提到了相似的例子（P363）。</p>
+<h2 id="说点什么"><a href="#说点什么" class="headerlink" title="说点什么"></a>说点什么</h2><p>通过几个泛型的例子，我们看到：随着时间的推移，对的可能错，错的亦能对。</p>
 <p>这不是很有趣的一件事吗？</p>
 <p>待续…</p>
 <hr>
