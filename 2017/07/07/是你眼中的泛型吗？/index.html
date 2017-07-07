@@ -7,39 +7,39 @@
 <head>
   <meta charset="utf-8">
   
-  <title>querySelector/querySelectorAll | CHE Studio</title>
+  <title>是你眼中的泛型吗？ | CHE Studio</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="H5,JS," />
+    <meta name="keywords" content="JAVA," />
   
 
-  <meta name="description" content="格式：
-[1].querySelector([2]);
-[1].querySelectorAll([2]);
-[1]Document/Element;
-[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);
-说明：主要作用为CSS选择器；querySelector返回第一">
+  <meta name="description" content="继《？ extends T与？ super T》之后，我们再聊聊泛型。
+Demo 1
+1
+public interface Generator {     T next();}第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
+public interface Generator {    T next();}第二种解决方法，在接口名后加“”使其成为一个泛型接口。
+泛型类/接口在使用前，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="querySelector/querySelectorAll">
-<meta property="og:url" content="http://rebey.cn/2016/09/21/querySelector与querySelectorAll/index.html">
+<meta property="og:title" content="是你眼中的泛型吗？">
+<meta property="og:url" content="http://rebey.cn/2017/07/07/是你眼中的泛型吗？/index.html">
 <meta property="og:site_name" content="CHE Studio">
-<meta property="og:description" content="格式：
-[1].querySelector([2]);
-[1].querySelectorAll([2]);
-[1]Document/Element;
-[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);
-说明：主要作用为CSS选择器；querySelector返回第一">
-<meta property="og:updated_time" content="2016-12-31T12:25:24.183Z">
+<meta property="og:description" content="继《？ extends T与？ super T》之后，我们再聊聊泛型。
+Demo 1
+1
+public interface Generator {     T next();}第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
+public interface Generator {    T next();}第二种解决方法，在接口名后加“”使其成为一个泛型接口。
+泛型类/接口在使用前，">
+<meta property="og:updated_time" content="2017-07-07T13:06:42.271Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="querySelector/querySelectorAll">
-<meta name="twitter:description" content="格式：
-[1].querySelector([2]);
-[1].querySelectorAll([2]);
-[1]Document/Element;
-[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);
-说明：主要作用为CSS选择器；querySelector返回第一">
+<meta name="twitter:title" content="是你眼中的泛型吗？">
+<meta name="twitter:description" content="继《？ extends T与？ super T》之后，我们再聊聊泛型。
+Demo 1
+1
+public interface Generator {     T next();}第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
+public interface Generator {    T next();}第二种解决方法，在接口名后加“”使其成为一个泛型接口。
+泛型类/接口在使用前，">
 
   
 
@@ -162,14 +162,14 @@
 
 
 <div class="content content-post CENTER">
-   <article id="post-querySelector与querySelectorAll" class="article article-type-post" itemprop="blogPost">
+   <article id="post-是你眼中的泛型吗？" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">querySelector/querySelectorAll</h1>
+    <h1 class="post-title">是你眼中的泛型吗？</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2016.09.21</span>
+        <span>2017.07.07</span>
       </span>
 
       
@@ -182,7 +182,7 @@
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/前端/">前端</a>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
   </span>
 
 
@@ -194,19 +194,61 @@
 
   <div class="article-content">
     
-      <p><strong>格式</strong>：</p>
-<p><em>[1].querySelector([2]);</em></p>
-<p><em>[1].querySelectorAll([2]);</em></p>
-<p>[1]Document/Element;</p>
-<p>[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);</p>
-<p><strong>说明</strong>：主要作用为CSS选择器；querySelector返回第一个匹配元素,匹配不到返回null；querySelectorAll返回所有匹配元素集合，匹配不到返回NodeList[]；</p>
-<p>这里着重说明querySelectorAll，其返回值为NodeList。<br>NodeList是静态的，主要有length与item两个属性；常把NodeList转为数组使用：Array.prototype.slice.call(div_list);</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">// 体现静态</span></div><div class="line"><span class="keyword">var</span> a = <span class="built_in">document</span>.getElementById(<span class="string">"body"</span>).querySelectorAll(<span class="string">"div"</span>);</div><div class="line"><span class="keyword">var</span> b = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"div"</span>);</div><div class="line"><span class="keyword">var</span> oDiv = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</div><div class="line"><span class="built_in">document</span>.body.appendChild(oDiv);</div><div class="line">alert(<span class="string">"querySelectorAll:"</span>+a.length+<span class="string">"getElementsByTagName:"</span>+b.length);</div><div class="line"><span class="comment">// 结果：querySelectorAll:3 getElementsByTagName:4</span></div></pre></td></tr></table></figure>
-<p>在IE8下返回类型为StaticNodeList，StaticNodeList只有length属性，使用时小心。</p>
-<p><strong>兼容</strong>：主流浏览器基本支持，特别注意的是，<a href="http://caniuse.com/#search=querySelector" target="_blank" rel="external">IE8只支持CSS2.1和一小部分CSS3</a></p>
-<p><strong>引发</strong>：<br>在handsontable上看到用ruleJS实现了类似Excel的单元格公式计算。download了源码想研究下，结果发现IE8不好使，一查源头就到了querySelectorAll上。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ruleJS src</span></div><div class="line"><span class="keyword">var</span> formElements = [<span class="string">'input[type=text]'</span>, <span class="string">'[data-formula]'</span>];</div><div class="line">[].slice.call($totalElements).forEach(<span class="function"><span class="keyword">function</span> (<span class="params">$item</span>) </span>&#123;</div><div class="line">    registerElementInMatrix($item);</div><div class="line">    registerElementEvents($item);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p><strong>参考</strong>：<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/querySelector" target="_blank" rel="external">MDN Web API</a></p>
+      <p>继《？ extends T与？ super T》之后，我们再聊聊泛型。</p>
+<p>Demo 1</p>
+<p>1</p>
+<p>public interface Generator {<br>    <t> T next();<br>}<br>第一种解决方法，在方法返回类型前加“<t>”使其成为一个泛型方法。</t></t></p>
+<p>public interface Generator<t> {<br>    T next();<br>}<br>第二种解决方法，在接口名后加“<t>”使其成为一个泛型接口。</t></t></p>
+<p>泛型类/接口在使用前，必须先指名参数类型，其中除了泛型方法外的泛型参数都将是所指定的类型。如下：</p>
+<p>// 泛型接口与其子类<br>public interface Generator<t> {<br>    T next(T t);<br>    void print(T t);<br>}</t></p>
+<p>public class SubGenerator implements Generator<string>{</string></p>
+<pre><code>@Override
+public String next(String t) {
+    // TODO Auto-generated method stub
+    return null;
+}
+
+@Override
+public void print(String t) {
+    // TODO Auto-generated method stub
+
+}
+</code></pre><p>}</p>
+<p>// 含有泛型方法的接口及其子类<br>public interface Generator<t> {<br>    T next(T t);<br>    <u> void print(U t);<br>}</u></t></p>
+<p>public class SubGenerator implements Generator<string>{</string></p>
+<pre><code>@Override
+public String next(String t) {
+    // TODO Auto-generated method stub
+    return null;
+}
+
+@Override
+public &lt;U&gt; void print(U t) {
+    // TODO Auto-generated method stub
+
+}
+</code></pre><p>}<br>Demo 2</p>
+<p>2</p>
+<p>即静态方法无法访问泛型类上定义的泛型，此时采用泛型方法可解决。</p>
+<p>// 正确做法<br>public class StaticGenerator {<br>    public static <t> T rebey(T t) {<br>        return null;<br>    }<br>}<br>Demo 3</t></p>
+<p>在《深入理解Java虚拟机 JVM高级特性与最佳实践（高清完整版）》P271 介绍了“当泛型遇见重载”的例子。得出的结论是：</p>
+<p>两个方法如果有相同的名称和特征签名，但返回值不同，那他们也是可以合法地共存于一个Class文件中的。<br>public String url(String s) {<br>    return “rebey.cn”;<br>}</p>
+<p>public int url(String s) {<br>    return 0;<br>}<br>然而以上代码是无法编译通过的。因为此书出版时还未发布JDK7，因此其实只有JDK1.6及以下才能编译通过。随着时间的推移，原来错的可能所以还是按我们原来的理解来解读重载就好了。同名方法参数个数、顺序、类型不同，与返回值类型无关。</p>
+<p>Demo 4</p>
+<p>public class Utilities {<br>    public static <t> HashSet<t> create(int size) {<br>        return new HashSet<t>(size);<br>    }</t></t></t></p>
+<pre><code>public static void print( HashSet&lt;String&gt; h) { 
+    for (String s : h) System.out.println(s);
+}
+</code></pre><p>}</p>
+<p>public class ResultGerneric {<br>    public static void main(String[] args) {<br>        Utilities.print(Utilities.create(10));    // error in Java 5,6,7 ; fine in Java 8<br>    }<br>}<br>这是来自GenericsFAQ403中的一个例子。笔者在java7上测试了，如愿的看到了错误提示：“The method print(HashSet<string>) in the type Utilities is not applicable for the arguments (HashSet<object>)”。由于Utilities.create方法未指定具体类型，默认转为Object，所以Utilities.print此时无法接收其作为String类型的参数。而在Java8版本的增加了类型推断(type argument inference)，能够根据赋值符号左边值类型自动推断出右边。</object></string></p>
+<p>此外，通过显示指定参数类型也能够解决上述问题：</p>
+<p>public class ResultGerneric {<br>    public static void main(String[] args) {<br>        Utilities.print(Utilities.<string>create(10));//点操作符与方法名之间<br>    }<br>}<br>在《Think In Java》4th中泛型章节也提到了相似的例子（P363）。</string></p>
+<p>说点什么</p>
+<p>通过几个泛型的例子，我们看到：随着时间的推移，对的可能错，错的亦能对。</p>
+<p>这不是很有趣的一件事吗？</p>
+<p>待续…</p>
+<hr>
+<p><strong>更多有意思的内容，欢迎访问笔者小站：</strong> <a href="http://rebey.cn/">rebey.cn</a></p>
 
     
   </div>
@@ -330,7 +372,7 @@
     
   <section class="duoshuo-comments">
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="" data-title="querySelector/querySelectorAll" data-url="http://rebey.cn/2016/09/21/querySelector与querySelectorAll/index.html"></div>
+    <div class="ds-thread" data-thread-key="" data-title="是你眼中的泛型吗？" data-url="http://rebey.cn/2017/07/07/是你眼中的泛型吗？/index.html"></div>
     <!-- 多说评论框 end -->
   </section>
 
