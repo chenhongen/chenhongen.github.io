@@ -16,30 +16,24 @@
   
 
   <meta name="description" content="继《？ extends T与？ super T》之后，我们再聊聊泛型。
-Demo 1
-1
-public interface Generator {     T next();}第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
+Demo 1public interface Generator {     T next();}第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
 public interface Generator {    T next();}第二种解决方法，在接口名后加“”使其成为一个泛型接口。
-泛型类/接口在使用前，">
+泛型类/接口在使用前，必须先">
 <meta property="og:type" content="article">
 <meta property="og:title" content="是你眼中的泛型吗？">
 <meta property="og:url" content="http://rebey.cn/2017/07/07/是你眼中的泛型吗？/index.html">
 <meta property="og:site_name" content="CHE Studio">
 <meta property="og:description" content="继《？ extends T与？ super T》之后，我们再聊聊泛型。
-Demo 1
-1
-public interface Generator {     T next();}第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
+Demo 1public interface Generator {     T next();}第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
 public interface Generator {    T next();}第二种解决方法，在接口名后加“”使其成为一个泛型接口。
-泛型类/接口在使用前，">
-<meta property="og:updated_time" content="2017-07-07T13:06:42.271Z">
+泛型类/接口在使用前，必须先">
+<meta property="og:updated_time" content="2017-07-07T13:10:41.776Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="是你眼中的泛型吗？">
 <meta name="twitter:description" content="继《？ extends T与？ super T》之后，我们再聊聊泛型。
-Demo 1
-1
-public interface Generator {     T next();}第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
+Demo 1public interface Generator {     T next();}第一种解决方法，在方法返回类型前加“”使其成为一个泛型方法。
 public interface Generator {    T next();}第二种解决方法，在接口名后加“”使其成为一个泛型接口。
-泛型类/接口在使用前，">
+泛型类/接口在使用前，必须先">
 
   
 
@@ -159,6 +153,11 @@ public interface Generator {    T next();}第二种解决方法，在接口名�
 </div>
 
 
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo-1"><span class="toc-text">Demo 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo-2"><span class="toc-text">Demo 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo-3"><span class="toc-text">Demo 3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo-4"><span class="toc-text">Demo 4</span></a></li></ol>
+  </div>
+
 
 
 <div class="content content-post CENTER">
@@ -195,9 +194,7 @@ public interface Generator {    T next();}第二种解决方法，在接口名�
   <div class="article-content">
     
       <p>继《？ extends T与？ super T》之后，我们再聊聊泛型。</p>
-<p>Demo 1</p>
-<p>1</p>
-<p>public interface Generator {<br>    <t> T next();<br>}<br>第一种解决方法，在方法返回类型前加“<t>”使其成为一个泛型方法。</t></t></p>
+<h2 id="Demo-1"><a href="#Demo-1" class="headerlink" title="Demo 1"></a>Demo 1</h2><p>public interface Generator {<br>    <t> T next();<br>}<br>第一种解决方法，在方法返回类型前加“<t>”使其成为一个泛型方法。</t></t></p>
 <p>public interface Generator<t> {<br>    T next();<br>}<br>第二种解决方法，在接口名后加“<t>”使其成为一个泛型接口。</t></t></p>
 <p>泛型类/接口在使用前，必须先指名参数类型，其中除了泛型方法外的泛型参数都将是所指定的类型。如下：</p>
 <p>// 泛型接口与其子类<br>public interface Generator<t> {<br>    T next(T t);<br>    void print(T t);<br>}</t></p>
@@ -227,15 +224,13 @@ public &lt;U&gt; void print(U t) {
     // TODO Auto-generated method stub
 
 }
-</code></pre><p>}<br>Demo 2</p>
-<p>2</p>
-<p>即静态方法无法访问泛型类上定义的泛型，此时采用泛型方法可解决。</p>
-<p>// 正确做法<br>public class StaticGenerator {<br>    public static <t> T rebey(T t) {<br>        return null;<br>    }<br>}<br>Demo 3</t></p>
-<p>在《深入理解Java虚拟机 JVM高级特性与最佳实践（高清完整版）》P271 介绍了“当泛型遇见重载”的例子。得出的结论是：</p>
+</code></pre><p>}</p>
+<h2 id="Demo-2"><a href="#Demo-2" class="headerlink" title="Demo 2"></a>Demo 2</h2><p>即静态方法无法访问泛型类上定义的泛型，此时采用泛型方法可解决。</p>
+<p>// 正确做法<br>public class StaticGenerator {<br>    public static <t> T rebey(T t) {<br>        return null;<br>    }<br>}</t></p>
+<h2 id="Demo-3"><a href="#Demo-3" class="headerlink" title="Demo 3"></a>Demo 3</h2><p>在《深入理解Java虚拟机 JVM高级特性与最佳实践（高清完整版）》P271 介绍了“当泛型遇见重载”的例子。得出的结论是：</p>
 <p>两个方法如果有相同的名称和特征签名，但返回值不同，那他们也是可以合法地共存于一个Class文件中的。<br>public String url(String s) {<br>    return “rebey.cn”;<br>}</p>
 <p>public int url(String s) {<br>    return 0;<br>}<br>然而以上代码是无法编译通过的。因为此书出版时还未发布JDK7，因此其实只有JDK1.6及以下才能编译通过。随着时间的推移，原来错的可能所以还是按我们原来的理解来解读重载就好了。同名方法参数个数、顺序、类型不同，与返回值类型无关。</p>
-<p>Demo 4</p>
-<p>public class Utilities {<br>    public static <t> HashSet<t> create(int size) {<br>        return new HashSet<t>(size);<br>    }</t></t></t></p>
+<h2 id="Demo-4"><a href="#Demo-4" class="headerlink" title="Demo 4"></a>Demo 4</h2><p>public class Utilities {<br>    public static <t> HashSet<t> create(int size) {<br>        return new HashSet<t>(size);<br>    }</t></t></t></p>
 <pre><code>public static void print( HashSet&lt;String&gt; h) { 
     for (String s : h) System.out.println(s);
 }
