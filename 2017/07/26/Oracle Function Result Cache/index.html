@@ -7,39 +7,30 @@
 <head>
   <meta charset="utf-8">
   
-  <title>querySelector/querySelectorAll | CHE Studio</title>
+  <title>Oracle Function Result Cache | CHE Studio</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="H5,JS," />
+    <meta name="keywords" content="JAVA," />
   
 
-  <meta name="description" content="格式：
-[1].querySelector([2]);
-[1].querySelectorAll([2]);
-[1]Document/Element;
-[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);
-说明：主要作用为CSS选择器；querySelector返回第一">
+  <meta name="description" content="作用与用法在Function中使用数据集缓存能够减少函数内部查询调用次数，从而提高效率，尤其适用于数据变动不频繁（如：组织机构）的数据。属于11g新特性。
+123CREATE OR REPLACE FUNCTION getOperatorNames (v_empIds varchar)   RETURN VARCHAR RESULT_CACHE...
+在返回值、类型 后加“RESULT_CACHE">
 <meta property="og:type" content="article">
-<meta property="og:title" content="querySelector/querySelectorAll">
-<meta property="og:url" content="http://rebey.cn/2016/09/21/querySelector与querySelectorAll/index.html">
+<meta property="og:title" content="Oracle Function Result Cache">
+<meta property="og:url" content="http://rebey.cn/2017/07/26/Oracle Function Result Cache/index.html">
 <meta property="og:site_name" content="CHE Studio">
-<meta property="og:description" content="格式：
-[1].querySelector([2]);
-[1].querySelectorAll([2]);
-[1]Document/Element;
-[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);
-说明：主要作用为CSS选择器；querySelector返回第一">
-<meta property="og:updated_time" content="2016-12-31T12:25:24.183Z">
+<meta property="og:description" content="作用与用法在Function中使用数据集缓存能够减少函数内部查询调用次数，从而提高效率，尤其适用于数据变动不频繁（如：组织机构）的数据。属于11g新特性。
+123CREATE OR REPLACE FUNCTION getOperatorNames (v_empIds varchar)   RETURN VARCHAR RESULT_CACHE...
+在返回值、类型 后加“RESULT_CACHE">
+<meta property="og:updated_time" content="2017-07-26T14:12:26.334Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="querySelector/querySelectorAll">
-<meta name="twitter:description" content="格式：
-[1].querySelector([2]);
-[1].querySelectorAll([2]);
-[1]Document/Element;
-[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);
-说明：主要作用为CSS选择器；querySelector返回第一">
+<meta name="twitter:title" content="Oracle Function Result Cache">
+<meta name="twitter:description" content="作用与用法在Function中使用数据集缓存能够减少函数内部查询调用次数，从而提高效率，尤其适用于数据变动不频繁（如：组织机构）的数据。属于11g新特性。
+123CREATE OR REPLACE FUNCTION getOperatorNames (v_empIds varchar)   RETURN VARCHAR RESULT_CACHE...
+在返回值、类型 后加“RESULT_CACHE">
 
   
 
@@ -159,17 +150,22 @@
 </div>
 
 
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#作用与用法"><span class="toc-text">作用与用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#存放与生命周期"><span class="toc-text">存放与生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#监控"><span class="toc-text">监控</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一些特性"><span class="toc-text">一些特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#说点什么"><span class="toc-text">说点什么</span></a></li></ol>
+  </div>
+
 
 
 <div class="content content-post CENTER">
-   <article id="post-querySelector与querySelectorAll" class="article article-type-post" itemprop="blogPost">
+   <article id="post-Oracle Function Result Cache" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">querySelector/querySelectorAll</h1>
+    <h1 class="post-title">Oracle Function Result Cache</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2016.09.21</span>
+        <span>2017.07.26</span>
       </span>
 
       
@@ -182,7 +178,7 @@
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/前端/">前端</a>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
   </span>
 
 
@@ -194,19 +190,22 @@
 
   <div class="article-content">
     
-      <p><strong>格式</strong>：</p>
-<p><em>[1].querySelector([2]);</em></p>
-<p><em>[1].querySelectorAll([2]);</em></p>
-<p>[1]Document/Element;</p>
-<p>[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);</p>
-<p><strong>说明</strong>：主要作用为CSS选择器；querySelector返回第一个匹配元素,匹配不到返回null；querySelectorAll返回所有匹配元素集合，匹配不到返回NodeList[]；</p>
-<p>这里着重说明querySelectorAll，其返回值为NodeList。<br>NodeList是静态的，主要有length与item两个属性；常把NodeList转为数组使用：Array.prototype.slice.call(div_list);</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">// 体现静态</span></div><div class="line"><span class="keyword">var</span> a = <span class="built_in">document</span>.getElementById(<span class="string">"body"</span>).querySelectorAll(<span class="string">"div"</span>);</div><div class="line"><span class="keyword">var</span> b = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"div"</span>);</div><div class="line"><span class="keyword">var</span> oDiv = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</div><div class="line"><span class="built_in">document</span>.body.appendChild(oDiv);</div><div class="line">alert(<span class="string">"querySelectorAll:"</span>+a.length+<span class="string">"getElementsByTagName:"</span>+b.length);</div><div class="line"><span class="comment">// 结果：querySelectorAll:3 getElementsByTagName:4</span></div></pre></td></tr></table></figure>
-<p>在IE8下返回类型为StaticNodeList，StaticNodeList只有length属性，使用时小心。</p>
-<p><strong>兼容</strong>：主流浏览器基本支持，特别注意的是，<a href="http://caniuse.com/#search=querySelector" target="_blank" rel="external">IE8只支持CSS2.1和一小部分CSS3</a></p>
-<p><strong>引发</strong>：<br>在handsontable上看到用ruleJS实现了类似Excel的单元格公式计算。download了源码想研究下，结果发现IE8不好使，一查源头就到了querySelectorAll上。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ruleJS src</span></div><div class="line"><span class="keyword">var</span> formElements = [<span class="string">'input[type=text]'</span>, <span class="string">'[data-formula]'</span>];</div><div class="line">[].slice.call($totalElements).forEach(<span class="function"><span class="keyword">function</span> (<span class="params">$item</span>) </span>&#123;</div><div class="line">    registerElementInMatrix($item);</div><div class="line">    registerElementEvents($item);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p><strong>参考</strong>：<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/querySelector" target="_blank" rel="external">MDN Web API</a></p>
+      <h2 id="作用与用法"><a href="#作用与用法" class="headerlink" title="作用与用法"></a>作用与用法</h2><p>在Function中使用数据集缓存能够减少函数内部查询调用次数，从而提高效率，尤其适用于数据变动不频繁（如：组织机构）的数据。属于11g新特性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">CREATE OR REPLACE FUNCTION getOperatorNames (v_empIds varchar)</div><div class="line">   RETURN VARCHAR RESULT_CACHE</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>在返回值、类型 后加“RESULT_CACHE”即可。</p>
+<h2 id="存放与生命周期"><a href="#存放与生命周期" class="headerlink" title="存放与生命周期"></a>存放与生命周期</h2><p>整合在当前数据源，随着当前数据事物发生而重置。（11g release 1需要额外添加“RELIES_ON”【如：result_cache relies_on (tablename)】，11g release 2不需要）</p>
+<blockquote>
+<p>cached results can be directly coupled to their underlying data sources.This means that cached results are invalidated and regenerated when transactions occur against the underlying data. </p>
+</blockquote>
+<p>当函数重建时，原缓存数据状态置为无效，新的缓存数据会生成。（缓存空间通过类似“最近最少使用”算法维护）可通过以下sql文查看：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">SELECT id</div><div class="line">  ,      name</div><div class="line">  ,      type</div><div class="line">  ,      status</div><div class="line">  ,      invalidations</div><div class="line">  FROM   v$result_cache_objects</div><div class="line">  ORDER  BY</div><div class="line">         id;</div></pre></td></tr></table></figure></p>
+<h2 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">SELECT name, value</div><div class="line">  FROM   v$result_cache_statistics</div><div class="line">  WHERE  name IN (&apos;Create Count Success&apos;,&apos;Find Count&apos;);</div></pre></td></tr></table></figure>
+<p>‘Create Count Success’ 可以理解为缓存个数，’Find Count’为命中次数。当然，v$result_cache_statistics中还有其他很多信息，比如缓存大小。</p>
+<h2 id="一些特性"><a href="#一些特性" class="headerlink" title="一些特性"></a>一些特性</h2><p>执行计划中不统计Function Result Cache；<br>支持跨回话；<br>更多细节可以查看：<a href="http://www.oracle-developer.net/display.php?id=504" target="_blank" rel="external">pl/sql function result cache in 11g</a></p>
+<h2 id="说点什么"><a href="#说点什么" class="headerlink" title="说点什么"></a>说点什么</h2><p>今天项目一个查询页面加载太慢了，数据量大用户体验差。其中有个根据人员ID查询名称的function就占用了0.3~0.4s，不能忍啊。心想有没类似redis的缓存的做法，通过搜索找到了result cache并应用了。效果甚佳，特此记录。</p>
+<p>oracle水很深，我们还只是浮游生物。</p>
+<blockquote>
+<p>更多有意思的内容，欢迎访问<a href="http://rebey.cn">rebey.cn</a></p>
+</blockquote>
 
     
   </div>
@@ -330,7 +329,7 @@
     
   <section class="duoshuo-comments">
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="" data-title="querySelector/querySelectorAll" data-url="http://rebey.cn/2016/09/21/querySelector与querySelectorAll/index.html"></div>
+    <div class="ds-thread" data-thread-key="" data-title="Oracle Function Result Cache" data-url="http://rebey.cn/2017/07/26/Oracle Function Result Cache/index.html"></div>
     <!-- 多说评论框 end -->
   </section>
 
