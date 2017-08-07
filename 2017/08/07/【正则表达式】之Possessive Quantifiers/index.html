@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>【正则表达式】之Possessive Quantifiers | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="针对“*”、“+”、“?”等限定符都是贪婪的（尽可能多的匹配字符），通过在最后追加“+”或“?”量词可改变贪婪性。本篇主要解疑正则表达式的“占有型量词”（Possessive Quantifiers）。
+Greediness（贪婪型）1234567Pattern p = Pattern.compile(&quot;\\[.+\\]\\[.+\\]&quot;);Matcher m = p.matcher(&quot;[che]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【正则表达式】之Possessive Quantifiers">
+<meta property="og:url" content="http://rebey.cn/2017/08/07/【正则表达式】之Possessive Quantifiers/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="针对“*”、“+”、“?”等限定符都是贪婪的（尽可能多的匹配字符），通过在最后追加“+”或“?”量词可改变贪婪性。本篇主要解疑正则表达式的“占有型量词”（Possessive Quantifiers）。
+Greediness（贪婪型）1234567Pattern p = Pattern.compile(&quot;\\[.+\\]\\[.+\\]&quot;);Matcher m = p.matcher(&quot;[che]">
+<meta property="og:updated_time" content="2017-08-07T14:06:10.919Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【正则表达式】之Possessive Quantifiers">
+<meta name="twitter:description" content="针对“*”、“+”、“?”等限定符都是贪婪的（尽可能多的匹配字符），通过在最后追加“+”或“?”量词可改变贪婪性。本篇主要解疑正则表达式的“占有型量词”（Possessive Quantifiers）。
+Greediness（贪婪型）1234567Pattern p = Pattern.compile(&quot;\\[.+\\]\\[.+\\]&quot;);Matcher m = p.matcher(&quot;[che]">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Greediness（贪婪型）"><span class="toc-text">Greediness（贪婪型）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reluctant-Laziness（勉强型）"><span class="toc-text">Reluctant/Laziness（勉强型）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Possessive（占有型）"><span class="toc-text">Possessive（占有型）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#x-≈-gt-x"><span class="toc-text">x+ ≈ (?>x) </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#说点什么"><span class="toc-text">说点什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-【正则表达式】之Possessive Quantifiers" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">【正则表达式】之Possessive Quantifiers</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.08.07</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>针对“*”、“+”、“?”等限定符都是贪婪的（尽可能多的匹配字符），通过在最后追加“+”或“?”量词可改变贪婪性。本篇主要解疑正则表达式的“占有型量词”（Possessive Quantifiers）。</p>
+<h2 id="Greediness（贪婪型）"><a href="#Greediness（贪婪型）" class="headerlink" title="Greediness（贪婪型）"></a>Greediness（贪婪型）</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Pattern p = Pattern.compile(<span class="string">"\\[.+\\]\\[.+\\]"</span>);</div><div class="line">Matcher m = p.matcher(<span class="string">"[che][1]'s blog is [rebey.cn][2],and built in [2016][3]."</span>);</div><div class="line"><span class="keyword">while</span>(m.find()) &#123;</div><div class="line">    System.out.println(m.group());</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 结果：[che][1]'s blog is [rebey.cn][2],and built in [2016][3]</span></div></pre></td></tr></table></figure>
+<p>在不做任何额外处理情况下，正则表达式默认是贪婪型的。贪婪型一次读取所有字符进行匹配。<br><strong>以下是匹配过程猜想：</strong><br>“\[.+”先遍历到字符“.”时发现不匹配了，开始往左回溯，得到“[che…]”;<br>继续往左回溯，像这样“[che…][3]”，因此就有了以上的输出结果。</p>
+<h2 id="Reluctant-Laziness（勉强型）"><a href="#Reluctant-Laziness（勉强型）" class="headerlink" title="Reluctant/Laziness（勉强型）"></a>Reluctant/Laziness（勉强型）</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Pattern p1 = Pattern.compile(<span class="string">"\\[.+?\\]\\[.+?\\]"</span>);</div><div class="line">Matcher m1 = p1.matcher(<span class="string">"[che][1]'s blog is [rebey.cn][2],and built in [2016][3]."</span>);</div><div class="line"><span class="keyword">while</span>(m1.find()) &#123;</div><div class="line">	System.out.println(m1.group());</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 结果：</span></div><div class="line"><span class="comment">//	[che][1]</span></div><div class="line"><span class="comment">//	[rebey.cn][2]</span></div><div class="line"><span class="comment">//	[2016][3]</span></div></pre></td></tr></table></figure>
+<p>在原有的“.+”之后加个“？”，就成为了勉强型。它将从左至右依次读取进行匹配，直到字符串结束。</p>
+<h2 id="Possessive（占有型）"><a href="#Possessive（占有型）" class="headerlink" title="Possessive（占有型）"></a>Possessive（占有型）</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Pattern p2 = Pattern.compile(<span class="string">"\\[.++\\]\\[.++\\]"</span>);</div><div class="line">Matcher m2 = p2.matcher(<span class="string">"[che][1]'s blog is [rebey.cn][2],and built in [2016][3]."</span>);</div><div class="line"><span class="keyword">while</span>(m2.find()) &#123;</div><div class="line">	System.out.println(m2.group());</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 结果：匹配不到</span></div></pre></td></tr></table></figure>
+<p>在原有的“.+”之后加个“+”，就成为了占有型。它也是一次读取所有字符串进行匹配，区别在于它不回溯。<br><strong>以下是匹配过程猜想：</strong><br>“\[.+”匹配“[che…”直到最后字符“.”不匹配，立即结束。</p>
+<h2 id="x-≈-gt-x"><a href="#x-≈-gt-x" class="headerlink" title="x+ ≈ (?&gt;x) "></a>x+ ≈ (?&gt;x) </h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Pattern p3 = Pattern.compile(<span class="string">"\\[.++"</span>);</div><div class="line">Matcher m3 = p3.matcher(<span class="string">"[che][1]'s blog is [rebey.cn][2],and built in [2016][3]."</span>);</div><div class="line"><span class="keyword">while</span>(m3.find()) &#123;</div><div class="line">	System.out.println(m3.group());</div><div class="line">&#125;</div><div class="line"></div><div class="line">Pattern p4 = Pattern.compile(<span class="string">"(?&gt;(\\[.+))"</span>);</div><div class="line">Matcher m4 = p4.matcher(<span class="string">"[che][1]'s blog is [rebey.cn][2],and built in [2016][3]."</span>);</div><div class="line"><span class="keyword">while</span>(m4.find()) &#123;</div><div class="line">	System.out.println(m4.group());</div><div class="line">&#125;</div><div class="line"></div><div class="line">结果皆为：[che][<span class="number">1</span>]<span class="string">'s blog is [rebey.cn][2],and built in [2016][3].</span></div></pre></td></tr></table></figure>
+<p>注意括号。</p>
+<h2 id="说点什么"><a href="#说点什么" class="headerlink" title="说点什么"></a>说点什么</h2><blockquote>
+<p>Possessive quantifiers are a way to prevent the regex engine from trying all permutations.</p>
+</blockquote>
+<p>占有量词是一种用来组织正则表达式尝试所有排列组合的方式。（即不回溯）</p>
+<blockquote>
+<p>With a possessive quantifier, the deal is all or nothing.<br>使用占有量词只有两种结果，全匹配或者空匹配。<br>The main practical benefit of possessive quantifiers is to speed up your regular expression.<br>占有量词的主要实际意义是加速你的正则表达式。</p>
+</blockquote>
+<p><strong>更多有意思的内容，欢迎访问笔者小站：</strong> <a href="http://rebey.cn/">rebey.cn</a></p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="http://www.regular-expressions.info/possessive.html" target="_blank" rel="external">Regex Tutorial - Possessive Quantifiers</a></p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="【正则表达式】之Possessive Quantifiers" data-url="http://rebey.cn/2017/08/07/【正则表达式】之Possessive Quantifiers/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+  }
+</script>
+
+</body>
+</html>
