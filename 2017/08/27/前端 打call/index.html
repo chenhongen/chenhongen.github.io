@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>前端 打call | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="RAW = React(Router) + Ant design + WebpackGITHUBraw-ie8兼容IE8，简单的前端框架半成品。
+· 20170826是的，最近在捣鼓SpringBoot。数据查出来抛到前端觉得没有一个好看的页面展示不得劲。结果一路跑偏到前端，一入前端深似海。因为一直想着尽量兼容到ie8版本，可以给公司项目用了。过程遇到了很多问题（readme记录部分），目前的状态">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端 打call">
+<meta property="og:url" content="http://rebey.cn/2017/08/27/前端 打call/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="RAW = React(Router) + Ant design + WebpackGITHUBraw-ie8兼容IE8，简单的前端框架半成品。
+· 20170826是的，最近在捣鼓SpringBoot。数据查出来抛到前端觉得没有一个好看的页面展示不得劲。结果一路跑偏到前端，一入前端深似海。因为一直想着尽量兼容到ie8版本，可以给公司项目用了。过程遇到了很多问题（readme记录部分），目前的状态">
+<meta property="og:image" content="https://sfault-image.b0.upaiyun.com/347/226/347226979-59a19bc397784_articlex">
+<meta property="og:image" content="https://sfault-image.b0.upaiyun.com/225/861/2258611539-59a2ab6aa5a1a_articlex">
+<meta property="og:updated_time" content="2017-08-27T11:46:38.981Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端 打call">
+<meta name="twitter:description" content="RAW = React(Router) + Ant design + WebpackGITHUBraw-ie8兼容IE8，简单的前端框架半成品。
+· 20170826是的，最近在捣鼓SpringBoot。数据查出来抛到前端觉得没有一个好看的页面展示不得劲。结果一路跑偏到前端，一入前端深似海。因为一直想着尽量兼容到ie8版本，可以给公司项目用了。过程遇到了很多问题（readme记录部分），目前的状态">
+<meta name="twitter:image" content="https://sfault-image.b0.upaiyun.com/347/226/347226979-59a19bc397784_articlex">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RAW-React-Router-Ant-design-Webpack"><span class="toc-text">RAW = React(Router) + Ant design + Webpack</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#GITHUB"><span class="toc-text">GITHUB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#·-20170826"><span class="toc-text">· 20170826</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#·-20170827"><span class="toc-text">· 20170827</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-前端 打call" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">前端 打call</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.08.27</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/前端/">前端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="RAW-React-Router-Ant-design-Webpack"><a href="#RAW-React-Router-Ant-design-Webpack" class="headerlink" title="RAW = React(Router) + Ant design + Webpack"></a>RAW = React(Router) + Ant design + Webpack</h1><h2 id="GITHUB"><a href="#GITHUB" class="headerlink" title="GITHUB"></a>GITHUB</h2><p><a href="https://github.com/chenhongen/raw-ie8" target="_blank" rel="external">raw-ie8</a><br>兼容IE8，简单的前端框架半成品。</p>
+<h2 id="·-20170826"><a href="#·-20170826" class="headerlink" title="· 20170826"></a>· 20170826</h2><p>是的，最近在捣鼓SpringBoot。数据查出来抛到前端觉得没有一个好看的页面展示不得劲。结果一路跑偏到前端，一入前端深似海。因为一直想着尽量兼容到ie8版本，可以给公司项目用了。过程遇到了很多问题（readme记录部分），目前的状态在webpack上能跑起来，部署到nginx之类的应该没有问题。而我尝试与maven结合起来，参照《<a href="http://justincalleja.com/2016/04/17/serving-a-webpack-bundle-in-spring-boot/" target="_blank" rel="external">Serving a Webpack bundle in Spring Boot</a>》搭建一个能利用webpack自动打jar包供Springboot使用的框架，之后将“raw-ie”迁移过去。然而奇怪的是，ie8上失败了（火狐,谷歌正常）。这是一个悲伤的故事。感觉整个人都憔悴了。</p>
+<p>按趋势来说，前后端分离必然还是需要各自拥有自己的服务器。这里只是天马行空，恰巧也有前人这么想并这么做了。现在的选择，要么抛弃阿斗IE8，要么单独给raw整个服务器适用于webpack打包后，要么直到找到问题所在，要么睡觉先。。其实还是最终目标才是选择的依据。目前可以先在webpack-dev-server上继续跑raw-ie8，在eclipse上继续往下整合SpringBoot+shrio+redis…</p>
+<p><img src="https://sfault-image.b0.upaiyun.com/347/226/347226979-59a19bc397784_articlex" alt="演示"></p>
+<h2 id="·-20170827"><a href="#·-20170827" class="headerlink" title="· 20170827"></a>· 20170827</h2><p>今天简单的学习了下nginx，把webpack打包好的使用nginx管理。结果发现和昨天使用springboot一体化整合的效果一样：“找不到标识符”。失败并不可怕，反而给了我重新定位错误的方向。未打包正常，打包后不管在什么平台的IE8都出错了，这不是告诉我问题出在打包上吗？然后就把UglifyJsPlugin注释掉（或者去掉-p）进行尝试。果然页面出来了，只不过存在样式问题。UglifyJs用于压缩js，去掉之后从原来700多K飙为1.92M。然后参照<a href="http://www.zuojj.com/archives/2157.html" target="_blank" rel="external">FED实验室</a>的一篇文章加上了UglifyJs的一些参数，降到1.09M。但是在I8下的样式问题依然存在(- -)。对这个问题感兴趣的大神可以从上文的GITHUB链接down下来打包在ie8下跑起来看看。不过，应该没人感兴趣。。。</p>
+<p><img src="https://sfault-image.b0.upaiyun.com/225/861/2258611539-59a2ab6aa5a1a_articlex" alt="样式BUG"></p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="前端 打call" data-url="http://rebey.cn/2017/08/27/前端 打call/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+  }
+</script>
+
+</body>
+</html>
