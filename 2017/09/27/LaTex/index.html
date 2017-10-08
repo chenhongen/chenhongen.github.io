@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>LaTex | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="LaTex说起LaTex，又会扯出Tex、MikTeX、CJK等一系列东西。这并不是我们关注的重点，然而如果你有时间，可以当个睡前故事看看这篇文章。我们只需要知道:
+
+LaTex有一套自成体系的语法，常用于科研生产、试卷等文档排版。
+支持复杂公式，可通过百度的Kity Formula在线体验下。
+
+Pandoc支持LaTex/Markdown/Html/Docx/pdf等多种格式文档相互转换。在线">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LaTex">
+<meta property="og:url" content="http://rebey.cn/2017/09/27/LaTex/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="LaTex说起LaTex，又会扯出Tex、MikTeX、CJK等一系列东西。这并不是我们关注的重点，然而如果你有时间，可以当个睡前故事看看这篇文章。我们只需要知道:
+
+LaTex有一套自成体系的语法，常用于科研生产、试卷等文档排版。
+支持复杂公式，可通过百度的Kity Formula在线体验下。
+
+Pandoc支持LaTex/Markdown/Html/Docx/pdf等多种格式文档相互转换。在线">
+<meta property="og:image" content="https://sfault-image.b0.upaiyun.com/262/473/262473302-59cb144a7fa99_articlex">
+<meta property="og:updated_time" content="2017-10-08T15:26:01.813Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LaTex">
+<meta name="twitter:description" content="LaTex说起LaTex，又会扯出Tex、MikTeX、CJK等一系列东西。这并不是我们关注的重点，然而如果你有时间，可以当个睡前故事看看这篇文章。我们只需要知道:
+
+LaTex有一套自成体系的语法，常用于科研生产、试卷等文档排版。
+支持复杂公式，可通过百度的Kity Formula在线体验下。
+
+Pandoc支持LaTex/Markdown/Html/Docx/pdf等多种格式文档相互转换。在线">
+<meta name="twitter:image" content="https://sfault-image.b0.upaiyun.com/262/473/262473302-59cb144a7fa99_articlex">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LaTex"><span class="toc-text">LaTex</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pandoc"><span class="toc-text">Pandoc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JTex"><span class="toc-text">JTex</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#硬伤"><span class="toc-text">硬伤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展"><span class="toc-text">扩展</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-LaTex" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">LaTex</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.09.27</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="LaTex"><a href="#LaTex" class="headerlink" title="LaTex"></a>LaTex</h2><p>说起LaTex，又会扯出Tex、MikTeX、CJK等一系列东西。这并不是我们关注的重点，然而如果你有时间，可以当个睡前故事看看这篇<a href="http://www.ctex.org/documents/shredder/tex_frame.html" target="_blank" rel="external">文章</a>。我们只需要知道:</p>
+<ul>
+<li>LaTex有一套自成体系的语法，常用于科研生产、试卷等文档排版。</li>
+<li>支持复杂公式，可通过百度的<a href="http://gongshi.baidu.com/latex.html" target="_blank" rel="external">Kity Formula</a>在线体验下。</li>
+</ul>
+<h2 id="Pandoc"><a href="#Pandoc" class="headerlink" title="Pandoc"></a><a href="http://www.pandoc.org/" target="_blank" rel="external">Pandoc</a></h2><p>支持LaTex/Markdown/Html/Docx/pdf等多种格式文档相互转换。<br>在线体验戳<a href="http://www.pandoc.org/try" target="_blank" rel="external">Here</a>。<br>需要在电脑安装msi程序，通过控制台指令可调用(也支持Linux/Mac)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pandoc rebey.tex -o tex.pdf --latex-engine=xelatex -V mainfont=&quot;SimSun&quot;</div></pre></td></tr></table></figure>
+<h2 id="JTex"><a href="#JTex" class="headerlink" title="JTex"></a>JTex</h2><p>usajusaj封装的Java生成.tex文件的工具包。关于Java操作Latex生成Word的解决方案目前采取的是通过JTex生成.tex文件后，通过Pandoc转成doc/docx。相关的资料极少，而且基本好几年前的。这里我按这个思路写了Demo。</p>
+<p>Github传送点<a href="https://github.com/chenhongen/jtex" target="_blank" rel="external">Here</a>。</p>
+<p>注意：插入公式时，需要将LaTex表达式放在两个“$”之间。</p>
+<h2 id="硬伤"><a href="#硬伤" class="headerlink" title="硬伤"></a>硬伤</h2><ul>
+<li><p>没有像Office那样图形化的操作页面。以至于在您不了解LaTex语法的情况下，想要编写一个符合需求的文档需要花费大量的精力去了解指令，还拥有类似css的样式.sty之类的。</p>
+</li>
+<li><p>使用Pandoc将LaTex转换成pdf的效果还是不错的，但是转成doc时效果存在一定偏差。</p>
+</li>
+<li><p>即便如此，LaTex是强大的，只是缺少拓展者。</p>
+</li>
+</ul>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p><a href="https://developer.myscript.com/get-started/web" target="_blank" rel="external">Myscript</a>，支持手写输入公式，可导出LaTex/MathML/Image/Binary data等。<br><img src="https://sfault-image.b0.upaiyun.com/262/473/262473302-59cb144a7fa99_articlex" alt="Myscript.png"></p>
+<blockquote>
+<p>更多有意思的内容，欢迎访问<a href="http://rebey.cn">rebey.cn</a></p>
+</blockquote>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="LaTex" data-url="http://rebey.cn/2017/09/27/LaTex/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+    var str = 'Hey，你还对大自然充满好奇吗？';
+    var i = 0;
+    var len = str.length;
+    var divTyping = document.getElementById('title');
+    var cursor = document.getElementById('cursor');
+    //cursor.hide();
+    type();
+    function type(){
+      if (i <= len) {
+        divTyping.innerHTML = str.slice(0, i++) + '|';
+        setTimeout(type, 200);//递归调用
+      } else {
+        divTyping.innerHTML = str;//结束打字,移除光标
+        document.getElementById("title").appendChild(cursor);
+        setInterval(function(){shineCursor()},800);
+      }
+   }
+   function shineCursor() {
+     if(cursor.innerHTML === "|") {
+       cursor.innerHTML = "&nbsp;";
+     } else {
+       cursor.innerHTML = "|";
+     }
+   }
+	
+  }
+</script>
+
+</body>
+</html>

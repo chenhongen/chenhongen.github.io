@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>Java基于Freemarker模板导出Word | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="准备
+下载Freemarker jar；
+wps/office创建.doc文件；
+编辑模板内容后另存为.xml(注意wps存在两种.xml结尾的文件，请按下图选择);
+修改模板后缀名为.ftl；
+为了查看方便，建议先将内容格式化下（在线XML格式化即可）；
+将需要动态变化的值替换成,${xxx} 来占位（支持循环，所以批量数据不需要挨个替换）；
+
+土亢
+图片使用base64编码，放在“yyy”的位">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java基于Freemarker模板导出Word">
+<meta property="og:url" content="http://rebey.cn/2017/09/26/Java基于Freemarker模板导出Word/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="准备
+下载Freemarker jar；
+wps/office创建.doc文件；
+编辑模板内容后另存为.xml(注意wps存在两种.xml结尾的文件，请按下图选择);
+修改模板后缀名为.ftl；
+为了查看方便，建议先将内容格式化下（在线XML格式化即可）；
+将需要动态变化的值替换成,${xxx} 来占位（支持循环，所以批量数据不需要挨个替换）；
+
+土亢
+图片使用base64编码，放在“yyy”的位">
+<meta property="og:image" content="https://sfault-image.b0.upaiyun.com/170/767/1707673864-59ca51abf1c11_articlex">
+<meta property="og:updated_time" content="2017-10-08T15:24:14.187Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java基于Freemarker模板导出Word">
+<meta name="twitter:description" content="准备
+下载Freemarker jar；
+wps/office创建.doc文件；
+编辑模板内容后另存为.xml(注意wps存在两种.xml结尾的文件，请按下图选择);
+修改模板后缀名为.ftl；
+为了查看方便，建议先将内容格式化下（在线XML格式化即可）；
+将需要动态变化的值替换成,${xxx} 来占位（支持循环，所以批量数据不需要挨个替换）；
+
+土亢
+图片使用base64编码，放在“yyy”的位">
+<meta name="twitter:image" content="https://sfault-image.b0.upaiyun.com/170/767/1707673864-59ca51abf1c11_articlex">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备"><span class="toc-text">准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#土亢"><span class="toc-text">土亢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码"><span class="toc-text">源码</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Java基于Freemarker模板导出Word" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Java基于Freemarker模板导出Word</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.09.26</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ol>
+<li>下载<a href="http://mvnrepository.com/artifact/org.freemarker/freemarker/2.3.23" target="_blank" rel="external">Freemarker</a> jar；</li>
+<li>wps/office创建.doc文件；</li>
+<li>编辑模板内容后另存为.xml(注意wps存在两种.xml结尾的文件，请按下图选择);<br><img src="https://sfault-image.b0.upaiyun.com/170/767/1707673864-59ca51abf1c11_articlex" alt="clipboard.png"></li>
+<li>修改模板后缀名为.ftl；</li>
+<li>为了查看方便，建议先将内容格式化下（在线XML格式化即可）；</li>
+<li>将需要动态变化的值替换成,${xxx} 来占位（支持循环，所以批量数据不需要挨个替换）；</li>
+</ol>
+<h2 id="土亢"><a href="#土亢" class="headerlink" title="土亢"></a>土亢</h2><ul>
+<li>图片使用base64编码，放在“yyy”的位置：“<w:bindata w:name="wordml://xxx.png">yyy</w:bindata>”</li>
+<li>当文档存在图片时，尤其是多张图片需要动态读取时，“wordml://${xxx}.png”中的xxx需要相应动态变化，不然图片会重复哦。</li>
+<li>单元格合并时,可在ftl里写相应判断，同上行内容使用“<w:vmerge>”或者“<w:vmerge w:val="continue">”来表示合并，否则，使用“<w:vmerge w:val="restart">”来另起新行。这里注意的是“vmerge”都是小写，学习过程中在网上看到是“vMerge”，合并不起作用，排查了半天错。<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">#assign</span> <span class="attr">tempName</span>=<span class="string">""</span>/&gt;</span></div><div class="line">...</div><div class="line"><span class="tag">&lt;<span class="name">#if</span> <span class="attr">tempName</span>!=<span class="string">Table.name</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">w:vmerge</span> <span class="attr">w:val</span>=<span class="string">"restart"</span>/&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">#assign</span> <span class="attr">tempName</span>=<span class="string">Table.name/</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">#else</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">w:vmerge</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">#if</span>&gt;</span></div></pre></td></tr></table></figure>
+</w:vmerge></w:vmerge></w:vmerge></li>
+</ul>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><a href="https://github.com/chenhongen/Freemarker2Word" target="_blank" rel="external">github传送门</a></p>
+<blockquote>
+<p>更多有意思的内容，欢迎访问<a href="http://rebey.cn">rebey.cn</a></p>
+</blockquote>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="Java基于Freemarker模板导出Word" data-url="http://rebey.cn/2017/09/26/Java基于Freemarker模板导出Word/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+    var str = 'Hey，你还对大自然充满好奇吗？';
+    var i = 0;
+    var len = str.length;
+    var divTyping = document.getElementById('title');
+    var cursor = document.getElementById('cursor');
+    //cursor.hide();
+    type();
+    function type(){
+      if (i <= len) {
+        divTyping.innerHTML = str.slice(0, i++) + '|';
+        setTimeout(type, 200);//递归调用
+      } else {
+        divTyping.innerHTML = str;//结束打字,移除光标
+        document.getElementById("title").appendChild(cursor);
+        setInterval(function(){shineCursor()},800);
+      }
+   }
+   function shineCursor() {
+     if(cursor.innerHTML === "|") {
+       cursor.innerHTML = "&nbsp;";
+     } else {
+       cursor.innerHTML = "|";
+     }
+   }
+	
+  }
+</script>
+
+</body>
+</html>
