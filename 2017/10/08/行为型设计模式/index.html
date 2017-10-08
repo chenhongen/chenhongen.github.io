@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>行为型设计模式 | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="策略模式选择使用封装好的一系列算法，可相互替换。
+类比：商店[Context]买完衣服买单[Stratege]（现金[Concrete Stratege]、扫码、跑路）。
+VS工厂模式：虽然一个负责创建，一个侧重策略选择。但网上很多工厂模式的实现代码写出了策略模式的效果。尤其是所谓的“多方法工厂”。
+推文
+用设计模式解构三国是一种什么体验？——Part 3：行为型设计模式（一）；策略模式+工厂模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="行为型设计模式">
+<meta property="og:url" content="http://rebey.cn/2017/10/08/行为型设计模式/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="策略模式选择使用封装好的一系列算法，可相互替换。
+类比：商店[Context]买完衣服买单[Stratege]（现金[Concrete Stratege]、扫码、跑路）。
+VS工厂模式：虽然一个负责创建，一个侧重策略选择。但网上很多工厂模式的实现代码写出了策略模式的效果。尤其是所谓的“多方法工厂”。
+推文
+用设计模式解构三国是一种什么体验？——Part 3：行为型设计模式（一）；策略模式+工厂模式">
+<meta property="og:updated_time" content="2017-10-08T14:11:41.011Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="行为型设计模式">
+<meta name="twitter:description" content="策略模式选择使用封装好的一系列算法，可相互替换。
+类比：商店[Context]买完衣服买单[Stratege]（现金[Concrete Stratege]、扫码、跑路）。
+VS工厂模式：虽然一个负责创建，一个侧重策略选择。但网上很多工厂模式的实现代码写出了策略模式的效果。尤其是所谓的“多方法工厂”。
+推文
+用设计模式解构三国是一种什么体验？——Part 3：行为型设计模式（一）；策略模式+工厂模式">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#策略模式"><span class="toc-text">策略模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#状态模式"><span class="toc-text">状态模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#责任链模式"><span class="toc-text">责任链模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#中介模式"><span class="toc-text">中介模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命令模式"><span class="toc-text">命令模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#观察者模式"><span class="toc-text">观察者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#迭代器模式"><span class="toc-text">迭代器模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模板方法模式"><span class="toc-text">模板方法模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#备忘录模式"><span class="toc-text">备忘录模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#访问者模式"><span class="toc-text">访问者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解释器模式"><span class="toc-text">解释器模式</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-行为型设计模式" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">行为型设计模式</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.10.08</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/设计模式/">设计模式</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h2><p>选择使用封装好的一系列算法，可相互替换。</p>
+<p>类比：商店[Context]买完衣服买单[Stratege]（现金[Concrete Stratege]、扫码、跑路）。</p>
+<p>VS工厂模式：虽然一个负责创建，一个侧重策略选择。但网上很多工厂模式的实现代码写出了策略模式的效果。尤其是所谓的“多方法工厂”。</p>
+<p><strong>推文</strong></p>
+<p><a href="http://www.10tiao.com/html/695/201702/2247484591/1.html" target="_blank" rel="external">用设计模式解构三国是一种什么体验？——Part 3：行为型设计模式（一）</a>；<br><a href="http://blog.csdn.net/u011507568/article/details/70238491" target="_blank" rel="external">策略模式+工厂模式优化if…else if…else if结构</a></p>
+<h2 id="状态模式"><a href="#状态模式" class="headerlink" title="状态模式"></a>状态模式</h2><p>随着 状态 改变而改变行为。</p>
+<p>类比：商店[Context]选衬衫[Stratege]，选中一件 断码了[Concrete Stratege]，换一件 太贵了;换了一件称心的，买单。</p>
+<p>VS策略模式：虽然都是选择行为，状态模式突出“状态”。</p>
+<p><strong>推文</strong></p>
+<p><a href="http://yukai.space/2017/08/10/%E7%8A%B6%E6%80%81%E6%9C%BA%E4%B8%8E%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/" target="_blank" rel="external">状态机与状态模式</a></p>
+<h2 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h2><p>多个对象依次处理请求（前者指定后者）。</p>
+<p>类比：搭配服装[Handler]，上衣[Concrete Handler1]选好了选裤子[Concrete Handler2]，裤子选好了选鞋子..；当然你也可以先选裤子再去配搭上衣。</p>
+<p>应用：JAVA WEB 中 Apache Tomcat 对 Encoding 的处理，Struts2 的拦截器，jsp servlet 的 Filter…</p>
+<p>VS状态模式：状态模式水平，责任链纵向。</p>
+<p><strong>推文</strong></p>
+<p><a href="http://blog.csdn.net/jason0539/article/details/45091639" target="_blank" rel="external">Java设计模式之责任链模式、职责链模式</a></p>
+<h2 id="中介模式"><a href="#中介模式" class="headerlink" title="中介模式"></a>中介模式</h2><p>增加中介者对象来解耦互相关联的各个对象。</p>
+<p>类比：网状图转星型拓扑。</p>
+<p>VS代理模式：代理 针对一个对象，为了增加控制等；中介 双方都是多个，为了解耦。</p>
+<p>VS外观模式：外观 明确调用，中介 选择调用（调停类包含选择业务逻辑）；外观 单向；中介 双向。</p>
+<p><strong>推文</strong></p>
+<p><a href="http://blog.csdn.net/itachi85/article/details/60466829" target="_blank" rel="external">设计模式（十四）中介者模式</a></p>
+<h2 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h2><p>请求发送者-&gt;命令-&gt;请求执行者</p>
+<p>类比：太一-&gt;进化-&gt;亚古兽</p>
+<p><strong>推文</strong></p>
+<p><a href="http://design-patterns.readthedocs.io/zh_CN/latest/behavioral_patterns/command.html" target="_blank" rel="external">Docs » 行为型模式 » 1. 命令模式</a></p>
+<h2 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h2><p>多个观察者对象监听一个主题对象。主题对象能主动想所有观察者推送通知。</p>
+<p>类比：被观察者Subscriber：微信公众号(持有订阅者ID为其推送文章)；<br>观察者Observer：订阅者</p>
+<p><strong>推文</strong></p>
+<p><a href="http://mp.weixin.qq.com/s/j2PTUKnAlO-6hPAyWowiJw" target="_blank" rel="external">Java设计模式（十一）：观察者模式</a></p>
+<h2 id="迭代器模式"><a href="#迭代器模式" class="headerlink" title="迭代器模式"></a>迭代器模式</h2><p>顺序遍历</p>
+<p>类比：Iterator</p>
+<p><strong>推文</strong></p>
+<p><a href="http://10tiao.com/html/710/201702/2650120488/2.html" target="_blank" rel="external">设计模式（十三）——迭代器模式</a></p>
+<h2 id="模板方法模式"><a href="#模板方法模式" class="headerlink" title="模板方法模式"></a>模板方法模式</h2><p>重写</p>
+<p><strong>推文</strong></p>
+<p><a href="https://my.oschina.net/u/2003960/blog/541806" target="_blank" rel="external">设计模式—-模板方法模式UML和实现代码</a></p>
+<h2 id="备忘录模式"><a href="#备忘录模式" class="headerlink" title="备忘录模式"></a>备忘录模式</h2><p>备份</p>
+<p><strong>推文</strong></p>
+<p><a href="http://blog.chinaunix.net/xmlrpc.php?r=blog/article&amp;uid=29140694&amp;id=4127905" target="_blank" rel="external">【JAVA】设计模式之备忘录模式（Memento模式）的使用分析</a></p>
+<h2 id="访问者模式"><a href="#访问者模式" class="headerlink" title="访问者模式"></a>访问者模式</h2><p>访问者操作集合内不同元素。（标注：有待加强理解）</p>
+<p><strong>推文</strong></p>
+<p><a href="http://blog.csdn.net/u012124438/article/details/70537203" target="_blank" rel="external">设计模式学习之访问者模式</a></p>
+<h2 id="解释器模式"><a href="#解释器模式" class="headerlink" title="解释器模式"></a>解释器模式</h2><p>翻译</p>
+<p><strong>推文</strong></p>
+<p><a href="http://blog.csdn.net/chenliguan/article/details/72633487" target="_blank" rel="external">行为型设计模式-解释器模式</a></p>
+<p><strong>更多有意思的内容，欢迎访问笔者小站：</strong> <a href="http://rebey.cn/">rebey.cn</a></p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="行为型设计模式" data-url="http://rebey.cn/2017/10/08/行为型设计模式/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+    var str = 'Hey，你还对大自然充满好奇吗？';
+    var i = 0;
+    var len = str.length;
+    var divTyping = document.getElementById('title');
+    var cursor = document.getElementById('cursor');
+    //cursor.hide();
+    type();
+    function type(){
+      if (i <= len) {
+        divTyping.innerHTML = str.slice(0, i++) + '|';
+        setTimeout(type, 200);//递归调用
+      } else {
+        divTyping.innerHTML = str;//结束打字,移除光标
+        document.getElementById("title").appendChild(cursor);
+        setInterval(function(){shineCursor()},800);
+      }
+   }
+   function shineCursor() {
+     if(cursor.innerHTML === "|") {
+       cursor.innerHTML = "&nbsp;";
+     } else {
+       cursor.innerHTML = "|";
+     }
+   }
+	
+  }
+</script>
+
+</body>
+</html>

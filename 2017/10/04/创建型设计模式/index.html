@@ -7,39 +7,66 @@
 <head>
   <meta charset="utf-8">
   
-  <title>querySelector/querySelectorAll | CHE Studio</title>
+  <title>创建型设计模式 | CHE Studio</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="H5,JS," />
+    <meta name="keywords" content="JAVA," />
   
 
-  <meta name="description" content="格式：
-[1].querySelector([2]);
-[1].querySelectorAll([2]);
-[1]Document/Element;
-[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);
-说明：主要作用为CSS选择器；querySelector返回第一">
+  <meta name="description" content="单例模式概述：
+
+你是我唯一想要的了解。《七里香》
+
+有且仅有一个实例，与能访问它的全局静态方法。
+实现：饿汉、懒汉、双重锁、静态内部类、枚举。
+难点：在考虑线程安全、序列化、反射、克隆、jdk版本、类加载器等情况下，保证唯一性。
+推文：
+那些年，我们一起写过的“单例模式”；
+Hi，我们再来聊一聊Java的单例吧；
+工厂模式概述：
+
+我喜欢的样子你都有。《甜甜的》
+
+通过工厂类获取实例，而不需要关">
 <meta property="og:type" content="article">
-<meta property="og:title" content="querySelector/querySelectorAll">
-<meta property="og:url" content="http://rebey.cn/2016/09/21/querySelector与querySelectorAll/index.html">
+<meta property="og:title" content="创建型设计模式">
+<meta property="og:url" content="http://rebey.cn/2017/10/04/创建型设计模式/index.html">
 <meta property="og:site_name" content="CHE Studio">
-<meta property="og:description" content="格式：
-[1].querySelector([2]);
-[1].querySelectorAll([2]);
-[1]Document/Element;
-[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);
-说明：主要作用为CSS选择器；querySelector返回第一">
-<meta property="og:updated_time" content="2016-12-31T12:25:24.183Z">
+<meta property="og:description" content="单例模式概述：
+
+你是我唯一想要的了解。《七里香》
+
+有且仅有一个实例，与能访问它的全局静态方法。
+实现：饿汉、懒汉、双重锁、静态内部类、枚举。
+难点：在考虑线程安全、序列化、反射、克隆、jdk版本、类加载器等情况下，保证唯一性。
+推文：
+那些年，我们一起写过的“单例模式”；
+Hi，我们再来聊一聊Java的单例吧；
+工厂模式概述：
+
+我喜欢的样子你都有。《甜甜的》
+
+通过工厂类获取实例，而不需要关">
+<meta property="og:updated_time" content="2017-10-08T14:09:55.907Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="querySelector/querySelectorAll">
-<meta name="twitter:description" content="格式：
-[1].querySelector([2]);
-[1].querySelectorAll([2]);
-[1]Document/Element;
-[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);
-说明：主要作用为CSS选择器；querySelector返回第一">
+<meta name="twitter:title" content="创建型设计模式">
+<meta name="twitter:description" content="单例模式概述：
+
+你是我唯一想要的了解。《七里香》
+
+有且仅有一个实例，与能访问它的全局静态方法。
+实现：饿汉、懒汉、双重锁、静态内部类、枚举。
+难点：在考虑线程安全、序列化、反射、克隆、jdk版本、类加载器等情况下，保证唯一性。
+推文：
+那些年，我们一起写过的“单例模式”；
+Hi，我们再来聊一聊Java的单例吧；
+工厂模式概述：
+
+我喜欢的样子你都有。《甜甜的》
+
+通过工厂类获取实例，而不需要关">
 
   
 
@@ -159,17 +186,22 @@
 </div>
 
 
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#单例模式"><span class="toc-text">单例模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工厂模式"><span class="toc-text">工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建造者模式"><span class="toc-text">建造者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原型模式"><span class="toc-text">原型模式</span></a></li></ol>
+  </div>
+
 
 
 <div class="content content-post CENTER">
-   <article id="post-querySelector与querySelectorAll" class="article article-type-post" itemprop="blogPost">
+   <article id="post-创建型设计模式" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">querySelector/querySelectorAll</h1>
+    <h1 class="post-title">创建型设计模式</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2016.09.21</span>
+        <span>2017.10.04</span>
       </span>
 
       
@@ -182,7 +214,7 @@
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/前端/">前端</a>
+    <a class="article-category-link" href="/categories/设计模式/">设计模式</a>
   </span>
 
 
@@ -194,19 +226,41 @@
 
   <div class="article-content">
     
-      <p><strong>格式</strong>：</p>
-<p><em>[1].querySelector([2]);</em></p>
-<p><em>[1].querySelectorAll([2]);</em></p>
-<p>[1]Document/Element;</p>
-<p>[2]CSS 选择器: id, 类, 类型, 属性, 属性值等;多个时querySelectorAll(“①,②，…”)或querySelectorAll([“①”,”②”，…]);</p>
-<p><strong>说明</strong>：主要作用为CSS选择器；querySelector返回第一个匹配元素,匹配不到返回null；querySelectorAll返回所有匹配元素集合，匹配不到返回NodeList[]；</p>
-<p>这里着重说明querySelectorAll，其返回值为NodeList。<br>NodeList是静态的，主要有length与item两个属性；常把NodeList转为数组使用：Array.prototype.slice.call(div_list);</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">// 体现静态</span></div><div class="line"><span class="keyword">var</span> a = <span class="built_in">document</span>.getElementById(<span class="string">"body"</span>).querySelectorAll(<span class="string">"div"</span>);</div><div class="line"><span class="keyword">var</span> b = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"div"</span>);</div><div class="line"><span class="keyword">var</span> oDiv = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</div><div class="line"><span class="built_in">document</span>.body.appendChild(oDiv);</div><div class="line">alert(<span class="string">"querySelectorAll:"</span>+a.length+<span class="string">"getElementsByTagName:"</span>+b.length);</div><div class="line"><span class="comment">// 结果：querySelectorAll:3 getElementsByTagName:4</span></div></pre></td></tr></table></figure>
-<p>在IE8下返回类型为StaticNodeList，StaticNodeList只有length属性，使用时小心。</p>
-<p><strong>兼容</strong>：主流浏览器基本支持，特别注意的是，<a href="http://caniuse.com/#search=querySelector" target="_blank" rel="external">IE8只支持CSS2.1和一小部分CSS3</a></p>
-<p><strong>引发</strong>：<br>在handsontable上看到用ruleJS实现了类似Excel的单元格公式计算。download了源码想研究下，结果发现IE8不好使，一查源头就到了querySelectorAll上。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ruleJS src</span></div><div class="line"><span class="keyword">var</span> formElements = [<span class="string">'input[type=text]'</span>, <span class="string">'[data-formula]'</span>];</div><div class="line">[].slice.call($totalElements).forEach(<span class="function"><span class="keyword">function</span> (<span class="params">$item</span>) </span>&#123;</div><div class="line">    registerElementInMatrix($item);</div><div class="line">    registerElementEvents($item);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p><strong>参考</strong>：<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/querySelector" target="_blank" rel="external">MDN Web API</a></p>
+      <h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><p><strong>概述：</strong></p>
+<blockquote>
+<p>你是我唯一想要的了解。《七里香》</p>
+</blockquote>
+<p>有且仅有一个实例，与能访问它的全局静态方法。</p>
+<p><strong>实现：</strong><br>饿汉、懒汉、双重锁、静态内部类、枚举。</p>
+<p><strong>难点：</strong><br>在考虑线程安全、序列化、反射、克隆、jdk版本、类加载器等情况下，保证唯一性。</p>
+<p><strong>推文：</strong></p>
+<p><a href="https://mp.weixin.qq.com/s/wEK3UcHjaHz1x-iXoW4_VQ" target="_blank" rel="external">那些年，我们一起写过的“单例模式”</a>；</p>
+<p><a href="http://www.barryzhang.com/archives/521" target="_blank" rel="external">Hi，我们再来聊一聊Java的单例吧</a>；</p>
+<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p><strong>概述：</strong></p>
+<blockquote>
+<p>我喜欢的样子你都有。《甜甜的》</p>
+</blockquote>
+<p>通过工厂类获取实例，而不需要关心复杂的创建过程。</p>
+<p><strong>实现：</strong><br>简单工厂（类内）、多方法工厂（类内方法）、普通工厂（产品子类）、抽象工厂（工厂子类）。</p>
+<p><strong>推文：</strong></p>
+<p><a href="http://blog.csdn.net/zxt0601/article/details/52798423" target="_blank" rel="external">Java经典设计模式之五大创建型模式（附实例和详解）</a>；</p>
+<p><a href="http://wiki.jikexueyuan.com/project/design-pattern-creation/simple-two.html" target="_blank" rel="external">工厂三兄弟之简单工厂模式（一）</a></p>
+<h2 id="建造者模式"><a href="#建造者模式" class="headerlink" title="建造者模式"></a>建造者模式</h2><p><strong>概述：</strong></p>
+<blockquote>
+<p>手牵手一步两步三步四步望着天。《星晴》</p>
+</blockquote>
+<p>将一个复杂对象的构建与它的表示 分离，使得同样的构建过程可以创建不同的表示。（一步步构建复杂对象）</p>
+<p><strong>推文：</strong></p>
+<p><a href="https://innofang.github.io/2017/02/22/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BA%8C-%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/" target="_blank" rel="external">设计模式(二):建造者模式</a>；</p>
+<p><a href="http://wiki.jikexueyuan.com/project/java-design-pattern/builder-pattern.html" target="_blank" rel="external">建造者模式</a></p>
+<h2 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h2><p><strong>概述：</strong></p>
+<blockquote>
+<p>听我说中药苦，抄袭应该更苦。《本草纲目》</p>
+</blockquote>
+<p>拷贝对象。（不会触发原构造方法；注意浅拷贝与深拷贝）</p>
+<p><strong>推文：</strong></p>
+<p><a href="http://wiki.jikexueyuan.com/project/java-design-pattern/prototype-pattern.html" target="_blank" rel="external">原型模式</a></p>
+<p><strong>更多有意思的内容，欢迎访问笔者小站：</strong> <a href="http://rebey.cn/">rebey.cn</a></p>
 
     
   </div>
@@ -330,7 +384,7 @@
     
   <section class="duoshuo-comments">
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="" data-title="querySelector/querySelectorAll" data-url="http://rebey.cn/2016/09/21/querySelector与querySelectorAll/index.html"></div>
+    <div class="ds-thread" data-thread-key="" data-title="创建型设计模式" data-url="http://rebey.cn/2017/10/04/创建型设计模式/index.html"></div>
     <!-- 多说评论框 end -->
   </section>
 
