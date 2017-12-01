@@ -75,6 +75,9 @@ Pandoc支持LaTex/Markdown/Html/Docx/pdf等多种格式文档相互转换。在�
   </script>
 
 
+
+  <script src="https://code.createjs.com/preloadjs-0.6.2.min.js"></script>
+  <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
 </head>
 
 <body>
@@ -522,7 +525,7 @@ Pandoc支持LaTex/Markdown/Html/Docx/pdf等多种格式文档相互转换。在�
 	}
     });
 
-    var str = 'Hey，你还对大自然充满好奇吗？';
+    /*var str = 'Hey，你还对大自然充满好奇吗？';
     var i = 0;
     var len = str.length;
     var divTyping = document.getElementById('title');
@@ -545,8 +548,59 @@ Pandoc支持LaTex/Markdown/Html/Docx/pdf等多种格式文档相互转换。在�
      } else {
        cursor.innerHTML = "|";
      }
-   }
-	
+   }*/
+
+  }
+
+  // 2017/12/1
+  // preload.js
+  //放置静态资源的数组
+  var manifest = [
+  	{src: 'images/css_sprites_sy.png', id: 'winter'}
+  ];
+  var loader = new createjs.LoadQueue(false,'','Anonymous');  //LoadQueue ( [preferXHR=true]  [basePath=""]  [crossOrigin=""] )
+  loader.on('complete', handleComplete);
+  loader.loadManifest(manifest);
+  //资源加载成功后,进行处理
+  function handleComplete() {
+     var winter = loader.getResult('winter');  //获取加载资源
+     console.log(winter);
+     init();
+  }
+
+  // easeljs
+  function init() {
+  	// 画布-舞台
+  	var stage = new createjs.Stage("demoCanvas");
+
+    //实例精灵动画集
+    var spriteSheet = new createjs.SpriteSheet({
+		  // 帧率
+		  framerate: 20,
+  		// 定义图像路径,使用图像或图像的url列表
+  		"images": [loader.getResult("winter")],
+  		// 帧大小相同情况
+  		"frames": {"regX": 0, "height": 631, "count": 14, "regY": 0, "width": 387},
+  		/*定义动画*/
+  		"animations":{
+  			 //动画的开始帧，结束帧，下一个动作，运行速度
+  			// start, end, next, speed
+  			"run": [0, 13, "run", 1],
+  			"jump": [0, 13, "run"]
+  		}
+  	});
+    //SpriteSheet类设置帧和动画,里面的run为开始的动画
+    var grant = new createjs.Sprite(spriteSheet, "run");
+    // stage one,container more，创建一个间隔事件侦听，进行动画
+	  var container = new createjs.Container();
+    container.addChild(grant);
+	  stage.addChild(container);
+
+  	createjs.Ticker.setFPS(3.2);
+  	createjs.Ticker.addEventListener("tick", tick);
+  	function tick(){
+  		stage.update(); //更新舞台
+  	}
   }
 </script>
 

@@ -1,29 +1,72 @@
 <!DOCTYPE html>
 
 
-  <html class="light page-archives">
+  <html class="light page-post">
 
 
 <head>
   <meta charset="utf-8">
   
-  <title>Archives | CHE Studio</title>
+  <title>忘了再看设计模式-创建型 | CHE Studio</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="花田土著,陈宏恩,前端,rebey,frontend,design,nodejs,JavaScript" />
+    <meta name="keywords" content="JAVA," />
   
 
-  <meta name="description" content="Code Help Everything!">
-<meta property="og:type" content="website">
-<meta property="og:title" content="CHE Studio">
-<meta property="og:url" content="http://rebey.cn/archives/page/2/index.html">
+  <meta name="description" content="单例模式概述：
+
+你是我唯一想要的了解。《七里香》
+
+有且仅有一个实例，与能访问它的全局静态方法。
+实现：饿汉、懒汉、双重锁、静态内部类、枚举。
+难点：在考虑线程安全、序列化、反射、克隆、jdk版本、类加载器等情况下，保证唯一性。
+推文：
+那些年，我们一起写过的“单例模式”；
+Hi，我们再来聊一聊Java的单例吧；
+工厂模式概述：
+
+我喜欢的样子你都有。《甜甜的》
+
+通过工厂类获取实例，而不需要关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="忘了再看设计模式-创建型">
+<meta property="og:url" content="http://rebey.cn/2017/10/04/忘了再看设计模式-创建型/index.html">
 <meta property="og:site_name" content="CHE Studio">
-<meta property="og:description" content="Code Help Everything!">
+<meta property="og:description" content="单例模式概述：
+
+你是我唯一想要的了解。《七里香》
+
+有且仅有一个实例，与能访问它的全局静态方法。
+实现：饿汉、懒汉、双重锁、静态内部类、枚举。
+难点：在考虑线程安全、序列化、反射、克隆、jdk版本、类加载器等情况下，保证唯一性。
+推文：
+那些年，我们一起写过的“单例模式”；
+Hi，我们再来聊一聊Java的单例吧；
+工厂模式概述：
+
+我喜欢的样子你都有。《甜甜的》
+
+通过工厂类获取实例，而不需要关">
+<meta property="og:updated_time" content="2017-10-08T15:29:22.179Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CHE Studio">
-<meta name="twitter:description" content="Code Help Everything!">
+<meta name="twitter:title" content="忘了再看设计模式-创建型">
+<meta name="twitter:description" content="单例模式概述：
+
+你是我唯一想要的了解。《七里香》
+
+有且仅有一个实例，与能访问它的全局静态方法。
+实现：饿汉、懒汉、双重锁、静态内部类、枚举。
+难点：在考虑线程安全、序列化、反射、克隆、jdk版本、类加载器等情况下，保证唯一性。
+推文：
+那些年，我们一起写过的“单例模式”；
+Hi，我们再来聊一聊Java的单例吧；
+工厂模式概述：
+
+我喜欢的样子你都有。《甜甜的》
+
+通过工厂类获取实例，而不需要关">
 
   
 
@@ -69,17 +112,8 @@
     <span id="toolbox-mobile" class="toolbox-mobile">More</span>
   
 
-  <div class="content content-archive">
-  <div class="page-header">
-
-  
-    <div class="breadcrumb">
-      <div class="location">博客</div>
-      <i class="icon-location"></i>
-    </div>
-  
-
-  
+  <div class="post-header CENTER">
+   
   <div class="toolbox">
     <a class="toolbox-entry" href="/">
       <span class="toolbox-entry-text">More</span>
@@ -152,109 +186,118 @@
   </div>
 
 
+</div>
 
-  <div class="box-blog-info">
-    <a class="avatar" href="/">
-      <img src="/images/avatar.jpg" alt="" />
-    </a>
-    <div class="info">
-      <h3 class="name" style="font-family: calligraffittiregular">
-        CHE Studio
-      </h3>
-      <div class="slogan">
-        Code Helps Everything.
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#单例模式"><span class="toc-text">单例模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工厂模式"><span class="toc-text">工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建造者模式"><span class="toc-text">建造者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原型模式"><span class="toc-text">原型模式</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-忘了再看设计模式-创建型" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">忘了再看设计模式-创建型</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.10.04</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/设计模式/">设计模式</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><p><strong>概述：</strong></p>
+<blockquote>
+<p>你是我唯一想要的了解。《七里香》</p>
+</blockquote>
+<p>有且仅有一个实例，与能访问它的全局静态方法。</p>
+<p><strong>实现：</strong><br>饿汉、懒汉、双重锁、静态内部类、枚举。</p>
+<p><strong>难点：</strong><br>在考虑线程安全、序列化、反射、克隆、jdk版本、类加载器等情况下，保证唯一性。</p>
+<p><strong>推文：</strong></p>
+<p><a href="https://mp.weixin.qq.com/s/wEK3UcHjaHz1x-iXoW4_VQ" target="_blank" rel="external">那些年，我们一起写过的“单例模式”</a>；</p>
+<p><a href="http://www.barryzhang.com/archives/521" target="_blank" rel="external">Hi，我们再来聊一聊Java的单例吧</a>；</p>
+<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p><strong>概述：</strong></p>
+<blockquote>
+<p>我喜欢的样子你都有。《甜甜的》</p>
+</blockquote>
+<p>通过工厂类获取实例，而不需要关心复杂的创建过程。</p>
+<p><strong>实现：</strong><br>简单工厂（类内）、多方法工厂（类内方法）、普通工厂（产品子类）、抽象工厂（工厂子类）。</p>
+<p><strong>推文：</strong></p>
+<p><a href="http://blog.csdn.net/zxt0601/article/details/52798423" target="_blank" rel="external">Java经典设计模式之五大创建型模式（附实例和详解）</a>；</p>
+<p><a href="http://wiki.jikexueyuan.com/project/design-pattern-creation/simple-two.html" target="_blank" rel="external">工厂三兄弟之简单工厂模式（一）</a></p>
+<h2 id="建造者模式"><a href="#建造者模式" class="headerlink" title="建造者模式"></a>建造者模式</h2><p><strong>概述：</strong></p>
+<blockquote>
+<p>手牵手一步两步三步四步望着天。《星晴》</p>
+</blockquote>
+<p>将一个复杂对象的构建与它的表示 分离，使得同样的构建过程可以创建不同的表示。（一步步构建复杂对象）</p>
+<p><strong>推文：</strong></p>
+<p><a href="https://innofang.github.io/2017/02/22/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BA%8C-%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/" target="_blank" rel="external">设计模式(二):建造者模式</a>；</p>
+<p><a href="http://wiki.jikexueyuan.com/project/java-design-pattern/builder-pattern.html" target="_blank" rel="external">建造者模式</a></p>
+<h2 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h2><p><strong>概述：</strong></p>
+<blockquote>
+<p>听我说中药苦，抄袭应该更苦。《本草纲目》</p>
+</blockquote>
+<p>拷贝对象。（不会触发原构造方法；注意浅拷贝与深拷贝）</p>
+<p><strong>推文：</strong></p>
+<p><a href="http://wiki.jikexueyuan.com/project/java-design-pattern/prototype-pattern.html" target="_blank" rel="external">原型模式</a></p>
+<p><strong>更多有意思的内容，欢迎访问笔者小站：</strong> <a href="http://rebey.cn/">rebey.cn</a></p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
       </div>
     </div>
   </div>
 
-</div>
-
-
-  <div class="post-list-box archive-body">
-    <ul class="list-post">  <li class="item-year item item-title item-title-2">
-    <a href="/archives/2017" class="text-year">
-      2017
-      <i class="icon-ji"></i>
-      
-    </a>
-  </li>
-<li class="item-post item">
-  <span class="post-date">07-02</span>
-
-  <a class="post-title" href="/2017/07/02/自定义类加载器/">自定义类加载器</a>
-
-</li>
-<li class="item-post item">
-  <span class="post-date">06-24</span>
-
-  <a class="post-title" href="/2017/06/24/？ extends T与？ super T/">？ extends T与？ super T</a>
-
-</li>
-<li class="item-post item">
-  <span class="post-date">06-23</span>
-
-  <a class="post-title" href="/2017/06/23/【java源码一带一路系列】之PriorityQueue/">【java源码一带一路系列】之PriorityQueue</a>
-
-</li>
-<li class="item-post item">
-  <span class="post-date">06-16</span>
-
-  <a class="post-title" href="/2017/06/16/【java源码一带一路系列】之ArrayList、Vector/">【java源码一带一路系列】之ArrayList、Vector</a>
-
-</li>
-<li class="item-post item">
-  <span class="post-date">06-10</span>
-
-  <a class="post-title" href="/2017/06/10/【java源码一带一路系列】之HashSet、LinkedHashSet、TreeSet/">【java源码一带一路系列】之HashSet、LinkedHashSet、TreeSet</a>
-
-</li>
-<li class="item-post item">
-  <span class="post-date">06-03</span>
-
-  <a class="post-title" href="/2017/06/03/【java源码一带一路系列】之TreeMap/">【java源码一带一路系列】之TreeMap</a>
-
-</li>
-<li class="item-post item">
-  <span class="post-date">05-28</span>
-
-  <a class="post-title" href="/2017/05/28/【java源码一带一路系列】之Hashtable/">【java源码一带一路系列】之Hashtable</a>
-
-</li>
-<li class="item-post item">
-  <span class="post-date">05-21</span>
-
-  <a class="post-title" href="/2017/05/21/【java源码一带一路系列】之LinkedHashMap.afterNodeAccess/">【java源码一带一路系列】之LinkedHashMap.afterNodeAccess()</a>
-
-</li>
-<li class="item-post item">
-  <span class="post-date">05-20</span>
-
-  <a class="post-title" href="/2017/05/20/【java源码一带一路系列】之HashMap.compute()/">【java源码一带一路系列】之HashMap.compute()</a>
-
-</li>
-<li class="item-post item">
-  <span class="post-date">05-14</span>
-
-  <a class="post-title" href="/2017/05/14/【java源码一带一路系列】之HashMap.putVal/">【java源码一带一路系列】之HashMap.putVal()</a>
-
-</li>
-</ul>
-  </div>
-
-  <div class="archive-footer">
-    
-  <div class="pagination">
-    <nav class="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/"><i class="icon-angle-left"></i></a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/3/"><i class="icon-angle-right"></i></a>
-    </nav>
-  </div>
-
-
-  </div>
-</div>
 
 
 
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
 
 
 
@@ -336,6 +379,35 @@
 </div>
 
 
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="忘了再看设计模式-创建型" data-url="http://rebey.cn/2017/10/04/忘了再看设计模式-创建型/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
 
   
 

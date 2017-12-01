@@ -7,30 +7,36 @@
 <head>
   <meta charset="utf-8">
   
-  <title>js：对象-属性-set/get | CHE Studio</title>
+  <title>忘了再看设计模式-行为型 | CHE Studio</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="JS," />
+    <meta name="keywords" content="JAVA," />
   
 
-  <meta name="description" content="碎语：
-&amp;emsp;&amp;emsp;js有对象-属性这早已耳熟能详，直到偶然看到某开源js源码才发现，同java一样，它也有对应的set/get方法。
-demo：123456789101112131415161718192021222324var che = &amp;#123;	_wheels: 4,	get wheels() &amp;#123;		return this._wheels;	&amp;#125;,	set">
+  <meta name="description" content="策略模式选择使用封装好的一系列算法，可相互替换。
+类比：商店[Context]买完衣服买单[Stratege]（现金[Concrete Stratege]、扫码、跑路）。
+VS工厂模式：虽然一个负责创建，一个侧重策略选择。但网上很多工厂模式的实现代码写出了策略模式的效果。尤其是所谓的“多方法工厂”。
+推文
+用设计模式解构三国是一种什么体验？——Part 3：行为型设计模式（一）；策略模式+工厂模式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="js：对象-属性-set/get">
-<meta property="og:url" content="http://rebey.cn/2016/12/31/js中的set与get/index.html">
+<meta property="og:title" content="忘了再看设计模式-行为型">
+<meta property="og:url" content="http://rebey.cn/2017/10/08/忘了再看设计模式-行为型/index.html">
 <meta property="og:site_name" content="CHE Studio">
-<meta property="og:description" content="碎语：
-&amp;emsp;&amp;emsp;js有对象-属性这早已耳熟能详，直到偶然看到某开源js源码才发现，同java一样，它也有对应的set/get方法。
-demo：123456789101112131415161718192021222324var che = &amp;#123;	_wheels: 4,	get wheels() &amp;#123;		return this._wheels;	&amp;#125;,	set">
-<meta property="og:updated_time" content="2016-12-31T13:49:43.073Z">
+<meta property="og:description" content="策略模式选择使用封装好的一系列算法，可相互替换。
+类比：商店[Context]买完衣服买单[Stratege]（现金[Concrete Stratege]、扫码、跑路）。
+VS工厂模式：虽然一个负责创建，一个侧重策略选择。但网上很多工厂模式的实现代码写出了策略模式的效果。尤其是所谓的“多方法工厂”。
+推文
+用设计模式解构三国是一种什么体验？——Part 3：行为型设计模式（一）；策略模式+工厂模式">
+<meta property="og:updated_time" content="2017-10-08T15:30:20.283Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="js：对象-属性-set/get">
-<meta name="twitter:description" content="碎语：
-&amp;emsp;&amp;emsp;js有对象-属性这早已耳熟能详，直到偶然看到某开源js源码才发现，同java一样，它也有对应的set/get方法。
-demo：123456789101112131415161718192021222324var che = &amp;#123;	_wheels: 4,	get wheels() &amp;#123;		return this._wheels;	&amp;#125;,	set">
+<meta name="twitter:title" content="忘了再看设计模式-行为型">
+<meta name="twitter:description" content="策略模式选择使用封装好的一系列算法，可相互替换。
+类比：商店[Context]买完衣服买单[Stratege]（现金[Concrete Stratege]、扫码、跑路）。
+VS工厂模式：虽然一个负责创建，一个侧重策略选择。但网上很多工厂模式的实现代码写出了策略模式的效果。尤其是所谓的“多方法工厂”。
+推文
+用设计模式解构三国是一种什么体验？——Part 3：行为型设计模式（一）；策略模式+工厂模式">
 
   
 
@@ -153,17 +159,22 @@ demo：123456789101112131415161718192021222324var che = &amp;#123;	_wheels: 4,	g
 </div>
 
 
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#策略模式"><span class="toc-text">策略模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#状态模式"><span class="toc-text">状态模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#责任链模式"><span class="toc-text">责任链模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#中介模式"><span class="toc-text">中介模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命令模式"><span class="toc-text">命令模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#观察者模式"><span class="toc-text">观察者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#迭代器模式"><span class="toc-text">迭代器模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模板方法模式"><span class="toc-text">模板方法模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#备忘录模式"><span class="toc-text">备忘录模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#访问者模式"><span class="toc-text">访问者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解释器模式"><span class="toc-text">解释器模式</span></a></li></ol>
+  </div>
+
 
 
 <div class="content content-post CENTER">
-   <article id="post-js中的set与get" class="article article-type-post" itemprop="blogPost">
+   <article id="post-忘了再看设计模式-行为型" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">js：对象-属性-set/get</h1>
+    <h1 class="post-title">忘了再看设计模式-行为型</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2016.12.31</span>
+        <span>2017.10.08</span>
       </span>
 
       
@@ -176,7 +187,7 @@ demo：123456789101112131415161718192021222324var che = &amp;#123;	_wheels: 4,	g
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/前端/">前端</a>
+    <a class="article-category-link" href="/categories/设计模式/">设计模式</a>
   </span>
 
 
@@ -188,16 +199,53 @@ demo：123456789101112131415161718192021222324var che = &amp;#123;	_wheels: 4,	g
 
   <div class="article-content">
     
-      <p><strong>碎语</strong>：</p>
-<p>&emsp;&emsp;js有<em>对象-属性</em>这早已耳熟能详，直到偶然看到某开源js源码才发现，同java一样，它也有对应的<em>set/get方法</em>。</p>
-<p><strong>demo</strong>：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> che = &#123;</div><div class="line">	_wheels: <span class="number">4</span>,</div><div class="line">	get wheels() &#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">this</span>._wheels;</div><div class="line">	&#125;,</div><div class="line">	set wheels(value) &#123;</div><div class="line">		<span class="keyword">if</span>(value &lt; <span class="number">1</span>) &#123;</div><div class="line">			<span class="built_in">console</span>.log(<span class="string">'give me a wheel at least,please!'</span>);</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">this</span>._wheels = value;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che.wheels: "</span>+che.wheels);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che._wheels: "</span>+che._wheels);</div><div class="line"></div><div class="line">che.wheels = <span class="number">2</span>;</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che.wheels: "</span>+che.wheels);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che._wheels: "</span>+che._wheels);</div><div class="line"></div><div class="line">che.wheels = <span class="number">0</span>;</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che.wheels: "</span>+che.wheels);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che._wheels: "</span>+che._wheels);</div></pre></td></tr></table></figure></p>
-<p><strong>兼容</strong>：这种写法并==不支持IE8==，替代方法如下;</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> che2 = &#123;</div><div class="line">	_wheels: <span class="number">4</span></div><div class="line">&#125;;</div><div class="line"><span class="built_in">Object</span>.defineProperty(che2, <span class="string">"wheels"</span>, &#123;</div><div class="line">	get: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">this</span>._wheels;</div><div class="line">	&#125;,</div><div class="line">	set: <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</div><div class="line">		<span class="keyword">if</span>(value &lt; <span class="number">1</span>) &#123;</div><div class="line">			<span class="built_in">console</span>.log(<span class="string">'give me a wheel at least,please!'</span>);</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">this</span>._wheels = value;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p><strong>补充</strong>：</p>
-<p>传说中的标准写法（不代表常用）<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Field</span>(<span class="params">val</span>)</span>&#123;  </div><div class="line">    <span class="keyword">this</span>.value = val;  </div><div class="line">&#125; </div><div class="line"></div><div class="line">Field.prototype = &#123;  </div><div class="line">    get value()&#123;  </div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>._value;  </div><div class="line">    &#125;,  </div><div class="line">    set value(val)&#123;  </div><div class="line">        <span class="keyword">this</span>._value = val;  </div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> field = <span class="keyword">new</span> Field(<span class="string">"che"</span>);</div><div class="line"><span class="built_in">console</span>.log(field.value);</div><div class="line"></div><div class="line">field.value = <span class="string">"che2"</span>;</div><div class="line"><span class="built_in">console</span>.log(field.value);</div></pre></td></tr></table></figure></p>
-<p>常用写法（外界无法修改默认值）<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> che3 = &#123;</div><div class="line">	get wheels() &#123;</div><div class="line">		<span class="keyword">return</span> <span class="number">4</span>;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che3.wheels: "</span> + che3.wheels);</div><div class="line"></div><div class="line">che3.wheels = <span class="number">2</span>;</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"che3.wheels: "</span> + che3.wheels);</div></pre></td></tr></table></figure></p>
-<p><del>最后祝各位程序员，新年吉祥。早！日！脱！单</del>！</p>
-<p><strong>参考</strong>：<a href="http://www.cnblogs.com/lhb25/archive/2010/09/19/1830724.html" target="_blank" rel="external">网络之美：JavaScript中Get和Set访问器的实现 </a></p>
+      <h2 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h2><p>选择使用封装好的一系列算法，可相互替换。</p>
+<p>类比：商店[Context]买完衣服买单[Stratege]（现金[Concrete Stratege]、扫码、跑路）。</p>
+<p>VS工厂模式：虽然一个负责创建，一个侧重策略选择。但网上很多工厂模式的实现代码写出了策略模式的效果。尤其是所谓的“多方法工厂”。</p>
+<p><strong>推文</strong></p>
+<p><a href="http://www.10tiao.com/html/695/201702/2247484591/1.html" target="_blank" rel="external">用设计模式解构三国是一种什么体验？——Part 3：行为型设计模式（一）</a>；<br><a href="http://blog.csdn.net/u011507568/article/details/70238491" target="_blank" rel="external">策略模式+工厂模式优化if…else if…else if结构</a></p>
+<h2 id="状态模式"><a href="#状态模式" class="headerlink" title="状态模式"></a>状态模式</h2><p>随着 状态 改变而改变行为。</p>
+<p>类比：商店[Context]选衬衫[Stratege]，选中一件 断码了[Concrete Stratege]，换一件 太贵了;换了一件称心的，买单。</p>
+<p>VS策略模式：虽然都是选择行为，状态模式突出“状态”。</p>
+<p><strong>推文</strong></p>
+<p><a href="http://yukai.space/2017/08/10/%E7%8A%B6%E6%80%81%E6%9C%BA%E4%B8%8E%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/" target="_blank" rel="external">状态机与状态模式</a></p>
+<h2 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h2><p>多个对象依次处理请求（前者指定后者）。</p>
+<p>类比：搭配服装[Handler]，上衣[Concrete Handler1]选好了选裤子[Concrete Handler2]，裤子选好了选鞋子..；当然你也可以先选裤子再去配搭上衣。</p>
+<p>应用：JAVA WEB 中 Apache Tomcat 对 Encoding 的处理，Struts2 的拦截器，jsp servlet 的 Filter…</p>
+<p>VS状态模式：状态模式水平，责任链纵向。</p>
+<p><strong>推文</strong></p>
+<p><a href="http://blog.csdn.net/jason0539/article/details/45091639" target="_blank" rel="external">Java设计模式之责任链模式、职责链模式</a></p>
+<h2 id="中介模式"><a href="#中介模式" class="headerlink" title="中介模式"></a>中介模式</h2><p>增加中介者对象来解耦互相关联的各个对象。</p>
+<p>类比：网状图转星型拓扑。</p>
+<p>VS代理模式：代理 针对一个对象，为了增加控制等；中介 双方都是多个，为了解耦。</p>
+<p>VS外观模式：外观 明确调用，中介 选择调用（调停类包含选择业务逻辑）；外观 单向；中介 双向。</p>
+<p><strong>推文</strong></p>
+<p><a href="http://blog.csdn.net/itachi85/article/details/60466829" target="_blank" rel="external">设计模式（十四）中介者模式</a></p>
+<h2 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h2><p>请求发送者-&gt;命令-&gt;请求执行者</p>
+<p>类比：太一-&gt;进化-&gt;亚古兽</p>
+<p><strong>推文</strong></p>
+<p><a href="http://design-patterns.readthedocs.io/zh_CN/latest/behavioral_patterns/command.html" target="_blank" rel="external">Docs » 行为型模式 » 1. 命令模式</a></p>
+<h2 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h2><p>多个观察者对象监听一个主题对象。主题对象能主动想所有观察者推送通知。</p>
+<p>类比：被观察者Subscriber：微信公众号(持有订阅者ID为其推送文章)；<br>观察者Observer：订阅者</p>
+<p><strong>推文</strong></p>
+<p><a href="http://mp.weixin.qq.com/s/j2PTUKnAlO-6hPAyWowiJw" target="_blank" rel="external">Java设计模式（十一）：观察者模式</a></p>
+<h2 id="迭代器模式"><a href="#迭代器模式" class="headerlink" title="迭代器模式"></a>迭代器模式</h2><p>顺序遍历</p>
+<p>类比：Iterator</p>
+<p><strong>推文</strong></p>
+<p><a href="http://10tiao.com/html/710/201702/2650120488/2.html" target="_blank" rel="external">设计模式（十三）——迭代器模式</a></p>
+<h2 id="模板方法模式"><a href="#模板方法模式" class="headerlink" title="模板方法模式"></a>模板方法模式</h2><p>重写</p>
+<p><strong>推文</strong></p>
+<p><a href="https://my.oschina.net/u/2003960/blog/541806" target="_blank" rel="external">设计模式—-模板方法模式UML和实现代码</a></p>
+<h2 id="备忘录模式"><a href="#备忘录模式" class="headerlink" title="备忘录模式"></a>备忘录模式</h2><p>备份</p>
+<p><strong>推文</strong></p>
+<p><a href="http://blog.chinaunix.net/xmlrpc.php?r=blog/article&amp;uid=29140694&amp;id=4127905" target="_blank" rel="external">【JAVA】设计模式之备忘录模式（Memento模式）的使用分析</a></p>
+<h2 id="访问者模式"><a href="#访问者模式" class="headerlink" title="访问者模式"></a>访问者模式</h2><p>访问者操作集合内不同元素。（标注：有待加强理解）</p>
+<p><strong>推文</strong></p>
+<p><a href="http://blog.csdn.net/u012124438/article/details/70537203" target="_blank" rel="external">设计模式学习之访问者模式</a></p>
+<h2 id="解释器模式"><a href="#解释器模式" class="headerlink" title="解释器模式"></a>解释器模式</h2><p>翻译</p>
+<p><strong>推文</strong></p>
+<p><a href="http://blog.csdn.net/chenliguan/article/details/72633487" target="_blank" rel="external">行为型设计模式-解释器模式</a></p>
+<p><strong>更多有意思的内容，欢迎访问笔者小站：</strong> <a href="http://rebey.cn/">rebey.cn</a></p>
 
     
   </div>
@@ -321,7 +369,7 @@ demo：123456789101112131415161718192021222324var che = &amp;#123;	_wheels: 4,	g
     
   <section class="duoshuo-comments">
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="" data-title="js：对象-属性-set/get" data-url="http://rebey.cn/2016/12/31/js中的set与get/index.html"></div>
+    <div class="ds-thread" data-thread-key="" data-title="忘了再看设计模式-行为型" data-url="http://rebey.cn/2017/10/08/忘了再看设计模式-行为型/index.html"></div>
     <!-- 多说评论框 end -->
   </section>
 

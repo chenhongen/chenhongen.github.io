@@ -22,11 +22,20 @@ canvas{
   bottom: 0;
   width: 100%;
   height: 100%;
-  background-color: #fff;
-  background-image: url('https://d2lm6fxwu08ot6.cloudfront.net/img-thumbs/960w/AG33MQ8DB5.jpg');
+  background-color: #D4C2C0;
+  /*background-image: url('https://d2lm6fxwu08ot6.cloudfront.net/img-thumbs/960w/AG33MQ8DB5.jpg');*/
   background-size: cover;
   background-position: 50% 50%;
   background-repeat: no-repeat;
+  z-index:-2;
+}
+
+#demoCanvas{
+  z-index:-1;
+  position:absolute;
+  left:15%;
+  top:25%;
+  width:20%;
 }
 
 html.page-home {
