@@ -179,6 +179,12 @@
     </a>
   </li>
 <li class="item-post item">
+  <span class="post-date">05-14</span>
+
+  <a class="post-title" href="/2017/05/14/【java源码一带一路系列】之HashMap.putVal/">【java源码一带一路系列】之HashMap.putVal()</a>
+
+</li>
+<li class="item-post item">
   <span class="post-date">05-07</span>
 
   <a class="post-title" href="/2017/05/07/【java源码一带一路系列】之HashMap.putAll()/">【java源码一带一路系列】之HashMap.putAll()</a>
@@ -523,15 +529,15 @@
   // preload.js
   //放置静态资源的数组
   var manifest = [
-  	{src: 'images/css_sprites_sy.png', id: 'winter'}
+  	{src: './images/css_sprites_sy.png', id: 'winter'}
   ];
   var loader = new createjs.LoadQueue(false,'','Anonymous');  //LoadQueue ( [preferXHR=true]  [basePath=""]  [crossOrigin=""] )
   loader.on('complete', handleComplete);
   loader.loadManifest(manifest);
   //资源加载成功后,进行处理
   function handleComplete() {
-     var winter = loader.getResult('winter');  //获取加载资源
-     console.log(winter);
+     //var winter = loader.getResult('winter');  //获取加载资源
+     //console.log(winter);
      init();
   }
 

@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>SSO CAS 服务端篇.md | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="一些芝士SSO的技术的几种技术方案
+基于cookies实现
+
+适合同父域（将domain设置为rebey.cn，则a.rebey.cn与b.rebey.cn共享cookie）
+
+基于session共享来实现
+
+Session中所涉及的类型必须是子系统中共同拥有的（即程序集、类型都需要一致），不同语言互通相对麻烦
+
+基于票据ticket来实现（CAS）
+
+支持跨域，支持多语言客户端
+请求过程
+
+图一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSO CAS 服务端篇.md">
+<meta property="og:url" content="http://rebey.cn/2017/12/30/SSO CAS 服务端篇/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="一些芝士SSO的技术的几种技术方案
+基于cookies实现
+
+适合同父域（将domain设置为rebey.cn，则a.rebey.cn与b.rebey.cn共享cookie）
+
+基于session共享来实现
+
+Session中所涉及的类型必须是子系统中共同拥有的（即程序集、类型都需要一致），不同语言互通相对麻烦
+
+基于票据ticket来实现（CAS）
+
+支持跨域，支持多语言客户端
+请求过程
+
+图一">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenhongen/DemoRun/master/sso/sequence_diagram.jpg">
+<meta property="og:image" content="https://github.com/chenhongen/DemoRun/blob/master/sso/sso4.png?raw=true">
+<meta property="og:image" content="https://github.com/chenhongen/DemoRun/blob/master/sso/20171224.jpg?raw=true">
+<meta property="og:updated_time" content="2017-12-30T14:13:02.954Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SSO CAS 服务端篇.md">
+<meta name="twitter:description" content="一些芝士SSO的技术的几种技术方案
+基于cookies实现
+
+适合同父域（将domain设置为rebey.cn，则a.rebey.cn与b.rebey.cn共享cookie）
+
+基于session共享来实现
+
+Session中所涉及的类型必须是子系统中共同拥有的（即程序集、类型都需要一致），不同语言互通相对麻烦
+
+基于票据ticket来实现（CAS）
+
+支持跨域，支持多语言客户端
+请求过程
+
+图一">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/chenhongen/DemoRun/master/sso/sequence_diagram.jpg">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+
+  <script src="https://code.createjs.com/preloadjs-0.6.2.min.js"></script>
+  <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一些芝士"><span class="toc-text">一些芝士</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SSO的技术的几种技术方案"><span class="toc-text">SSO的技术的几种技术方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#请求过程"><span class="toc-text">请求过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初始构建"><span class="toc-text">初始构建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改为oracle数据库jdbc验证"><span class="toc-text">修改为oracle数据库jdbc验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义加密匹配"><span class="toc-text">自定义加密匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可返回（用户表）更多属性配置"><span class="toc-text">可返回（用户表）更多属性配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#不允许使用CAS来认证您访问的目标应用。"><span class="toc-text">不允许使用CAS来认证您访问的目标应用。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#啰嗦几句"><span class="toc-text">啰嗦几句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#待续…"><span class="toc-text">待续…</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一些链接"><span class="toc-text">一些链接</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-SSO CAS 服务端篇" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">SSO CAS 服务端篇.md</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.12.30</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="一些芝士"><a href="#一些芝士" class="headerlink" title="一些芝士"></a>一些芝士</h2><h3 id="SSO的技术的几种技术方案"><a href="#SSO的技术的几种技术方案" class="headerlink" title="SSO的技术的几种技术方案"></a>SSO的技术的几种技术方案</h3><ul>
+<li>基于cookies实现</li>
+</ul>
+<p>适合同父域（将domain设置为rebey.cn，则a.rebey.cn与b.rebey.cn共享cookie）</p>
+<ul>
+<li>基于session共享来实现</li>
+</ul>
+<p>Session中所涉及的类型必须是子系统中共同拥有的（即程序集、类型都需要一致），不同语言互通相对麻烦</p>
+<ul>
+<li>基于票据ticket来实现（CAS）</li>
+</ul>
+<p>支持跨域，支持多语言客户端</p>
+<h3 id="请求过程"><a href="#请求过程" class="headerlink" title="请求过程"></a>请求过程</h3><p><img src="https://raw.githubusercontent.com/chenhongen/DemoRun/master/sso/sequence_diagram.jpg" alt="pac4j"></p>
+<p><img src="https://github.com/chenhongen/DemoRun/blob/master/sso/sso4.png?raw=true" alt="image"></p>
+<p>图一来自pac4j，图二来自网络（哪篇博客存的图在下忘了- -）。很透彻的两张图。</p>
+<p><img src="https://github.com/chenhongen/DemoRun/blob/master/sso/20171224.jpg?raw=true" alt="image"></p>
+<p>图三为本人手绘。描述了先访问A系统再访问B系统。记录下过程中一些重要点和问题：<br>一直纠结4认证成功后为什么要进行5,6步。暂且理解为为了解决跨域问题。</p>
+<h2 id="初始构建"><a href="#初始构建" class="headerlink" title="初始构建"></a>初始构建</h2><p>从<a href="https://github.com/apereo/cas-management-overlay" target="_blank" rel="external">cas-management-overlay</a>下载官方提供的maven overlay（省去下载源码通过gradle去构建环节）。</p>
+<p>根据实际情况调整pom.xml；如：依赖的war包通过ali库无法下载，需要手动下载。</p>
+<p>cmd运行build.cmd run启动（前提是需要安装maven，配置环境变量）。<del>这种启动方式不太友好，是否能直接通关eclipse启动希望赐教。</del></p>
+<p>启动后默认地址：<a href="http://localhost:8443/cas" target="_blank" rel="external">http://localhost:8443/cas</a></p>
+<p>默认用户名/密码为：casuser/Mellon</p>
+<h2 id="修改为oracle数据库jdbc验证"><a href="#修改为oracle数据库jdbc验证" class="headerlink" title="修改为oracle数据库jdbc验证"></a>修改为oracle数据库jdbc验证</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">#cas.authn.accept.users=casuser::Mellon</div><div class="line"></div><div class="line">cas.authn.jdbc.query[0].sql=select password from cap_user where user_id=?</div><div class="line">cas.authn.jdbc.query[0].healthQuery=SELECT 1 from dual</div><div class="line">cas.authn.jdbc.query[0].isolateInternalQueries=false</div><div class="line">cas.authn.jdbc.query[0].url=jdbc:oracle:thin:@127.0.0.1:1521/ORCL</div><div class="line">cas.authn.jdbc.query[0].failFast=true</div><div class="line">cas.authn.jdbc.query[0].isolationLevelName=ISOLATION_READ_COMMITTED</div><div class="line">cas.authn.jdbc.query[0].dialect=org.hibernate.dialect.OracleDialect</div><div class="line">cas.authn.jdbc.query[0].leakThreshold=10</div><div class="line">cas.authn.jdbc.query[0].propagationBehaviorName=PROPAGATION_REQUIRED</div><div class="line">cas.authn.jdbc.query[0].batchSize=1</div><div class="line">cas.authn.jdbc.query[0].user=iamsuser</div><div class="line">cas.authn.jdbc.query[0].ddlAuto=create-drop</div><div class="line">cas.authn.jdbc.query[0].maxAgeDays=180</div><div class="line">cas.authn.jdbc.query[0].password=iamsuser</div><div class="line">cas.authn.jdbc.query[0].autocommit=false</div><div class="line">cas.authn.jdbc.query[0].driverClass=oracle.jdbc.driver.OracleDriver</div><div class="line">cas.authn.jdbc.query[0].idleTimeout=5000</div><div class="line">cas.authn.jdbc.query[0].fieldPassword=password</div></pre></td></tr></table></figure>
+<h3 id="自定义加密匹配"><a href="#自定义加密匹配" class="headerlink" title="自定义加密匹配"></a>自定义加密匹配</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cas.authn.jdbc.query[0].passwordEncoder.type= com.che.ChePasswordEncoder</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">import java.io.UnsupportedEncodingException;</div><div class="line">import java.security.MessageDigest;</div><div class="line">import java.security.NoSuchAlgorithmException;</div><div class="line"></div><div class="line">import org.apache.commons.lang3.StringUtils;</div><div class="line">import org.springframework.security.crypto.password.PasswordEncoder;</div><div class="line"></div><div class="line">import sun.misc.BASE64Encoder;</div><div class="line"></div><div class="line">public class ChePasswordEncoder implements PasswordEncoder &#123;</div><div class="line">	// 盐值（加密混淆）</div><div class="line">    private final static String slat = &quot;diasj29er2ur734tuei89u34efdfi30q7u5834tdphf056=-251758&quot;;</div><div class="line">    </div><div class="line">	/**</div><div class="line">	 * 利用MD5进行加密</div><div class="line">	 * </div><div class="line">	 * @param str 待加密的字符串</div><div class="line">	 * @return 加密后的字符串</div><div class="line">	 * @throws NoSuchAlgorithmException 没有这种产生消息摘要的算法</div><div class="line">	 * @throws UnsupportedEncodingException</div><div class="line">	 */</div><div class="line">	@Override</div><div class="line">	public String encode(CharSequence rawPassword) &#123;</div><div class="line">		if (rawPassword == null) &#123;</div><div class="line">			return null;</div><div class="line">		&#125;</div><div class="line">		String newstr = null;</div><div class="line">		rawPassword = rawPassword + &quot;/&quot; + slat;</div><div class="line">		// 确定计算方法</div><div class="line">		MessageDigest md5;</div><div class="line">		try &#123;</div><div class="line">			md5 = MessageDigest.getInstance(&quot;MD5&quot;);</div><div class="line">			BASE64Encoder base64en = new BASE64Encoder();</div><div class="line">			// 加密后的字符串</div><div class="line">			newstr = base64en.encode(md5.digest(rawPassword.toString().getBytes(&quot;utf-8&quot;)));</div><div class="line">		&#125; catch (UnsupportedEncodingException | NoSuchAlgorithmException e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		System.out.println(&quot;===========================&quot;+newstr);</div><div class="line">		return newstr;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public boolean matches(CharSequence rawPassword, String encodedPassword) &#123;</div><div class="line">		String encodeedRawPassword = StringUtils.isNotBlank(rawPassword) ? this.encode(rawPassword.toString()) : null;</div><div class="line">		boolean matched = StringUtils.equals(encodeedRawPassword, encodedPassword);</div><div class="line">		return matched;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="可返回（用户表）更多属性配置"><a href="#可返回（用户表）更多属性配置" class="headerlink" title="可返回（用户表）更多属性配置"></a>可返回（用户表）更多属性配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">cas.authn.attributeRepository.jdbc[0].singleRow=true</div><div class="line">cas.authn.attributeRepository.jdbc[0].order=0</div><div class="line">cas.authn.attributeRepository.jdbc[0].url=jdbc:oracle:thin:@127.0.0.1:1521/ORCL</div><div class="line">cas.authn.attributeRepository.jdbc[0].username=user_id</div><div class="line">cas.authn.attributeRepository.jdbc[0].user=iamsuser</div><div class="line">cas.authn.attributeRepository.jdbc[0].password=iamsuser</div><div class="line">cas.authn.attributeRepository.jdbc[0].sql=select * from cap_user where user_id=?</div><div class="line">cas.authn.attributeRepository.jdbc[0].dialect=org.hibernate.dialect.OracleDialect</div><div class="line">cas.authn.attributeRepository.jdbc[0].ddlAuto=none</div><div class="line">cas.authn.attributeRepository.jdbc[0].driverClass=oracle.jdbc.driver.OracleDriver</div><div class="line">cas.authn.attributeRepository.jdbc[0].leakThreshold=10</div><div class="line">cas.authn.attributeRepository.jdbc[0].propagationBehaviorName=PROPAGATION_REQUIRED</div><div class="line">cas.authn.attributeRepository.jdbc[0].batchSize=1</div><div class="line">cas.authn.attributeRepository.jdbc[0].healthQuery=SELECT 1 from dual</div><div class="line">cas.authn.attributeRepository.jdbc[0].failFast=true</div></pre></td></tr></table></figure>
+<p>这里很多相同的参数配置两遍应该不太友好的，有待推敲；</p>
+<p>jdbc[0]这种 转 yml格式搜不到可行写法，希望有缘人赐教。</p>
+<h3 id="不允许使用CAS来认证您访问的目标应用。"><a href="#不允许使用CAS来认证您访问的目标应用。" class="headerlink" title="不允许使用CAS来认证您访问的目标应用。"></a>不允许使用CAS来认证您访问的目标应用。</h3><p>src/main/resources下添加services文件夹，添加HTTPSandIMAPS-10000001.json(文件名有规则，暂时未知)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	&quot;@class&quot;: &quot;org.apereo.cas.services.RegexRegisteredService&quot;,</div><div class="line">	&quot;serviceId&quot;: &quot;^(http|https|imaps)://.*&quot;,</div><div class="line">	&quot;name&quot;: &quot;HTTPS and IMAPS&quot;,</div><div class="line">	&quot;id&quot;: 10000001,</div><div class="line">	&quot;description&quot;: &quot;This service definition authorizes all application urls that support HTTPS and IMAPS protocols.&quot;,</div><div class="line">	&quot;evaluationOrder&quot;: 10000,</div><div class="line">	&quot;attributeReleasePolicy&quot;: &#123;</div><div class="line">		&quot;@class&quot;: &quot;org.apereo.cas.services.ReturnAllAttributeReleasePolicy&quot;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="啰嗦几句"><a href="#啰嗦几句" class="headerlink" title="啰嗦几句"></a>啰嗦几句</h2><p>本意springboot+shiro集成cas，需要一个cas server，发现相关资料很少，尤其中文好资料。因为大公司都用自己的开发的cas吗。。</p>
+<h2 id="待续…"><a href="#待续…" class="headerlink" title="待续…"></a>待续…</h2><h2 id="一些链接"><a href="#一些链接" class="headerlink" title="一些链接"></a>一些链接</h2><p>本文github：<a href="https://github.com/chenhongen/cas-overlay-template-master" target="_blank" rel="external">点这里</a>；</p>
+<p>官方软文：<a href="https://apereo.github.io/2017/03/28/cas5-gettingstarted-overlay/" target="_blank" rel="external">cas5-gettingstarted-overlay</a>；</p>
+<p>@yuchanghui搭建的server与client：<a href="https://github.com/yuchanghui/buyi-sso" target="_blank" rel="external">buyi-sso</a>；</p>
+<p>系列博客：<a href="http://blog.csdn.net/u010475041/article/details/77914728" target="_blank" rel="external">CAS单点登录</a>；</p>
+<p><strong>更多有意思的内容，欢迎访问笔者小站：</strong> <a href="http://rebey.cn/">rebey.cn</a></p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="SSO CAS 服务端篇.md" data-url="http://rebey.cn/2017/12/30/SSO CAS 服务端篇/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+    /*var str = 'Hey，你还对大自然充满好奇吗？';
+    var i = 0;
+    var len = str.length;
+    var divTyping = document.getElementById('title');
+    var cursor = document.getElementById('cursor');
+    //cursor.hide();
+    type();
+    function type(){
+      if (i <= len) {
+        divTyping.innerHTML = str.slice(0, i++) + '|';
+        setTimeout(type, 200);//递归调用
+      } else {
+        divTyping.innerHTML = str;//结束打字,移除光标
+        document.getElementById("title").appendChild(cursor);
+        setInterval(function(){shineCursor()},800);
+      }
+   }
+   function shineCursor() {
+     if(cursor.innerHTML === "|") {
+       cursor.innerHTML = "&nbsp;";
+     } else {
+       cursor.innerHTML = "|";
+     }
+   }*/
+
+  }
+
+  // 2017/12/1
+  // preload.js
+  //放置静态资源的数组
+  var manifest = [
+  	{src: './images/css_sprites_sy.png', id: 'winter'}
+  ];
+  var loader = new createjs.LoadQueue(false,'','Anonymous');  //LoadQueue ( [preferXHR=true]  [basePath=""]  [crossOrigin=""] )
+  loader.on('complete', handleComplete);
+  loader.loadManifest(manifest);
+  //资源加载成功后,进行处理
+  function handleComplete() {
+     //var winter = loader.getResult('winter');  //获取加载资源
+     //console.log(winter);
+     init();
+  }
+
+  // easeljs
+  function init() {
+  	// 画布-舞台
+  	var stage = new createjs.Stage("demoCanvas");
+
+    //实例精灵动画集
+    var spriteSheet = new createjs.SpriteSheet({
+		  // 帧率
+		  framerate: 20,
+  		// 定义图像路径,使用图像或图像的url列表
+  		"images": [loader.getResult("winter")],
+  		// 帧大小相同情况
+  		"frames": {"regX": 0, "height": 631, "count": 14, "regY": 0, "width": 387},
+  		/*定义动画*/
+  		"animations":{
+  			 //动画的开始帧，结束帧，下一个动作，运行速度
+  			// start, end, next, speed
+  			"run": [0, 13, "run", 1],
+  			"jump": [0, 13, "run"]
+  		}
+  	});
+    //SpriteSheet类设置帧和动画,里面的run为开始的动画
+    var grant = new createjs.Sprite(spriteSheet, "run");
+    // stage one,container more，创建一个间隔事件侦听，进行动画
+	  var container = new createjs.Container();
+    container.addChild(grant);
+	  stage.addChild(container);
+
+  	createjs.Ticker.setFPS(3.2);
+  	createjs.Ticker.addEventListener("tick", tick);
+  	function tick(){
+  		stage.update(); //更新舞台
+  	}
+  }
+</script>
+
+</body>
+</html>

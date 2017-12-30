@@ -561,15 +561,15 @@
   // preload.js
   //放置静态资源的数组
   var manifest = [
-  	{src: 'images/css_sprites_sy.png', id: 'winter'}
+  	{src: './images/css_sprites_sy.png', id: 'winter'}
   ];
   var loader = new createjs.LoadQueue(false,'','Anonymous');  //LoadQueue ( [preferXHR=true]  [basePath=""]  [crossOrigin=""] )
   loader.on('complete', handleComplete);
   loader.loadManifest(manifest);
   //资源加载成功后,进行处理
   function handleComplete() {
-     var winter = loader.getResult('winter');  //获取加载资源
-     console.log(winter);
+     //var winter = loader.getResult('winter');  //获取加载资源
+     //console.log(winter);
      init();
   }
 
