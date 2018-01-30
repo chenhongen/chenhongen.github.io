@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>Springboot多模块jsp | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="项目结构module1（如：封装好的一套组织机构、权限、角色、用户管理模块）包含jsp页面，module2（具体业务应用场景开发）依赖module1，结构图如下：1234567891011121314parent│       └── module1│   │── ...│   └── src/main/resources│       │── mapper│       │── public│">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Springboot多模块jsp">
+<meta property="og:url" content="http://rebey.cn/2018/01/30/Springboot多模块jsp/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="项目结构module1（如：封装好的一套组织机构、权限、角色、用户管理模块）包含jsp页面，module2（具体业务应用场景开发）依赖module1，结构图如下：1234567891011121314parent│       └── module1│   │── ...│   └── src/main/resources│       │── mapper│       │── public│">
+<meta property="og:updated_time" content="2018-01-30T15:17:45.274Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Springboot多模块jsp">
+<meta name="twitter:description" content="项目结构module1（如：封装好的一套组织机构、权限、角色、用户管理模块）包含jsp页面，module2（具体业务应用场景开发）依赖module1，结构图如下：1234567891011121314parent│       └── module1│   │── ...│   └── src/main/resources│       │── mapper│       │── public│">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+
+  <script src="https://code.createjs.com/preloadjs-0.6.2.min.js"></script>
+  <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#项目结构"><span class="toc-text">项目结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#展望"><span class="toc-text">展望</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于作者"><span class="toc-text">关于作者</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Springboot多模块jsp" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Springboot多模块jsp</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.01.30</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><p>module1（如：封装好的一套组织机构、权限、角色、用户管理模块）包含jsp页面，module2（具体业务应用场景开发）依赖module1，结构图如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">parent</div><div class="line">│       </div><div class="line">└── module1</div><div class="line">│   │── ...</div><div class="line">│   └── src/main/resources</div><div class="line">│       │── mapper</div><div class="line">│       │── public</div><div class="line">│       │   ...</div><div class="line">│       src/main/webapp</div><div class="line">│       └── WEB-INF</div><div class="line">│            └── jsp</div><div class="line">│</div><div class="line">└── module2</div><div class="line">    │   ...</div></pre></td></tr></table></figure></p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
+<li>module1和module2的packaging均为jar。</li>
+<li><p>src/main/resources下静态资源，及src/main/webapp/WEB-INF/jsp通过==resources==打包到META-INF目录下。这里的META-INF指打成jar后，jar里的META-INF。值得注意的是，如果您的mapper位于src/main/resources下，也需要打包出来哦。<br><br>module1’s pom.xml的build标签内中添加resources：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 打包时将jsp文件拷贝到META-INF目录下--&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">resource</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 指定resources插件处理哪个目录下的资源文件 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/webapp<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 注意必须要放在此目录下才能被访问到--&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">targetPath</span>&gt;</span>META-INF/resources<span class="tag">&lt;/<span class="name">targetPath</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">includes</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/**<span class="tag">&lt;/<span class="name">include</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">resource</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/resources/public<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">targetPath</span>&gt;</span>META-INF/resources<span class="tag">&lt;/<span class="name">targetPath</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">includes</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/**<span class="tag">&lt;/<span class="name">include</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">resource</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/resources<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">includes</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/**<span class="tag">&lt;/<span class="name">include</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>普通项目直接在application.yml中配置即可，多模块项目无效。采用WebConfig.java：</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</div><div class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;</div><div class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;</div><div class="line"><span class="keyword">import</span> org.springframework.web.servlet.view.InternalResourceViewResolver;</div><div class="line"></div><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addResourceHandlers</span><span class="params">(ResourceHandlerRegistry registry)</span> </span>&#123;</div><div class="line">        registry.addResourceHandler(<span class="string">"/**"</span>).addResourceLocations(<span class="string">"/"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 多模块的jsp访问，默认是src/main/webapp，但是多模块的目录只设置yml文件不行</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function"><span class="keyword">public</span> InternalResourceViewResolver <span class="title">viewResolver</span><span class="params">()</span> </span>&#123;</div><div class="line">        InternalResourceViewResolver resolver = <span class="keyword">new</span> InternalResourceViewResolver();</div><div class="line">        resolver.setViewClass(org.springframework.web.servlet.view.JstlView.class);</div><div class="line">        <span class="comment">// jsp目录</span></div><div class="line">        resolver.setPrefix(<span class="string">"/WEB-INF/jsp/"</span>);</div><div class="line">        <span class="comment">// 后缀</span></div><div class="line">        resolver.setSuffix(<span class="string">".jsp"</span>);</div><div class="line">        <span class="keyword">return</span> resolver;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="展望"><a href="#展望" class="headerlink" title="展望"></a>展望</h3><ul>
+<li>是否支持module1热部署；</li>
+</ul>
+<h3 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a><a href="https://rebey.cn/">关于作者</a></h3><p>今年最后几个工作日了。看过日出也追过月光，忙碌一年的农民好像颗粒无收般难过。像极旧社会的大锅饭，干多干少结果好像并没有什么两样。所有的努力并不是当下就能体现的吧，就像乔布斯旁听美术课时大概也不知道会和苹果有什么关系。清风徐来，水波不兴。希望新的一年能有新的战场。</p>
+<p><strong>更多有意思的内容，欢迎访问笔者小站：</strong> <a href="http://rebey.cn/">rebey.cn</a></p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="Springboot多模块jsp" data-url="http://rebey.cn/2018/01/30/Springboot多模块jsp/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+    /*var str = 'Hey，你还对大自然充满好奇吗？';
+    var i = 0;
+    var len = str.length;
+    var divTyping = document.getElementById('title');
+    var cursor = document.getElementById('cursor');
+    //cursor.hide();
+    type();
+    function type(){
+      if (i <= len) {
+        divTyping.innerHTML = str.slice(0, i++) + '|';
+        setTimeout(type, 200);//递归调用
+      } else {
+        divTyping.innerHTML = str;//结束打字,移除光标
+        document.getElementById("title").appendChild(cursor);
+        setInterval(function(){shineCursor()},800);
+      }
+   }
+   function shineCursor() {
+     if(cursor.innerHTML === "|") {
+       cursor.innerHTML = "&nbsp;";
+     } else {
+       cursor.innerHTML = "|";
+     }
+   }*/
+
+  }
+
+  // 2017/12/1
+  // preload.js
+  //放置静态资源的数组
+  var manifest = [
+  	{src: './images/css_sprites_sy.png', id: 'winter'}
+  ];
+  var loader = new createjs.LoadQueue(false,'','Anonymous');  //LoadQueue ( [preferXHR=true]  [basePath=""]  [crossOrigin=""] )
+  loader.on('complete', handleComplete);
+  loader.loadManifest(manifest);
+  //资源加载成功后,进行处理
+  function handleComplete() {
+     //var winter = loader.getResult('winter');  //获取加载资源
+     //console.log(winter);
+     init();
+  }
+
+  // easeljs
+  function init() {
+  	// 画布-舞台
+  	var stage = new createjs.Stage("demoCanvas");
+
+    //实例精灵动画集
+    var spriteSheet = new createjs.SpriteSheet({
+		  // 帧率
+		  framerate: 20,
+  		// 定义图像路径,使用图像或图像的url列表
+  		"images": [loader.getResult("winter")],
+  		// 帧大小相同情况
+  		"frames": {"regX": 0, "height": 631, "count": 14, "regY": 0, "width": 387},
+  		/*定义动画*/
+  		"animations":{
+  			 //动画的开始帧，结束帧，下一个动作，运行速度
+  			// start, end, next, speed
+  			"run": [0, 13, "run", 1],
+  			"jump": [0, 13, "run"]
+  		}
+  	});
+    //SpriteSheet类设置帧和动画,里面的run为开始的动画
+    var grant = new createjs.Sprite(spriteSheet, "run");
+    // stage one,container more，创建一个间隔事件侦听，进行动画
+	  var container = new createjs.Container();
+    container.addChild(grant);
+	  stage.addChild(container);
+
+  	createjs.Ticker.setFPS(3.2);
+  	createjs.Ticker.addEventListener("tick", tick);
+  	function tick(){
+  		stage.update(); //更新舞台
+  	}
+  }
+</script>
+
+</body>
+</html>
