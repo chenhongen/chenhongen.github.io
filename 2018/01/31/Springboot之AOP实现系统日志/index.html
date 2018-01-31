@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>Springboot之AOP实现系统日志 | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JAVA," />
+  
+
+  <meta name="description" content="需求描述封装方法记录增删改查等操作日志。为了尽可能的解耦，使用自定义的AOP切点来实现。
+关键代码
+LogAnnotation.java，自定义注解声明。这里定义了4个参数，其中logType为枚举类型；123456789101112131415161718192021222324252627282930import java.lang.annotation.Documented;import j">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Springboot之AOP实现系统日志">
+<meta property="og:url" content="http://rebey.cn/2018/01/31/Springboot之AOP实现系统日志/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="需求描述封装方法记录增删改查等操作日志。为了尽可能的解耦，使用自定义的AOP切点来实现。
+关键代码
+LogAnnotation.java，自定义注解声明。这里定义了4个参数，其中logType为枚举类型；123456789101112131415161718192021222324252627282930import java.lang.annotation.Documented;import j">
+<meta property="og:updated_time" content="2018-01-31T15:01:21.196Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Springboot之AOP实现系统日志">
+<meta name="twitter:description" content="需求描述封装方法记录增删改查等操作日志。为了尽可能的解耦，使用自定义的AOP切点来实现。
+关键代码
+LogAnnotation.java，自定义注解声明。这里定义了4个参数，其中logType为枚举类型；123456789101112131415161718192021222324252627282930import java.lang.annotation.Documented;import j">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+
+  <script src="https://code.createjs.com/preloadjs-0.6.2.min.js"></script>
+  <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#需求描述"><span class="toc-text">需求描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#关键代码"><span class="toc-text">关键代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#推荐参考"><span class="toc-text">推荐参考</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Springboot之AOP实现系统日志" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Springboot之AOP实现系统日志</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.01.31</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h4 id="需求描述"><a href="#需求描述" class="headerlink" title="需求描述"></a>需求描述</h4><p>封装方法记录增删改查等操作日志。为了尽可能的解耦，使用自定义的AOP切点来实现。</p>
+<h4 id="关键代码"><a href="#关键代码" class="headerlink" title="关键代码"></a>关键代码</h4><ul>
+<li>LogAnnotation.java，自定义注解声明。这里定义了4个参数，其中logType为枚举类型；<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">import java.lang.annotation.Documented;</div><div class="line">import java.lang.annotation.ElementType;</div><div class="line">import java.lang.annotation.Inherited;</div><div class="line">import java.lang.annotation.Retention;</div><div class="line">import java.lang.annotation.RetentionPolicy;</div><div class="line">import java.lang.annotation.Target;</div><div class="line"></div><div class="line">import com.mes.common.EMESConsts.SystemLogType;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 自定义日志注解</div><div class="line"> *    </div><div class="line"> * 创建人：che</div><div class="line"> * 创建时间：2018年1月19日 下午2:24:09</div><div class="line"> * </div><div class="line"> * @Retention 描述注解的生命周期</div><div class="line"> * @Target 描述注解的使用范围</div><div class="line"> * @Inherited 允许继承</div><div class="line"> * @Documented 注解归档</div><div class="line"> */</div><div class="line">@Retention(RetentionPolicy.RUNTIME)</div><div class="line">@Target(&#123;ElementType.METHOD&#125;)</div><div class="line">@Inherited</div><div class="line">@Documented</div><div class="line">public @interface LogAnnotation &#123;</div><div class="line">	String logModule() default &quot;&quot;;</div><div class="line">	String logFunction() default &quot;&quot;;</div><div class="line">	SystemLogType logType() default SystemLogType.SYS;</div><div class="line">    String logContent() default &quot;&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 系统日志操作类型</div><div class="line">public enum SystemLogType &#123;</div><div class="line">    SYS,VIEW,INSERT,UPDATE,DELETE,LOGIN,LOGOUT,IMPORT,EXPORT</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>LogAspect.java，切面监听，相应处理；</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">import java.lang.reflect.Method;</div><div class="line">import java.util.Date;</div><div class="line"></div><div class="line">import javax.annotation.Resource;</div><div class="line"></div><div class="line">import org.apache.shiro.SecurityUtils;</div><div class="line">import org.aspectj.lang.JoinPoint;</div><div class="line">import org.aspectj.lang.annotation.After;</div><div class="line">import org.aspectj.lang.annotation.Aspect;</div><div class="line">import org.aspectj.lang.annotation.Pointcut;</div><div class="line">import org.slf4j.Logger;</div><div class="line">import org.slf4j.LoggerFactory;</div><div class="line">import org.springframework.stereotype.Component;</div><div class="line"></div><div class="line">import com.mes.annotation.LogAnnotation;</div><div class="line">import com.mes.dao.SysSystemLogMapper;</div><div class="line">import com.mes.pojo.UserObject;</div><div class="line">import com.mes.pojo.po.SysSystemLog;</div><div class="line"></div><div class="line"></div><div class="line">@Component</div><div class="line">@Aspect</div><div class="line">public class LogAspect &#123;</div><div class="line">    private Logger logger = LoggerFactory.getLogger(LogAspect.class);</div><div class="line">    </div><div class="line">	@Resource</div><div class="line">	private SysSystemLogMapper mapper;</div><div class="line"></div><div class="line">    @Pointcut(&quot;execution(* com.mes.service..*(..))&quot;)</div><div class="line">    private void pointcut() &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @After(value = &quot;pointcut()&quot;)</div><div class="line">    public void After(JoinPoint joinPoint) throws ClassNotFoundException &#123;</div><div class="line">        String className = joinPoint.getTarget().getClass().getName();</div><div class="line">        String methodName = joinPoint.getSignature().getName();</div><div class="line">        Object[] args = joinPoint.getArgs();</div><div class="line">        Class&lt;?&gt; targetClass = Class.forName(className);</div><div class="line">        Method[] methods = targetClass.getMethods();</div><div class="line">        for (Method method : methods) &#123;</div><div class="line">            if (method.getName().equalsIgnoreCase(methodName)) &#123;</div><div class="line">                Class&lt;?&gt;[] clazzs = method.getParameterTypes();</div><div class="line">                if (clazzs.length == args.length) &#123;</div><div class="line">                    LogAnnotation logAnnotation = method.getAnnotation(LogAnnotation.class);</div><div class="line">                    if (logAnnotation != null) &#123;</div><div class="line">                        String logContent = logAnnotation.logContent();</div><div class="line">                        String logModule = logAnnotation.logModule();</div><div class="line">                        String logFunction = logAnnotation.logFunction();</div><div class="line">                        int logType = logAnnotation.logType().ordinal();</div><div class="line">                        logger.info(&quot;获取日志：&#123;&#125;-&#123;&#125;-&#123;&#125;&quot;, logModule, logFunction, logContent);</div><div class="line">                        // 数据库记录操作...</div><div class="line">                        UserObject userObject = (UserObject) SecurityUtils.getSubject().getSession().getAttribute(&quot;userObject&quot;);</div><div class="line">                        </div><div class="line">                        // 未登录 不记录</div><div class="line">                        if(userObject != null) &#123;</div><div class="line">	                        SysSystemLog log = new SysSystemLog();</div><div class="line">	                        log.setIp(userObject.getUserRemoteIP());</div><div class="line">	                        log.setContent(logContent);</div><div class="line">	                        log.setModule(logModule);</div><div class="line">	                        log.setFunction(logFunction);</div><div class="line">	                        log.setType(logType+&quot;&quot;);</div><div class="line">	                        log.setCreateId(Long.parseLong(userObject.getEmpId()));</div><div class="line">	                        log.setModifyId(Long.parseLong(userObject.getEmpId()));</div><div class="line">	                        Date date = new Date();</div><div class="line">	                        log.setCreateDate(date);</div><div class="line">	                        log.setModifyDate(date);</div><div class="line">	                        logger.info(log.toString());</div><div class="line">	                        mapper.insertSelective(log);</div><div class="line">                        &#125;</div><div class="line">                        break;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>使用</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">@LogAnnotation(logModule = &quot;框架&quot;, logFunction = &quot;系统日志&quot;, logContent = &quot;日志一览&quot;, logType = EMESConsts.SystemLogType.VIEW)</div><div class="line">public List&lt;QuerySystemLogDTO&gt; listByCriteria(CriteriaEntity&lt;QuerySystemLogDTO&gt; entity) &#123; &#125;</div></pre></td></tr></table></figure>
+<h4 id="推荐参考"><a href="#推荐参考" class="headerlink" title="推荐参考"></a>推荐参考</h4><ol>
+<li><a href="https://github.com/ameizi/DevArticles/issues/152" target="_blank" rel="external">使用Spring AOP记录Controller层操作日志</a></li>
+<li><a href="https://my.oschina.net/gaomq/blog/1487067" target="_blank" rel="external">springboot使用注解的方式记录用户业务操作</a></li>
+<li><a href="https://juejin.im/post/59b3a9e16fb9a00a5d390625" target="_blank" rel="external">SpringBoot详解（四）-优雅地处理日志</a></li>
+</ol>
+<p><strong>更多有意思的内容，欢迎访问笔者小站：</strong> <a href="http://rebey.cn/">rebey.cn</a></p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="Springboot之AOP实现系统日志" data-url="http://rebey.cn/2018/01/31/Springboot之AOP实现系统日志/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });
+
+    /*var str = 'Hey，你还对大自然充满好奇吗？';
+    var i = 0;
+    var len = str.length;
+    var divTyping = document.getElementById('title');
+    var cursor = document.getElementById('cursor');
+    //cursor.hide();
+    type();
+    function type(){
+      if (i <= len) {
+        divTyping.innerHTML = str.slice(0, i++) + '|';
+        setTimeout(type, 200);//递归调用
+      } else {
+        divTyping.innerHTML = str;//结束打字,移除光标
+        document.getElementById("title").appendChild(cursor);
+        setInterval(function(){shineCursor()},800);
+      }
+   }
+   function shineCursor() {
+     if(cursor.innerHTML === "|") {
+       cursor.innerHTML = "&nbsp;";
+     } else {
+       cursor.innerHTML = "|";
+     }
+   }*/
+
+  }
+
+  // 2017/12/1
+  // preload.js
+  //放置静态资源的数组
+  var manifest = [
+  	{src: './images/css_sprites_sy.png', id: 'winter'}
+  ];
+  var loader = new createjs.LoadQueue(false,'','Anonymous');  //LoadQueue ( [preferXHR=true]  [basePath=""]  [crossOrigin=""] )
+  loader.on('complete', handleComplete);
+  loader.loadManifest(manifest);
+  //资源加载成功后,进行处理
+  function handleComplete() {
+     //var winter = loader.getResult('winter');  //获取加载资源
+     //console.log(winter);
+     init();
+  }
+
+  // easeljs
+  function init() {
+  	// 画布-舞台
+  	var stage = new createjs.Stage("demoCanvas");
+
+    //实例精灵动画集
+    var spriteSheet = new createjs.SpriteSheet({
+		  // 帧率
+		  framerate: 20,
+  		// 定义图像路径,使用图像或图像的url列表
+  		"images": [loader.getResult("winter")],
+  		// 帧大小相同情况
+  		"frames": {"regX": 0, "height": 631, "count": 14, "regY": 0, "width": 387},
+  		/*定义动画*/
+  		"animations":{
+  			 //动画的开始帧，结束帧，下一个动作，运行速度
+  			// start, end, next, speed
+  			"run": [0, 13, "run", 1],
+  			"jump": [0, 13, "run"]
+  		}
+  	});
+    //SpriteSheet类设置帧和动画,里面的run为开始的动画
+    var grant = new createjs.Sprite(spriteSheet, "run");
+    // stage one,container more，创建一个间隔事件侦听，进行动画
+	  var container = new createjs.Container();
+    container.addChild(grant);
+	  stage.addChild(container);
+
+  	createjs.Ticker.setFPS(3.2);
+  	createjs.Ticker.addEventListener("tick", tick);
+  	function tick(){
+  		stage.update(); //更新舞台
+  	}
+  }
+</script>
+
+</body>
+</html>
