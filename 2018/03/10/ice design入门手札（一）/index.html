@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>ice design入门手札（一） | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="react," />
+  
+
+  <meta name="description" content="icework 新建页面
+src/nav.js 中修改菜单显示名字，此外可通过该文件配置首页左侧菜单。
+
+1234567const autoGenAsideNavs = [  &amp;#123;    text: &amp;quot;可视化文件管理&amp;quot;,    to: &amp;quot;/visualFileTable1&amp;quot;,    icon: &amp;apos;home&amp;apos;  &amp;#125;];
+请">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ice design入门手札（一）">
+<meta property="og:url" content="http://rebey.cn/2018/03/10/ice design入门手札（一）/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="icework 新建页面
+src/nav.js 中修改菜单显示名字，此外可通过该文件配置首页左侧菜单。
+
+1234567const autoGenAsideNavs = [  &amp;#123;    text: &amp;quot;可视化文件管理&amp;quot;,    to: &amp;quot;/visualFileTable1&amp;quot;,    icon: &amp;apos;home&amp;apos;  &amp;#125;];
+请">
+<meta property="og:updated_time" content="2018-03-21T14:11:51.542Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ice design入门手札（一）">
+<meta name="twitter:description" content="icework 新建页面
+src/nav.js 中修改菜单显示名字，此外可通过该文件配置首页左侧菜单。
+
+1234567const autoGenAsideNavs = [  &amp;#123;    text: &amp;quot;可视化文件管理&amp;quot;,    to: &amp;quot;/visualFileTable1&amp;quot;,    icon: &amp;apos;home&amp;apos;  &amp;#125;];
+请">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+
+  <script src="https://code.createjs.com/preloadjs-0.6.2.min.js"></script>
+  <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#icework-新建页面"><span class="toc-text">icework 新建页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#请求数据CORS-后端处理-spring-boot"><span class="toc-text">请求数据CORS 后端处理(spring boot)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#post-form数据"><span class="toc-text">post form数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于Pagination-current"><span class="toc-text">关于Pagination current</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Icon"><span class="toc-text">Icon</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack-path"><span class="toc-text">webpack path</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-ice design入门手札（一）" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">ice design入门手札（一）</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.03.10</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/前端/">前端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="icework-新建页面"><a href="#icework-新建页面" class="headerlink" title="icework 新建页面"></a>icework 新建页面</h3><ul>
+<li>src/nav.js 中修改菜单显示名字，此外可通过该文件配置首页左侧菜单。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">const autoGenAsideNavs = [</div><div class="line">  &#123;</div><div class="line">    text: &quot;可视化文件管理&quot;,</div><div class="line">    to: &quot;/visualFileTable1&quot;,</div><div class="line">    icon: &apos;home&apos;</div><div class="line">  &#125;</div><div class="line">];</div></pre></td></tr></table></figure>
+<h3 id="请求数据CORS-后端处理-spring-boot"><a href="#请求数据CORS-后端处理-spring-boot" class="headerlink" title="请求数据CORS 后端处理(spring boot)"></a>请求数据CORS 后端处理(spring boot)</h3><p>细粒度处理（类、方法）加注解：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">@CrossOrigin(origins = &quot;http://localhost:4444&quot;)</div></pre></td></tr></table></figure></p>
+<p>全局处理：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">@Configuration</div><div class="line">public class WebConfig extends WebMvcConfigurerAdapter &#123;</div><div class="line">    @Bean</div><div class="line">    public WebMvcConfigurer corsConfigurer() &#123;</div><div class="line">        return new WebMvcConfigurerAdapter() &#123;</div><div class="line">            @Override</div><div class="line">            public void addCorsMappings(CorsRegistry registry) &#123;</div><div class="line">                registry.addMapping(&quot;/**&quot;)</div><div class="line">	                .allowedOrigins(&quot;http://localhost:4444&quot;);</div><div class="line">	//              .allowedMethods(&quot;PUT&quot;, &quot;DELETE&quot;)</div><div class="line">	//              .allowedHeaders(&quot;header1&quot;, &quot;header2&quot;, &quot;header3&quot;)</div><div class="line">	//              .exposedHeaders(&quot;header1&quot;, &quot;header2&quot;)</div><div class="line">	//              .allowCredentials(false).maxAge(3600);</div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>tips:此处配置的是“localhost”，如果您访问的是127.0.0.1的话还是跨域失败的，聪明的你应该知道怎么解决。</p>
+<p>修改页面baseURL及url，method默认为get，data-binder中对应params。如果是post改为data<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">@DataBinder(&#123;</div><div class="line">  tableData: &#123;</div><div class="line">    // 详细请求配置请参见 https://github.com/axios/axios</div><div class="line">    baseURL: &apos;http://localhost:8080/&apos;,</div><div class="line">    url: &apos;complex-tab-table-list.json&apos;,</div><div class="line">    params: &#123;</div><div class="line">      page: 1,</div><div class="line">    &#125;,</div><div class="line">    defaultBindingData: &#123;</div><div class="line">      list: [],</div><div class="line">      total: 100,</div><div class="line">      pageSize: 10,</div><div class="line">      currentPage: 1,</div><div class="line">    &#125;,</div><div class="line">  &#125;,</div><div class="line">&#125;)</div><div class="line"></div><div class="line">@DataBinder(&#123;</div><div class="line">  tableData: &#123;</div><div class="line">    baseURL: &apos;http://localhost:8080/&apos;,</div><div class="line">    url: &apos;user/listUserByCriteria&apos;,</div><div class="line">    method: &apos;post&apos;,</div><div class="line">    data: &#123;&#125;,</div><div class="line">    //headers: &#123;</div><div class="line">    //  Accept: &apos;application/json&apos;,</div><div class="line">    //  &apos;Content-Type&apos;: &apos;multipart/form-data&apos;</div><div class="line">    //&#125;</div><div class="line">    defaultBindingData: &#123;</div><div class="line">      list: [],</div><div class="line">      total: 100,</div><div class="line">      pageSize: 3,</div><div class="line">    &#125;,</div><div class="line">  &#125;,</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p><a href="https://www.npmjs.com/package/@icedesign/data-binder" target="_blank" rel="external">data-binder入门传送</a>，听说近期会开源，坐等。</p>
+<h3 id="post-form数据"><a href="#post-form数据" class="headerlink" title="post form数据"></a>post form数据</h3><p>默认post的Content-Type是application/json，习惯了application/x-www-form-urlencoded的话，可以npm install qs来包装下，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">import qs from &apos;qs&apos;;</div><div class="line"></div><div class="line">// TODO</div><div class="line">componentDidMount() &#123;</div><div class="line">this.queryCache.pageIndex = 1;</div><div class="line">this.queryCache.pageSize = 3;</div><div class="line"></div><div class="line">this.data = qs.stringify(&#123;</div><div class="line">  ...this.queryCache</div><div class="line">&#125;);</div><div class="line"></div><div class="line">this.fetchData();</div><div class="line">&#125;</div><div class="line"></div><div class="line">// data存放查询参数</div><div class="line">fetchData = () =&gt; &#123;</div><div class="line">this.props.updateBindingData(&apos;tableData&apos;, &#123;</div><div class="line">  data: this.data,</div><div class="line">&#125;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="关于Pagination-current"><a href="#关于Pagination-current" class="headerlink" title="关于Pagination current"></a>关于Pagination current</h3><p>demo依赖mock数据中currentPage来更新current，改成实际后台数据后，不建议这么照搬。可参照官方<a href="https://alibaba.github.io/ice/#/component/pagination" target="_blank" rel="external">Pagination</a>demo修改current到state里。</p>
+<h3 id="Icon"><a href="#Icon" class="headerlink" title="Icon"></a>Icon</h3><p>ice中提供了icon、FoundationSymbol两套图标。同时支持自定义图标DynamicIcon。css从<a href="http://www.iconfont.cn" target="_blank" rel="external">iconfont</a>获取（找到需要的图标添加到项目-&gt;选择Font class-&gt;生成地址）。注：目前采用fontclass引入字体图标，故不支持多色。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import React, &#123; Component &#125; from &apos;react&apos;;</div><div class="line">import ReactDOM from &apos;react-dom&apos;;</div><div class="line">import DynamicIcon from &apos;dynamic-icon&apos;;</div><div class="line"></div><div class="line">// 使用 custom 生成自定义 ICON 组件</div><div class="line">const CustomIcon = DynamicIcon.create(&#123;</div><div class="line">  fontFamily: &apos;iconfont&apos;,</div><div class="line">  prefix: &apos;icon&apos;,</div><div class="line">  css: &apos;https://at.alicdn.com/t/font_1472628097_7496383.css&apos;</div><div class="line">&#125;);</div><div class="line">export default CustomIcon;</div></pre></td></tr></table></figure>
+<p>其他页面使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">import CustomIcon from &apos;../../../../components/CustomIcon&apos;;</div><div class="line"></div><div class="line">...</div><div class="line"></div><div class="line">&lt;CustomIcon type=&quot;dingding&quot; /&gt;</div></pre></td></tr></table></figure>
+<h3 id="webpack-path"><a href="#webpack-path" class="headerlink" title="webpack path"></a>webpack path</h3><p>node_modules\ice-scripts\lib\config\webpack.config.dev.js<br>node_modules\ice-scripts\lib\config\webpack.config.prod.js</p>
+<p><strong>更多有意思的内容，欢迎访问笔者小站：</strong> <a href="http://rebey.cn/">rebey.cn</a></p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="ice design入门手札（一）" data-url="http://rebey.cn/2018/03/10/ice design入门手札（一）/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/deeplearn.bundle.js', function() {
+      
+    });
+    /*loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });*/
+
+    /*var str = 'Hey，你还对大自然充满好奇吗？';
+    var i = 0;
+    var len = str.length;
+    var divTyping = document.getElementById('title');
+    var cursor = document.getElementById('cursor');
+    //cursor.hide();
+    type();
+    function type(){
+      if (i <= len) {
+        divTyping.innerHTML = str.slice(0, i++) + '|';
+        setTimeout(type, 200);//递归调用
+      } else {
+        divTyping.innerHTML = str;//结束打字,移除光标
+        document.getElementById("title").appendChild(cursor);
+        setInterval(function(){shineCursor()},800);
+      }
+   }
+   function shineCursor() {
+     if(cursor.innerHTML === "|") {
+       cursor.innerHTML = "&nbsp;";
+     } else {
+       cursor.innerHTML = "|";
+     }
+   }*/
+
+  }
+
+  // 2017/12/1
+  // preload.js
+  //放置静态资源的数组
+  /*var manifest = [
+  	{src: './images/css_sprites_sy.png', id: 'winter'}
+  ];
+  var loader = new createjs.LoadQueue(false,'','Anonymous');  //LoadQueue ( [preferXHR=true]  [basePath=""]  [crossOrigin=""] )
+  loader.on('complete', handleComplete);
+  loader.loadManifest(manifest);
+  //资源加载成功后,进行处理
+  function handleComplete() {
+     //var winter = loader.getResult('winter');  //获取加载资源
+     //console.log(winter);
+     init();
+  }
+
+  // easeljs
+  function init() {
+  	// 画布-舞台
+  	var stage = new createjs.Stage("demoCanvas");
+
+    //实例精灵动画集
+    var spriteSheet = new createjs.SpriteSheet({
+		  // 帧率
+		  framerate: 20,
+  		// 定义图像路径,使用图像或图像的url列表
+  		"images": [loader.getResult("winter")],
+  		// 帧大小相同情况
+  		"frames": {"regX": 0, "height": 631, "count": 14, "regY": 0, "width": 387},
+  		//定义动画
+  		"animations":{
+  			 //动画的开始帧，结束帧，下一个动作，运行速度
+  			// start, end, next, speed
+  			"run": [0, 13, "run", 1],
+  			"jump": [0, 13, "run"]
+  		}
+  	});
+    //SpriteSheet类设置帧和动画,里面的run为开始的动画
+    var grant = new createjs.Sprite(spriteSheet, "run");
+    // stage one,container more，创建一个间隔事件侦听，进行动画
+	  var container = new createjs.Container();
+    container.addChild(grant);
+	  stage.addChild(container);
+
+  	createjs.Ticker.setFPS(3.2);
+  	createjs.Ticker.addEventListener("tick", tick);
+  	function tick(){
+  		stage.update(); //更新舞台
+  	}
+  }*/
+</script>
+
+</body>
+</html>
