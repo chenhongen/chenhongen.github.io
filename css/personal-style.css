@@ -5,8 +5,8 @@
 	padding-top: 20px;
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#26FFFFFF, endColorstr=#26FFFFFF);
 	border-radius: 5px; /* ���нǶ�ʹ�ð뾶Ϊ5px��Բ�ǣ�������ΪCSS3��׼���� */ 
-	-moz-border-radius: 5px; /* Mozilla��������˽������ */ 
-	-webkit-border-radius: 5px; /* Webkit��������˽������ */ 
+	-moz-border-radius: 5px; /* Mozilla�������˽������ */ 
+	-webkit-border-radius: 5px; /* Webkit�������˽������ */ 
 }
 
 /*canvas{
