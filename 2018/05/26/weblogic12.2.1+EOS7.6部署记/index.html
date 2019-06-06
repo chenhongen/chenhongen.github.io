@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>weblogic12.2.1+EOS7.6部署记 | CHE Studio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="weblogic," />
+  
+
+  <meta name="description" content="&amp;gt; weblogic12.2.1安装
+java -jar fmw_12.2.1.0.0_wls.jar时需要jdk1.7
+安装后，配置向导选jdk1.8且版本152（以上）
+
+&amp;gt; EOS Server 7.6安装
+weblogic需要处于启动状态！
+bea home：D:\Oracle\Middleware\Oracle_Home
+weblogic home: D:\Oracle\Mi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="weblogic12.2.1+EOS7.6部署记">
+<meta property="og:url" content="http://rebey.cn/2018/05/26/weblogic12.2.1+EOS7.6部署记/index.html">
+<meta property="og:site_name" content="CHE Studio">
+<meta property="og:description" content="&amp;gt; weblogic12.2.1安装
+java -jar fmw_12.2.1.0.0_wls.jar时需要jdk1.7
+安装后，配置向导选jdk1.8且版本152（以上）
+
+&amp;gt; EOS Server 7.6安装
+weblogic需要处于启动状态！
+bea home：D:\Oracle\Middleware\Oracle_Home
+weblogic home: D:\Oracle\Mi">
+<meta property="og:updated_time" content="2019-06-06T03:27:05.904Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="weblogic12.2.1+EOS7.6部署记">
+<meta name="twitter:description" content="&amp;gt; weblogic12.2.1安装
+java -jar fmw_12.2.1.0.0_wls.jar时需要jdk1.7
+安装后，配置向导选jdk1.8且版本152（以上）
+
+&amp;gt; EOS Server 7.6安装
+weblogic需要处于启动状态！
+bea home：D:\Oracle\Middleware\Oracle_Home
+weblogic home: D:\Oracle\Mi">
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+  <script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "500052254");
+  		mta.setAttribute("cid", "500456400");
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+  </script>
+
+
+
+  <script src="https://code.createjs.com/preloadjs-0.6.2.min.js"></script>
+  <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">More</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">More</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#gt-weblogic12-2-1安装"><span class="toc-text">> weblogic12.2.1安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gt-EOS-Server-7-6安装"><span class="toc-text">> EOS Server 7.6安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gt-部署包上传大小限制"><span class="toc-text">> 部署包上传大小限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gt-jar冲突"><span class="toc-text">> jar冲突</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#排查过程"><span class="toc-text">排查过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gt-常用路径"><span class="toc-text">> 常用路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gt-关于我"><span class="toc-text">> 关于我</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-weblogic12.2.1+EOS7.6部署记" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">weblogic12.2.1+EOS7.6部署记</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.05.26</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Chen hongen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="gt-weblogic12-2-1安装"><a href="#gt-weblogic12-2-1安装" class="headerlink" title="&gt; weblogic12.2.1安装"></a>&gt; weblogic12.2.1安装</h3><ul>
+<li>java -jar fmw_12.2.1.0.0_wls.jar时需要jdk1.7</li>
+<li>安装后，配置向导选jdk1.8且版本152（以上）</li>
+</ul>
+<h3 id="gt-EOS-Server-7-6安装"><a href="#gt-EOS-Server-7-6安装" class="headerlink" title="&gt; EOS Server 7.6安装"></a>&gt; EOS Server 7.6安装</h3><ul>
+<li>weblogic需要处于启动状态！</li>
+<li>bea home：D:\Oracle\Middleware\Oracle_Home</li>
+<li>weblogic home: D:\Oracle\Middleware\Oracle_Home\wlserver</li>
+<li>domain: D:\Oracle\Middleware\user_projects\domains\base_domain</li>
+<li>server: AdminServer</li>
+<li>如需修改默认端口7001，需先修改后再安装EOS，否则workspace登录存在问题</li>
+</ul>
+<h3 id="gt-部署包上传大小限制"><a href="#gt-部署包上传大小限制" class="headerlink" title="&gt; 部署包上传大小限制"></a>&gt; 部署包上传大小限制</h3><ul>
+<li>修改D:\Oracle\Middleware\Oracle_Home\user_projects\domains\base_domain\applications\governor.war\WEB-INF_srv\config下user_config.xml</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;group name=&quot;FileUpload&quot;&gt;</div><div class="line">    &lt;configValue key=&quot;TempDir&quot;&gt;upload&lt;/configValue&gt;</div><div class="line">    &lt;configValue key=&quot;MaxSize&quot;&gt;184857600&lt;/configValue&gt;</div><div class="line">    &lt;configValue key=&quot;InMemorySize&quot;&gt;10240&lt;/configValue&gt;</div><div class="line">    &lt;!--files with specified ext names are not accespted when uploading  --&gt;</div><div class="line">    &lt;configValue key=&quot;Exclude&quot;&gt;exe,java,jsp,html,htm,class,jar&lt;/configValue&gt;</div><div class="line">&lt;/group&gt;</div></pre></td></tr></table></figure>
+<h3 id="gt-jar冲突"><a href="#gt-jar冲突" class="headerlink" title="&gt; jar冲突"></a>&gt; jar冲突</h3><h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><ul>
+<li>替换weblogic.xml：D:\Oracle\Middleware\Oracle_Home\user_projects\domains\base_domain\applications\default.ear\default.war\WEB-INF</li>
+<li><a href="http://doc.primeton.com/pages/viewpage.action?pageId=786719" target="_blank" rel="external">删除掉D:\Oracle\Middleware\Oracle_Home\oracle_common\modules下commonj.sdo.jar、commonj.sdo.backward.jar</a></li>
+<li><del>xmlbeans-2.3.0换为2.6.0（可能</del>）</li>
+</ul>
+<h4 id="排查过程"><a href="#排查过程" class="headerlink" title="排查过程"></a>排查过程</h4><ul>
+<li>查看应用日志contribution.log得知：</li>
+</ul>
+<blockquote>
+<p>[2019-05-24<br>16:26:52,178][ERROR][org.gocom.components.coframe.auth.startup.AuthStartupContributionListener][Line:166]<br>loadAuthService[IAuthManagerService=org.gocom.components.coframe.auth.DefaultAuthManagerService]<br>error. java.lang.LinkageError: loader constraint violation: when<br>resolving interface method<br>“javax.xml.stream.XMLStreamReader.getName()Ljavax/xml/namespace/QName;”<br>the class loader (instance of<br>weblogic/utils/classloaders/ChangeAwareClassLoader) of the current<br>class, com/primeton/spring/parser/SpringConfigFileParser, and the<br>class loader (instance of <bootloader>) for the method’s defining<br>class, javax/xml/stream/XMLStreamReader, have different Class objects<br>for the type javax/xml/namespace/QName used in the signature</bootloader></p>
+</blockquote>
+<ul>
+<li>通过findClass工具查找com/primeton/spring/parser/SpringConfigFileParser对应jar，出现在普元的哪个jar中：<br>F:\primeton6for3276\ide\eclipse\jre\bin\java  -cp ant.jar;. FindClass com.primeton.spring.parser.SpringConfigFileParser F:\primeton6for3276\ide\eclipse<br>（上述例子就是在F:\primeton6for3276\ide\eclipse目录下，搜索com.primeton.spring.parser.SpringConfigFileParser所在位置）<br>结果是eos-server-spring开头的jar</li>
+<li><p>善用github，查到eos-server-spring的package-name</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;groupId&gt;bps.simbest&lt;/groupId&gt;</div><div class="line">&lt;artifactId&gt;eos-server-spring&lt;/artifactId&gt;</div><div class="line">&lt;version&gt;7.1.3.0&lt;/version&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>在weblogic.xml中添加<a href="https://docs.oracle.com/middleware/12213/wls/WBAPP/weblogic_xml.htm#WBAPP663" target="_blank" rel="external">prefer-application-packages</a></p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; </div><div class="line">&lt;weblogic-web-app xmlns=&quot;http://xmlns.oracle.com/weblogic/weblogic-web-app&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; </div><div class="line">                  xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee </div><div class="line">http://java.sun.com/xml/ns/javaee/web-app_3.0.xsd </div><div class="line">http://xmlns.oracle.com/weblogic/weblogic-web-app </div><div class="line">http://xmlns.oracle.com/weblogic/weblogic-web-app/1.8/weblogic-web-app.xsd&quot;&gt; </div><div class="line">  &lt;container-descriptor&gt;</div><div class="line">    &lt;prefer-web-inf-classes&gt;false&lt;/prefer-web-inf-classes&gt;</div><div class="line">    &lt;prefer-application-packages&gt;</div><div class="line">        &lt;package-name&gt;bps.simbest.*&lt;/package-name&gt;</div><div class="line">    &lt;/prefer-application-packages&gt;</div><div class="line"> </div><div class="line">    &lt;prefer-application-resources&gt;</div><div class="line">      &lt;resource-name&gt;bps.simbest.*&lt;/resource-name&gt;</div><div class="line">    &lt;/prefer-application-resources&gt;</div><div class="line">  &lt;/container-descriptor&gt;</div><div class="line">&lt;/weblogic-web-app&gt;</div></pre></td></tr></table></figure>
+<h3 id="gt-常用路径"><a href="#gt-常用路径" class="headerlink" title="&gt; 常用路径"></a>&gt; 常用路径</h3><ul>
+<li>应用代码：D:\Oracle\Middleware\Oracle_Home\user_projects\domains\base_domain\applications\default.ear\default.war</li>
+<li>应用日志：D:\Oracle\Middleware\Oracle_Home\user_projects\domains\mes_work_default_6200\logs</li>
+<li>weblogic日志：D:\Oracle\Middleware\Oracle_Home\user_projects\domains\base_domain\servers\AdminServer\logs</li>
+<li>服务启动：D:\Oracle\Middleware\Oracle_Home\user_projects\domains\base_domain startWebLogic.cmd</li>
+<li>应用缓存：D:\Oracle\Middleware\Oracle_Home\user_projects\domains\base_domain\servers\AdminServer\tmp_WL_user[可删]</li>
+<li>数据库配置：D:\Oracle\Middleware\Oracle_Home\user_projects\domains\base_domain\config\jdbc</li>
+</ul>
+<h3 id="gt-关于我"><a href="#gt-关于我" class="headerlink" title="&gt; 关于我"></a>&gt; 关于我</h3><p><a href="http://rebey.cn/">rebey.cn</a></p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">手机扫一扫，支持CHE~</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+  <section class="duoshuo-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="" data-title="weblogic12.2.1+EOS7.6部署记" data-url="http://rebey.cn/2018/05/26/weblogic12.2.1+EOS7.6部署记/index.html"></div>
+    <!-- 多说评论框 end -->
+  </section>
+
+
+
+
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"rebey"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+
+
+  </div>
+
+  
+
+  
+<script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+    loadScript('/js/deeplearn.bundle.js', function() {
+      
+    });
+    /*loadScript('/js/particles.min.js', function() {
+       if(document.getElementById("particles-js") != null) {
+       particlesJS('particles-js',
+	  {
+	    "particles": {
+	      "number": {
+		"value": 80,
+		"density": {
+		  "enable": true,
+		  "value_area": 800
+		}
+	      },
+	      "color": {
+		"value": "#ffffff"
+	      },
+	      "shape": {
+		"type": "circle",
+		"stroke": {
+		  "width": 0,
+		  "color": "#000000"
+		},
+		"polygon": {
+		  "nb_sides": 5
+		},
+		"image": {
+		  "src": "img/github.svg",
+		  "width": 100,
+		  "height": 100
+		}
+	      },
+	      "opacity": {
+		"value": 0.5,
+		"random": false,
+		"anim": {
+		  "enable": false,
+		  "speed": 1,
+		  "opacity_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "size": {
+		"value": 5,
+		"random": true,
+		"anim": {
+		  "enable": false,
+		  "speed": 40,
+		  "size_min": 0.1,
+		  "sync": false
+		}
+	      },
+	      "line_linked": {
+		"enable": true,
+		"distance": 150,
+		"color": "#ffffff",
+		"opacity": 0.4,
+		"width": 1
+	      },
+	      "move": {
+		"enable": true,
+		"speed": 6,
+		"direction": "none",
+		"random": false,
+		"straight": false,
+		"out_mode": "out",
+		"attract": {
+		  "enable": false,
+		  "rotateX": 600,
+		  "rotateY": 1200
+		}
+	      }
+	    },
+	    "interactivity": {
+	      "detect_on": "canvas",
+	      "events": {
+		"onhover": {
+		  "enable": true,
+		  "mode": "repulse"
+		},
+		"onclick": {
+		  "enable": true,
+		  "mode": "push"
+		},
+		"resize": true
+	      },
+	      "modes": {
+		"grab": {
+		  "distance": 400,
+		  "line_linked": {
+		    "opacity": 1
+		  }
+		},
+		"bubble": {
+		  "distance": 400,
+		  "size": 40,
+		  "duration": 2,
+		  "opacity": 8,
+		  "speed": 3
+		},
+		"repulse": {
+		  "distance": 200
+		},
+		"push": {
+		  "particles_nb": 4
+		},
+		"remove": {
+		  "particles_nb": 2
+		}
+	      }
+	    },
+	    "retina_detect": true,
+	    "config_demo": {
+	      "hide_card": false,
+	      "background_color": "#b61924",
+	      "background_image": "",
+	      "background_position": "50% 50%",
+	      "background_repeat": "no-repeat",
+	      "background_size": "cover"
+	    }
+	  }
+
+	);
+	}
+    });*/
+
+    /*var str = 'Hey，你还对大自然充满好奇吗？';
+    var i = 0;
+    var len = str.length;
+    var divTyping = document.getElementById('title');
+    var cursor = document.getElementById('cursor');
+    //cursor.hide();
+    type();
+    function type(){
+      if (i <= len) {
+        divTyping.innerHTML = str.slice(0, i++) + '|';
+        setTimeout(type, 200);//递归调用
+      } else {
+        divTyping.innerHTML = str;//结束打字,移除光标
+        document.getElementById("title").appendChild(cursor);
+        setInterval(function(){shineCursor()},800);
+      }
+   }
+   function shineCursor() {
+     if(cursor.innerHTML === "|") {
+       cursor.innerHTML = "&nbsp;";
+     } else {
+       cursor.innerHTML = "|";
+     }
+   }*/
+
+  }
+
+  // 2017/12/1
+  // preload.js
+  //放置静态资源的数组
+  /*var manifest = [
+  	{src: './images/css_sprites_sy.png', id: 'winter'}
+  ];
+  var loader = new createjs.LoadQueue(false,'','Anonymous');  //LoadQueue ( [preferXHR=true]  [basePath=""]  [crossOrigin=""] )
+  loader.on('complete', handleComplete);
+  loader.loadManifest(manifest);
+  //资源加载成功后,进行处理
+  function handleComplete() {
+     //var winter = loader.getResult('winter');  //获取加载资源
+     //console.log(winter);
+     init();
+  }
+
+  // easeljs
+  function init() {
+  	// 画布-舞台
+  	var stage = new createjs.Stage("demoCanvas");
+
+    //实例精灵动画集
+    var spriteSheet = new createjs.SpriteSheet({
+		  // 帧率
+		  framerate: 20,
+  		// 定义图像路径,使用图像或图像的url列表
+  		"images": [loader.getResult("winter")],
+  		// 帧大小相同情况
+  		"frames": {"regX": 0, "height": 631, "count": 14, "regY": 0, "width": 387},
+  		//定义动画
+  		"animations":{
+  			 //动画的开始帧，结束帧，下一个动作，运行速度
+  			// start, end, next, speed
+  			"run": [0, 13, "run", 1],
+  			"jump": [0, 13, "run"]
+  		}
+  	});
+    //SpriteSheet类设置帧和动画,里面的run为开始的动画
+    var grant = new createjs.Sprite(spriteSheet, "run");
+    // stage one,container more，创建一个间隔事件侦听，进行动画
+	  var container = new createjs.Container();
+    container.addChild(grant);
+	  stage.addChild(container);
+
+  	createjs.Ticker.setFPS(3.2);
+  	createjs.Ticker.addEventListener("tick", tick);
+  	function tick(){
+  		stage.update(); //更新舞台
+  	}
+  }*/
+</script>
+
+</body>
+</html>
