@@ -7,36 +7,30 @@
 <head>
   <meta charset="utf-8">
   
-  <title>装饰器应用-大碗字典 | CHE Studio</title>
+  <title>启动加载的三回合 | CHE Studio</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="typescript,vue," />
+    <meta name="keywords" content="springboot," />
   
 
-  <meta name="description" content="需求简述表格加载数据时，根据数据查询key值映射渲染为显示value值。好比DB存的”1/0”,表格渲染完即为“是/否”。
-Input: key,需要开发者指定
-Output: value
-目标简化代码篇幅↓；提高业务开发人员效率↑
-原始版原版代码量像碗面，又长又宽，大概像下面这样：1234567891011121314151617181920212223242526272829303132333">
+  <meta name="description" content="☞ Round 1 应用挂载监听
+实现ApplicationListener接口
+123456789public class CheApplicationEnvironmentPreparedEventListener implements    ApplicationListener&amp;lt;ApplicationEnvironmentPreparedEvent&amp;gt;&amp;#123;    @Ove">
 <meta property="og:type" content="article">
-<meta property="og:title" content="装饰器应用-大碗字典">
-<meta property="og:url" content="http://rebey.cn/2020/01/01/装饰器应用-大碗字典/index.html">
+<meta property="og:title" content="启动加载的三回合">
+<meta property="og:url" content="http://rebey.cn/2020/03/01/启动加载的三回合/index.html">
 <meta property="og:site_name" content="CHE Studio">
-<meta property="og:description" content="需求简述表格加载数据时，根据数据查询key值映射渲染为显示value值。好比DB存的”1/0”,表格渲染完即为“是/否”。
-Input: key,需要开发者指定
-Output: value
-目标简化代码篇幅↓；提高业务开发人员效率↑
-原始版原版代码量像碗面，又长又宽，大概像下面这样：1234567891011121314151617181920212223242526272829303132333">
-<meta property="og:updated_time" content="2020-01-01T10:44:38.374Z">
+<meta property="og:description" content="☞ Round 1 应用挂载监听
+实现ApplicationListener接口
+123456789public class CheApplicationEnvironmentPreparedEventListener implements    ApplicationListener&amp;lt;ApplicationEnvironmentPreparedEvent&amp;gt;&amp;#123;    @Ove">
+<meta property="og:updated_time" content="2020-03-18T06:43:26.580Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="装饰器应用-大碗字典">
-<meta name="twitter:description" content="需求简述表格加载数据时，根据数据查询key值映射渲染为显示value值。好比DB存的”1/0”,表格渲染完即为“是/否”。
-Input: key,需要开发者指定
-Output: value
-目标简化代码篇幅↓；提高业务开发人员效率↑
-原始版原版代码量像碗面，又长又宽，大概像下面这样：1234567891011121314151617181920212223242526272829303132333">
+<meta name="twitter:title" content="启动加载的三回合">
+<meta name="twitter:description" content="☞ Round 1 应用挂载监听
+实现ApplicationListener接口
+123456789public class CheApplicationEnvironmentPreparedEventListener implements    ApplicationListener&amp;lt;ApplicationEnvironmentPreparedEvent&amp;gt;&amp;#123;    @Ove">
 
   
 
@@ -161,7 +155,7 @@ Output: value
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#需求简述"><span class="toc-text">需求简述</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#目标"><span class="toc-text">目标</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#原始版"><span class="toc-text">原始版</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-0版-封装独立类DictLoader"><span class="toc-text">1.0版 - 封装独立类DictLoader</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-0版-自定义装饰器Dict"><span class="toc-text">2.0版 - 自定义装饰器Dict</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gt-关于我"><span class="toc-text">> 关于我</span></a>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#☞-Round-1-应用挂载监听"><span class="toc-text">☞ Round 1 应用挂载监听</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#☞-Round-2-spring-factories挂载监听"><span class="toc-text">☞ Round 2 spring.factories挂载监听</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#☞-Round-3-自定义-Enable-注解"><span class="toc-text">☞ Round 3 自定义@Enable 注解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gt-关于我"><span class="toc-text">> 关于我</span></a></li></ol>
   </div>
 
 
@@ -172,9 +166,9 @@ Output: value
  * @Author: chenhongen
  * @Date: 2020-01-01 17:21:17
  -->
-<article id="post-装饰器应用-大碗字典" class="article article-type-post" itemprop="blogPost">
+<article id="post-启动加载的三回合" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">装饰器应用-大碗字典</h1>
+    <h1 class="post-title">启动加载的三回合</h1>
 
     <!-- 开始添加字数统计-->
     
@@ -188,7 +182,7 @@ Output: value
       <span class="post-meta-item-icon">
         <i class="fa fa-keyboard-o"></i>
         <span class="post-meta-item-text">  字数统计: </span>
-        <span class="post-count">548字</span>
+        <span class="post-count">479字</span>
       </span>
     </span>
 
@@ -205,7 +199,7 @@ Output: value
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2020.01.01</span>
+        <span>2020.03.01</span>
       </span>
 
       
@@ -218,7 +212,7 @@ Output: value
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/categories/前端/">前端</a>
+    <a class="article-category-link" href="/categories/后端/">后端</a>
   </span>
 
 
@@ -230,23 +224,56 @@ Output: value
 
   <div class="article-content">
     
-      <h5 id="需求简述"><a href="#需求简述" class="headerlink" title="需求简述"></a>需求简述</h5><p>表格加载数据时，根据数据查询key值映射渲染为显示value值。好比DB存的”1/0”,表格渲染完即为“是/否”。</p>
-<p>Input: key,需要开发者指定</p>
-<p>Output: value</p>
-<h5 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h5><p>简化代码篇幅↓；提高业务开发人员效率↑</p>
-<h5 id="原始版"><a href="#原始版" class="headerlink" title="原始版"></a>原始版</h5><p>原版代码量像碗面，又长又宽，大概像下面这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">private mounted() &#123;</div><div class="line">    // 查询页面相关字典（初始化：准备数据）</div><div class="line">    this.refDicReady();</div><div class="line">    // 数据准备结束后，查询列表；渲染页面model</div><div class="line">    this.$nextTick(() =&gt; &#123;</div><div class="line">        this.query();</div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 查询页面相关字典（初始化：准备数据）</div><div class="line">private refDicReady() &#123;</div><div class="line">    const dic = new DicReqVO();</div><div class="line">    dic.parentDicCodeList = [</div><div class="line">        XxConst.TYPE,</div><div class="line">        XxConst.DATASOURCE,</div><div class="line">        //// 问题一：十个的话就在后面加长加宽写十个</div><div class="line">    ];</div><div class="line">    this.dicService.dicMultipleAllList(dic).then((res: ResponseData) =&gt; &#123;</div><div class="line">        /** XX类型 */</div><div class="line">        this.xxDic.type = res.data[XxConst.TYPE];</div><div class="line">        /** Xx字典 */</div><div class="line">        this.xxDic.dataSource = res.data[XxConst.DATASOURCE];</div><div class="line">        //// 问题二：又写了一碗，更多项的话下面就...继续加长加宽</div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 问题三 字典格式化函数每个业务Controller写了一碗</div><div class="line"> */</div><div class="line">private dictionaryFormatter(&#123; cellValue, row, rowIndex, column, columnIndex &#125;) &#123;</div><div class="line">    return this.dicFormatter(...);</div><div class="line">&#125;</div><div class="line">/**</div><div class="line"> * dicFormatter是原作者唯一想到提取到共通BaseController里的方法...</div><div class="line"> */</div><div class="line">dicFormatter(cellValue: string, dics: DicRepVO[]) &#123;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>vue页面中使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">:formatter=&quot;dateFormatter&quot;</div></pre></td></tr></table></figure></p>
-<h5 id="1-0版-封装独立类DictLoader"><a href="#1-0版-封装独立类DictLoader" class="headerlink" title="1.0版 - 封装独立类DictLoader"></a>1.0版 - 封装独立类DictLoader</h5><ul>
-<li>将需要开发者指定的key值封装成Map类型DIC_MAP放入XxConst，页面不再重复写两遍</li>
-<li>dicFormatter、dictionaryFormatter、以及更加业务Map加载初始化统一封装到DictLoader</li>
+      <h3 id="☞-Round-1-应用挂载监听"><a href="#☞-Round-1-应用挂载监听" class="headerlink" title="☞ Round 1 应用挂载监听"></a>☞ Round 1 应用挂载监听</h3><ul>
+<li><p>实现ApplicationListener接口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public class CheApplicationEnvironmentPreparedEventListener implements</div><div class="line">    ApplicationListener&lt;ApplicationEnvironmentPreparedEvent&gt;&#123;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) &#123;</div><div class="line">        // 核心功能写在这里哟</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>main方法中，application.addListeners挂载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;</div><div class="line">    SpringApplication application = new SpringApplication(AuthCenterApplication.class);</div><div class="line">    application.addListeners(new CheApplicationEnvironmentPreparedEventListener());</div><div class="line">    application.run(args);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>分析</p>
+<ul>
+<li>监听实现可以抽取到公共服务，但是每个微服务主函数都需要写一遍监听挂载</li>
+<li>硬编码，例如：无法通过yml配置文件动态关闭开启挂载的核心功能</li>
 </ul>
-<p>Controller中服用是不是爽口许多~<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/** 字典构造器 可抽取至base */</div><div class="line">private dictLoader = new DictLoader();</div><div class="line"></div><div class="line">private async mounted() &#123;</div><div class="line">    // 字典加载后调用查询</div><div class="line">    this.dictLoader.init( DataSourceConst.DIC_MAP ).then(() =&gt; &#123;</div><div class="line">        this.query();</div><div class="line">    &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>vue页面中使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">:formatter=&quot;dictLoader.format&quot;</div></pre></td></tr></table></figure></p>
-<h5 id="2-0版-自定义装饰器Dict"><a href="#2-0版-自定义装饰器Dict" class="headerlink" title="2.0版 - 自定义装饰器Dict"></a>2.0版 - 自定义装饰器Dict</h5><ul>
-<li>基于Decorators思想进一步简化</li>
+</li>
 </ul>
-<p>Controller中服用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/** 字典构造器 可抽取至base */</div><div class="line">private dictLoader = new DictLoader();</div><div class="line"></div><div class="line">@Dict( DataSourceConst.DIC_MAP )</div><div class="line">private mounted() &#123;</div><div class="line">    this.query();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>自定义注解Dict<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line"> * @Description: </div><div class="line"> * @Author: chenhongen</div><div class="line"> * @Date: 2020-01-01 14:16:26</div><div class="line"> */</div><div class="line">export function Dict( map: Map&lt;string, string&gt;) &#123;    </div><div class="line">    return function (target: any,</div><div class="line">        key: string,</div><div class="line">        descriptor: TypedPropertyDescriptor&lt;any&gt;): TypedPropertyDescriptor&lt;any&gt; &#123;</div><div class="line">            const oldValue = descriptor.value</div><div class="line">            descriptor.value = function () &#123;</div><div class="line">                this.dictLoader.init( map ).then(() =&gt; &#123;</div><div class="line">                    // 执行原方法</div><div class="line">                    oldValue.apply(this, this.arguments);</div><div class="line">                &#125;);</div><div class="line">            &#125;</div><div class="line">            return descriptor</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="☞-Round-2-spring-factories挂载监听"><a href="#☞-Round-2-spring-factories挂载监听" class="headerlink" title="☞ Round 2 spring.factories挂载监听"></a>☞ Round 2 spring.factories挂载监听</h3><ul>
+<li><p>实现ApplicationListener接口</p>
+<ul>
+<li>通过event获取Environment可取得bootstap.yml配置文件内容，实现开关功能</li>
+<li>若遇到监听重复加载2次情况，可通过event.getSpringApplication().getWebApplicationType().name())加以区分<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">public class CheApplicationEnvironmentPreparedEventListener implements</div><div class="line">    ApplicationListener&lt;ApplicationEnvironmentPreparedEvent&gt;&#123;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) &#123;</div><div class="line">        // spring.application.log 开启日志</div><div class="line">        // 监听注入2次,name分别为NONE、SERVLET</div><div class="line">        if(&quot;true&quot;.equals(event.getEnvironment().getProperty(&quot;che.xx&quot;)) &amp;&amp;</div><div class="line">                &quot;SERVLET&quot;.equals(event.getSpringApplication().getWebApplicationType().name())) &#123;</div><div class="line">            // 核心功能写在这里哟</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>src/main/resources/spring.factories文件添加监听</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">org.springframework.context.ApplicationListener=xx.yy.CheApplicationEnvironmentPreparedEventListener</div></pre></td></tr></table></figure>
+<ul>
+<li>分析<ul>
+<li>spring.factories可抽取至公共服务</li>
+<li>默认不启用，仅能通过bootstrap.yml自定义开启,无法通过application.yml设置</li>
+</ul>
+</li>
+</ul>
+<h3 id="☞-Round-3-自定义-Enable-注解"><a href="#☞-Round-3-自定义-Enable-注解" class="headerlink" title="☞ Round 3 自定义@Enable 注解"></a>☞ Round 3 自定义@Enable 注解</h3><ul>
+<li><p>EnableCheLog注解类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@Retention(RetentionPolicy.RUNTIME)</div><div class="line">@Target(ElementType.TYPE)</div><div class="line">@Documented</div><div class="line">@Import(&#123;LogImportSelector.class&#125;)</div><div class="line">public @interface EnableCheLog &#123;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>LogImportSelector类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class LogImportSelector implements ImportSelector, EnvironmentAware &#123;</div><div class="line">    </div><div class="line">    private Environment environment;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    public String[] selectImports(AnnotationMetadata annotationMetadata) &#123;</div><div class="line">        // environment获取yml配置作为开关</div><div class="line">        if(&quot;true&quot;.equals(environment.getProperty(&quot;che.xx&quot;))) &#123;</div><div class="line">            // 核心功能写在这里哟</div><div class="line">        &#125;</div><div class="line">        return new String[]&#123;&#125;;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    public void setEnvironment(Environment environment) &#123;</div><div class="line">        this.environment = environment;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>启动类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@EnableCheLog</div><div class="line">public class AuthCenterApplication &#123;</div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        SpringApplication.run(AuthCenterApplication.class, args);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>分析</p>
+<ul>
+<li>EnableCheLog、LogImportSelector放在公共服务</li>
+<li>支持所有yml配置文件设置开关，当然也可以利用yml配置进行核心业务开发</li>
+</ul>
+</li>
+</ul>
 <h3 id="gt-关于我"><a href="#gt-关于我" class="headerlink" title="&gt; 关于我"></a>&gt; 关于我</h3><p><a href="http://rebey.cn/">rebey.cn</a></p>
 
     
@@ -371,7 +398,7 @@ Output: value
     
   <section class="duoshuo-comments">
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="" data-title="装饰器应用-大碗字典" data-url="http://rebey.cn/2020/01/01/装饰器应用-大碗字典/index.html"></div>
+    <div class="ds-thread" data-thread-key="" data-title="启动加载的三回合" data-url="http://rebey.cn/2020/03/01/启动加载的三回合/index.html"></div>
     <!-- 多说评论框 end -->
   </section>
 
